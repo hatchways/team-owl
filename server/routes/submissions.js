@@ -12,7 +12,7 @@ const {
 router.post('/', createSubmission);
 router.get('/', getAllSubmissions);
 router.delete('/', deleteSubmission);
-router.get('/submission/:id', getSubmissionById);
-router.put('/submission/:id', updateSubmission);
+router.get('/:id', getSubmissionById);
+router.put('/:id', updateSubmission);
 
 module.exports = router;

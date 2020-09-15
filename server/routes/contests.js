@@ -12,7 +12,7 @@ const {
 router.post('/', createContest);
 router.get('/', getAllContests);
 router.delete('/', deleteContest);
-router.get('/contest/:id', getContestById);
-router.put('/contest/:id', updateContest);
+router.get('/:id', getContestById);
+router.put('/:id', updateContest);
 
 module.exports = router;

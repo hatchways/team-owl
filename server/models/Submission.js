@@ -11,12 +11,19 @@ const SubmissionSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  active: Boolean,
+  active: {
+    type: Boolean,
+    default: true,
+  },
   date: {
     type: Date,
     default: Date.now(),
   },
-  urlAWS: String,
+  urlAWS: {
+    type: String,
+    default: 'default url to AWS',
+    required: true, //required??
+  },
 });
 
 const Submission = mongoose.model('Submission', SubmissionSchema);

@@ -63,12 +63,17 @@ exports.loginUser = async (req, res, next) => {
 		if (!isMatch) {
 			return res.status(400).json({ msg: "Password invalid" });
 		}
-		const token = jwt.sign({ user: user.name }, process.env.TOKEN_SECRET_KEY);
+		const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET_KEY);
 		res.status(200).json({ token, user: { name: user.name, id: user._id } });
 	} catch (error) {
 		console.error(error.message);
 		res.status(500).json({ msg: "Server error - 500" });
 	}
+};
+
+//POST -  verfiy Token - Logged in
+exports.verifyToken = async (req, res, next) => {
+	return res.status(200).json(req.user);
 };
 
 //GET - get User by Id

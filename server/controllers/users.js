@@ -1,7 +1,8 @@
 const User = require('../models/User');
 const validator = require('email-validator');
 const bcrypt = require('bcryptjs');
-const { ensureIndexes } = require('../models/User');
+const aws = require('aws-sdk');
+const fs = require('fs');
 
 //POST - create user
 exports.createUser = async (req, res, next) => {
@@ -10,7 +11,7 @@ exports.createUser = async (req, res, next) => {
   if (!name || !email || !password) {
     return res
       .status(400)
-      .json({ msg: 'Name, email, password and userType are required.' });
+      .json({ msg: 'Name, email, and password are required.' });
   }
 
   if (!validator.validate(email)) {
@@ -29,18 +30,52 @@ exports.createUser = async (req, res, next) => {
       return res.status(400).json({ msg: 'User already exists.' });
     }
 
-    user = new User({
-      name,
-      email,
-      password,
-    });
+    if (req.file) {
+      //if avatar is provided
+      aws.config.setPromisesDependency();
+      aws.config.update({
+        accessKeyId: process.env.ACCESSKEYID,
+        secretAccessKey: process.env.SECRETACCESSKEY,
+        region: process.env.REGION,
+      });
 
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
+      const s3 = new aws.S3();
 
-    await user.save();
+      const params = {
+        ACL: 'public-read',
+        Bucket: process.env.BUCKET_NAME,
+        Body: fs.createReadStream(req.file.path),
+        Key: `userAvatar/${req.file.originalname}`,
+      };
 
-    res.status(200).json(user);
+      s3.upload(params, async (err, data) => {
+        if (err) {
+          console.log('Error occured while trying to upload to S3 bucket', err);
+        }
+
+        if (data) {
+          fs.unlinkSync(req.file.path); // Empty temp folder
+          user = new User({ ...req.body, avatar: data.Location });
+
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(password, salt);
+
+          await user.save();
+
+          res.status(201).json(user);
+        }
+      });
+    } else {
+      //if no avatar is provided
+      user = new User({ ...req.body });
+
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+
+      await user.save();
+
+      res.status(201).json(user);
+    }
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ msg: 'Server error - 500' });
@@ -59,13 +94,13 @@ exports.loginUser = async (req, res, next) => {
     const user = User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ msg: 'Email invalid' });
+      return res.status(404).json({ msg: 'Email invalid' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({ msg: 'Password invalid' });
+      return res.status(401).json({ msg: 'Password invalid' });
     }
 
     res.status(200).json({ user });
@@ -81,7 +116,7 @@ exports.getUserById = async (req, res, next) => {
 
   try {
     if (!user) {
-      return res.status(400).json({ msg: 'User ID does not exist' });
+      return res.status(404).json({ msg: 'User ID does not exist' });
     }
 
     res.status(200).json(user);
@@ -97,7 +132,7 @@ exports.getAllUsers = async (req, res, next) => {
 
   try {
     if (!users) {
-      return res.status(400).json({ msg: 'No users exists' });
+      return res.status(404).json({ msg: 'No users exists' });
     }
 
     res.status(200).json(users);

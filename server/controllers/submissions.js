@@ -50,12 +50,13 @@ exports.createSubmission = async (req, res, next) => {
           locationURL.push(data.Location);
         }
 
+        //submissionPic only created when all uploads are completed
+        //submission only gets saved then
         if (picArray.length == uploads.length) {
           console.log('Files are supposed to be uploaded');
+          submission.submissionPic = locationURL;
+          await submission.save();
         }
-
-        submission.submissionPic = locationURL;
-        await submission.save();
       });
     });
 

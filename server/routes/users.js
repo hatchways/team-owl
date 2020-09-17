@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const { auth } = require('../middleware/auth');
 
 const {
   createUser,
@@ -8,6 +9,7 @@ const {
   getAllUsers,
   updateUser,
   deleteUser,
+  loginUser,
 } = require('../controllers/users');
 
 const multerSingle = multer({
@@ -17,8 +19,9 @@ const multerSingle = multer({
 
 router.post('/', multerSingle, createUser);
 router.get('/', getAllUsers);
-router.delete('/', deleteUser);
+router.delete('/', auth, deleteUser);
 router.get('/:id', getUserById);
-router.put('/:id', updateUser);
+router.put('/:id', auth, updateUser);
+router.post('/login', loginUser);
 
 module.exports = router;

@@ -3,6 +3,7 @@ const validator = require('email-validator');
 const bcrypt = require('bcryptjs');
 const aws = require('aws-sdk');
 const fs = require('fs');
+const jwt = require('jsonwebtoken');
 
 //POST - create user
 exports.createUser = async (req, res, next) => {
@@ -74,7 +75,9 @@ exports.createUser = async (req, res, next) => {
 
       await user.save();
 
-      res.status(201).json(user);
+      //token
+      const token = jwt.sign({ user: user.name }, process.env.TOKEN_SECRET_KEY);
+      res.status(201).json(user, token);
     }
   } catch (error) {
     console.error(error.message);
@@ -82,28 +85,23 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
-//POST - log in user - missing JWT
+//POST - log in user - auth
 exports.loginUser = async (req, res, next) => {
   const { email, password } = req.body;
-
   try {
     if (!email || !password) {
       return res.status(400).json({ msg: 'Email and password required' });
     }
-
-    const user = User.findOne({ email });
-
+    const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ msg: 'Email invalid' });
+      return res.status(400).json({ msg: 'Email invalid' });
     }
-
     const isMatch = await bcrypt.compare(password, user.password);
-
     if (!isMatch) {
-      return res.status(401).json({ msg: 'Password invalid' });
+      return res.status(400).json({ msg: 'Password invalid' });
     }
-
-    res.status(200).json({ user });
+    const token = jwt.sign({ user: user.name }, process.env.TOKEN_SECRET_KEY);
+    res.status(200).json({ token, user: { name: user.name, id: user._id } });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ msg: 'Server error - 500' });

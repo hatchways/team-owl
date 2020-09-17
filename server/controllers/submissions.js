@@ -9,9 +9,10 @@ exports.createSubmission = async (req, res, next) => {
   req.params.id = req.id;
   try {
     const contest = await Contest.findOne({ _id: req.params.id });
-    const user = await User.findOne({ _id: '5f60095f5d46b01ceecd35a2' });
-
     //problem - same user can submit multiple submissions
+    //Hardcoding the userId for img upload test on FE for now, req.user.userId and auth work
+    //Shiv id: 5f61089819261d0d5680307f
+    const user = await User.findOne({ _id: '5f61089819261d0d5680307f' });
 
     let uploads = req.files;
     aws.config.setPromisesDependency();
@@ -108,5 +109,21 @@ exports.updateSubmission = async (req, res, next) => {
 
 //DELETE - create submission by Id - auth
 exports.deleteSubmission = async (req, res, next) => {
-  return res.status(200).json({ msg: 'Delete submission' });
+  const submission = await Submission.findOne({ _id: req.params.id });
+  const createdByIdObject = submission.user._id;
+  const createdByIdString = createdByIdObject.toString();
+  const userId = req.user.userId;
+
+  if (createdByIdString !== userId) {
+    return res
+      .status(401)
+      .json({ msg: 'You are not authorized to delete this submission' });
+  }
+  try {
+    await Submission.findOneAndRemove({ _id: req.params.id });
+    res.json({ msg: 'Submission removed' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
 };

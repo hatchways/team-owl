@@ -5,12 +5,9 @@ const User = require('../models/User');
 exports.createContest = async (req, res, next) => {
   const { title, description, prize, deadline } = req.body;
 
-  //const user = req.user; //to be implemented when authentication is available
-  //for now, hardcoding user
   //problem: possible to have unlimited contests and identical contests by the same user
   //potential solution: store total contests in array as user property in DB
-
-  const user = await User.findOne({ _id: '5f61089819261d0d5680307f' });
+  const user = await User.findOne({ _id: req.user.userId });
 
   //todo: convert local time to UTC time before saving to contest
 
@@ -67,5 +64,21 @@ exports.updateContest = async (req, res, next) => {
 
 //DELETE - create contest by Id - auth
 exports.deleteContest = async (req, res, next) => {
-  return res.status(200).json({ msg: 'Delete contest' });
+  const contest = await Contest.findOne({ _id: req.params.id });
+  const createdByIdObject = contest.user._id;
+  const createdByIdString = createdByIdObject.toString();
+  const userId = req.user.userId;
+
+  if (createdByIdString !== userId) {
+    return res
+      .status(401)
+      .json({ msg: 'You are not authorized to delete this contest' });
+  }
+  try {
+    await Contest.findOneAndRemove({ _id: req.params.id });
+    res.json({ msg: 'Contest removed' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
 };

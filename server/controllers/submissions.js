@@ -57,14 +57,9 @@ exports.createSubmission = async (req, res, next) => {
           console.log('Files are supposed to be uploaded');
           submission.submissionPic = locationURL;
           await submission.save();
+          res.status(201).json(submission);
         }
       });
-    });
-
-    res.status(201).json({
-      msg:
-        'locationURL saved to submissionPic but not able to json them because of asynchronus issues',
-      submission,
     });
   } catch (error) {
     console.error(error.message);
@@ -74,9 +69,9 @@ exports.createSubmission = async (req, res, next) => {
 
 //GET - get submission by Id
 exports.getSubmissionById = async (req, res, next) => {
-  const submission = await Submission.findOne({ _id: req.params.id });
-
   try {
+    const submission = await Submission.findOne({ _id: req.params.id });
+
     if (!submission) {
       return res.status(404).json({ msg: 'This submission does not exist' });
     }
@@ -89,9 +84,9 @@ exports.getSubmissionById = async (req, res, next) => {
 
 //GET - get all submissions
 exports.getAllSubmissions = async (req, res, next) => {
-  const submissions = await Submission.find();
-
   try {
+    const submissions = await Submission.find();
+
     if (!submissions) {
       return res.status(404).json({ msg: 'There are no submissions' });
     }
@@ -109,17 +104,15 @@ exports.updateSubmission = async (req, res, next) => {
 
 //DELETE - create submission by Id - auth
 exports.deleteSubmission = async (req, res, next) => {
-  const submission = await Submission.findOne({ _id: req.params.id });
-  const createdByIdObject = submission.user._id;
-  const createdByIdString = createdByIdObject.toString();
-  const userId = req.user.userId;
-
-  if (createdByIdString !== userId) {
-    return res
-      .status(401)
-      .json({ msg: 'You are not authorized to delete this submission' });
-  }
   try {
+    const submission = await Submission.findOne({ _id: req.params.id });
+    const user = req.user;
+    const verify = userCheck(submission, user);
+    if (!verify) {
+      return res
+        .status(401)
+        .json({ msg: 'You are not authorized to delete this submission' });
+    }
     await Submission.findOneAndRemove({ _id: req.params.id });
     res.json({ msg: 'Submission removed' });
   } catch (error) {

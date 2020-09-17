@@ -100,8 +100,9 @@ exports.verifyToken = async (req, res, next) => {
 
 //GET - Loggedin user - self
 exports.getLoggedinUser = async (req, res, next) => {
-  const user = await User.findOne({ _id: req.user.userId });
   try {
+    const user = await User.findOne({ _id: req.user.userId });
+
     if (!user) {
       return res.status(401).json({ msg: 'You are not authorized' });
     }
@@ -137,9 +138,9 @@ exports.loginUser = async (req, res, next) => {
 
 //GET - get User by Id
 exports.getUserById = async (req, res, next) => {
-  const user = await User.findOne({ _id: req.params.id });
-
   try {
+    const user = await User.findOne({ _id: req.params.id });
+
     if (!user) {
       return res.status(404).json({ msg: 'User ID does not exist' });
     }
@@ -153,9 +154,9 @@ exports.getUserById = async (req, res, next) => {
 
 //GET - get all Users
 exports.getAllUsers = async (req, res, next) => {
-  const users = await User.find();
-
   try {
+    const users = await User.find();
+
     if (!users) {
       return res.status(404).json({ msg: 'No users exists' });
     }

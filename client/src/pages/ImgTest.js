@@ -5,7 +5,6 @@ const ImgTest = () => {
   const [file1, setFiles1] = useState();
   const [file2, setFiles2] = useState();
   const [file3, setFiles3] = useState();
-  //const [uploadedFile, setUploadedFile] = useState({});
 
   const onChangeOne = (e) => {
     setFiles1(e.target.files[0]);
@@ -40,8 +39,6 @@ const ImgTest = () => {
         formData
       );
       const { submission } = res.data;
-      // setUploadedFile({ submission });
-      console.log(submission);
     } catch (error) {
       if (error.response.status === 500) {
         console.log('There was a problem with the server');

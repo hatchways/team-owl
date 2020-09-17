@@ -1,8 +1,11 @@
 import React from 'react';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core';
-import { BrowserRouter, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { theme } from './themes/theme';
+import Login from './pages/Login';
+import Signup from './pages/Singup';
+import Nav from './components/Nav';
 import LandingPage from './pages/Landing';
 
 const App = () => {
@@ -10,7 +13,12 @@ const App = () => {
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <Route path="/" component={LandingPage} />
+        <Nav />
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+        </Switch>
       </BrowserRouter>
     </MuiThemeProvider>
   );

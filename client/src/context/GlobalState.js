@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import UserContext from '../context/UserContext';
 import {
   getFromStorage,
@@ -6,20 +6,27 @@ import {
   removeFromStorage,
 } from '../helper/localStorage';
 import { verifyToken, login, signUp } from '../helper/Fetch';
+import { userReducer } from './reducers';
 
 const GlobalState = (props) => {
-  const [state, setState] = useState({ user: undefined });
+  const [state, dispatch] = useReducer(userReducer, {
+    user: undefined,
+    token: undefined,
+  });
 
   const handleLogout = () => {
     removeFromStorage('auth_Token');
-    setState({ user: undefined });
+    dispatch({ type: 'LOG_OUT' });
   };
 
   const handleLogin = async (email, password) => {
     const data = await login(email, password);
     if (data.token) {
       setInStorage('auth_Token', data.token);
-      setState({ user: data.user });
+      dispatch({
+        type: 'LOG_IN',
+        payload: { token: data.token, user: data.user },
+      });
     } else {
       console.log('wrong email and password');
     }
@@ -31,19 +38,19 @@ const GlobalState = (props) => {
   };
 
   useEffect(() => {
-    let token = getFromStorage('auth_Token');
-    if (token != null) {
-      const checkLogin = async () => {
-        const user = await verifyToken(token);
-        setState({ user: user.data });
-      };
-      checkLogin();
-    }
+    const checkLogin = async () => {
+      let token = getFromStorage('auth_Token') || '';
+      const user = await verifyToken(token);
+      if (user.data) {
+        dispatch({ type: 'VERIFY_TOKEN', payload: { token, user: user.data } });
+      }
+    };
+    checkLogin();
   }, []);
 
   return (
     <UserContext.Provider
-      value={{ state, setState, handleLogout, handleLogin, handleSignUp }}
+      value={{ state, handleLogout, handleLogin, handleSignUp }}
     >
       {props.children}
     </UserContext.Provider>

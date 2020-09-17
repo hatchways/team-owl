@@ -1,7 +1,8 @@
 import axios from 'axios';
-
 const server_Url = 'http://localhost:3001';
 
+// helper for verifying token
+//
 const verifyToken = async (token) => {
   const user = await axios
     .post(`${server_Url}/api/user/verifytoken/`, null, {
@@ -15,6 +16,8 @@ const verifyToken = async (token) => {
   return user;
 };
 
+// helper for login
+//
 const login = async (email, password) => {
   const user = await axios.post(`${server_Url}/api/user/login`, {
     email,
@@ -23,6 +26,8 @@ const login = async (email, password) => {
   return user.data;
 };
 
+// helper for signup
+//
 const signUp = async (name, email, password) => {
   const user = await axios.post(`${server_Url}/api/user/`, {
     name,

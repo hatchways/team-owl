@@ -53,10 +53,10 @@ const GlobalState = (props) => {
     const checkLogin = async () => {
       let token = getFromStorage('auth_Token') || '';
       const user = await verifyToken(token);
-      if (user.data) {
-        dispatch({ type: 'VERIFY_TOKEN', payload: { token, user: user.data } });
+      if (user) {
+        dispatch({ type: 'VERIFY_TOKEN', payload: { token, user: user } });
       } else {
-        // console.log(user);
+        console.log(user);
       }
     };
     checkLogin();

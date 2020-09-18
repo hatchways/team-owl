@@ -12,6 +12,7 @@ const GlobalState = (props) => {
   const [state, dispatch] = useReducer(userReducer, {
     user: undefined,
     token: undefined,
+    toast: { open: false, message: '' },
   });
 
   const handleLogout = () => {
@@ -20,21 +21,32 @@ const GlobalState = (props) => {
   };
 
   const handleLogin = async (email, password) => {
-    const data = await login(email, password);
-    if (data.token) {
-      setInStorage('auth_Token', data.token);
+    const user = await login(email, password);
+    if (user.token) {
+      setInStorage('auth_Token', user.token);
       dispatch({
         type: 'LOG_IN',
-        payload: { token: data.token, user: data.user },
+        payload: { token: user.token, user: user.user },
       });
     } else {
-      console.log('wrong email and password');
+      dispatch({ type: 'TOAST', payload: { open: true, message: user.msg } });
     }
   };
 
-  const handleSignUp = async (name, email, password) => {
-    await signUp(name, email, password);
-    handleLogin(email, password);
+  const handleSignUp = async (name, email, password, rePassword) => {
+    if (password !== rePassword) {
+      dispatch({
+        type: 'TOAST',
+        payload: { open: true, message: 'Passwords Do not Match' },
+      });
+      return;
+    }
+    let user = await signUp(name, email, password);
+    if (user.name) {
+      handleLogin(email, password);
+    } else {
+      dispatch({ type: 'TOAST', payload: { open: true, message: user.msg } });
+    }
   };
 
   useEffect(() => {
@@ -43,6 +55,8 @@ const GlobalState = (props) => {
       const user = await verifyToken(token);
       if (user.data) {
         dispatch({ type: 'VERIFY_TOKEN', payload: { token, user: user.data } });
+      } else {
+        // console.log(user);
       }
     };
     checkLogin();

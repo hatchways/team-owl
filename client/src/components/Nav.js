@@ -10,15 +10,15 @@ export default function Nav() {
 
   return (
     <>
-      <AppBar position="static" className={classes.appBar}>
+      <AppBar position="sticky" className={classes.appBar}>
         <Toolbar>
           <Grid container spacing={5}>
-            <Grid container item xs={7} alignContent="center">
-              <Typography variant="subtitle1" className={classes.logo}>
-                TATTO ART
-              </Typography>
+            <Grid container item xs={6} alignContent="center">
+              <Link to="/" className={classes.logo}>
+                <Typography variant="subtitle1">TATTO ART</Typography>
+              </Link>
             </Grid>
-            <Grid container item xs={5} justify="flex-end">
+            <Grid container item xs={6} justify="flex-end">
               {context.state.user ? (
                 <Button
                   onClick={() => {
@@ -26,11 +26,10 @@ export default function Nav() {
                   }}
                   size="large"
                   variant="outlined"
+                  color="primary"
                   className={classes.button}
                 >
-                  <Typography style={{ color: '#f4f4f4' }} variant="button">
-                    LogOut
-                  </Typography>
+                  <Typography variant="button">LogOut</Typography>
                 </Button>
               ) : (
                 <>
@@ -39,22 +38,20 @@ export default function Nav() {
                     to="/login"
                     size="large"
                     variant="outlined"
+                    color="primary"
                     className={classes.button}
                   >
-                    <Typography style={{ color: '#f4f4f4' }} variant="button">
-                      Login
-                    </Typography>
+                    <Typography variant="button">Login</Typography>
                   </Button>
                   <Button
                     component={Link}
                     to="/signup"
                     size="large"
                     variant="outlined"
+                    color="primary"
                     className={classes.button}
                   >
-                    <Typography style={{ color: '#f4f4f4' }} variant="button">
-                      Signup
-                    </Typography>
+                    <Typography variant="button">Signup</Typography>
                   </Button>
                 </>
               )}

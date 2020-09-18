@@ -1,18 +1,20 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { theme } from '../themes/theme';
 
-const useNavStyles = makeStyles((theme) => ({
+const useNavStyles = makeStyles(() => ({
   appBar: {
     padding: '0 5%',
   },
   logo: {
     letterSpacing: '0.75rem',
     fontWeight: '300',
+    textDecoration: 'none',
+    color: 'inherit',
   },
   button: {
-    borderRadius: 0,
+    // borderRadius: 0,
     borderColor: 'white',
     marginLeft: '10%',
+    color: '#f4f4f4',
   },
 }));
 

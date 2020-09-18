@@ -9,9 +9,7 @@ exports.createUser = async (req, res, next) => {
 	const { name, email, password } = req.body;
 
 	if (!name || !email || !password) {
-		return res
-			.status(400)
-			.json({ msg: "Name, email, password and userType are required." });
+		return res.status(400).json({ msg: "Name, email, password are required." });
 	}
 
 	if (!validator.validate(email)) {
@@ -23,7 +21,6 @@ exports.createUser = async (req, res, next) => {
 			.status(400)
 			.json({ msg: "Password must have at least 6 characters." });
 	}
-
 	try {
 		let user = await User.findOne({ email });
 		if (user) {
@@ -57,14 +54,18 @@ exports.loginUser = async (req, res, next) => {
 		}
 		const user = await User.findOne({ email });
 		if (!user) {
-			return res.status(400).json({ msg: "Email invalid" });
+			return res.status(400).json({ msg: "Email / Password invalid" });
 		}
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) {
-			return res.status(400).json({ msg: "Password invalid" });
+			return res.status(400).json({ msg: "Email / Password invalid" });
 		}
 		const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET_KEY);
-		res.status(200).json({ token, user: { name: user.name, id: user._id } });
+		res.status(200).json({
+			token,
+			user: { name: user.name, id: user._id },
+			msg: "Login Successful",
+		});
 	} catch (error) {
 		console.error(error.message);
 		res.status(500).json({ msg: "Server error - 500" });

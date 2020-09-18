@@ -1,13 +1,20 @@
-import React, { useContext } from 'react';
-import Nav from '../components/Nav';
-import UserContext from '../context/UserContext';
+import React from 'react';
 import { Typography, Grid } from '@material-ui/core';
+import useLandingStyles from './Landing_Css';
 
 export default function Landing() {
-  const context = useContext(UserContext);
+  const classes = useLandingStyles();
+
   return (
     <>
-      <Typography variant="h2">Home Page</Typography>
+      <Grid
+        container
+        justify="center"
+        alignContent="center"
+        className={classes.grid}
+      >
+        <Typography variant="h2">Home Page</Typography>
+      </Grid>
     </>
   );
 }

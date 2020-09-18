@@ -1,11 +1,16 @@
 export const userReducer = (state, { type, payload }) => {
   switch (type) {
     case 'LOG_OUT':
-      return { token: undefined, user: undefined };
+      return { ...state, token: undefined, user: undefined };
     case 'LOG_IN':
-      return { token: payload.token, user: payload.user };
+      return { ...state, token: payload.token, user: payload.user };
     case 'VERIFY_TOKEN':
-      return { token: payload.token, user: payload.user };
+      return { ...state, token: payload.token, user: payload.user };
+    case 'TOAST':
+      return {
+        ...state,
+        toast: { open: payload.open, message: payload.message },
+      };
     default:
       return state;
   }

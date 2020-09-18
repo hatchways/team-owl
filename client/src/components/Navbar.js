@@ -15,7 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 const useStyles = makeStyles((theme) => ({
   navLinks: {
-    color: theme.palette.secondary.light,
+    color: theme.palette.primary.light,
     marginRight: theme.spacing(3),
     borderColor: '#ffffff',
   },
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   appBar: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   container: {
     width: '100%',

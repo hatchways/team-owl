@@ -1,7 +1,7 @@
 import 'date-fns';
 import React, { Fragment } from 'react';
-import Navbar from './Navbar';
-import TextFields from './TextFields';
+import Navbar from '../components/Navbar';
+import TextFields from '../components/TextFields';
 
 const Contest = () => {
   return (

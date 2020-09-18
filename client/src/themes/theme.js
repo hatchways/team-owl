@@ -29,7 +29,11 @@ export const theme = createMuiTheme({
     '& .MuiInputLabel-outlined.Mui-focused': {
       color: 'black',
     },
+    '&:hover .MuiButton-contained': {
+      color: '#ddd',
+    },
   },
+
   typography: {
     fontFamily: ['Poppins', 'Poppins-Semibold'],
     fontSize: 12,
@@ -41,7 +45,12 @@ export const theme = createMuiTheme({
     },
   },
   palette: {
+    primary: { main: '#000000', light: '#ffffff' },
     grey: { main: '#dddddd', dark: '#888888' },
-    secondary: { main: '#000000', light: '#ffffff' },
+  },
+  subtitle: {
+    textAlign: 'left',
+    paddingTop: 50,
+    fontFamily: ['Poppins', 'Poppins-Semibold'],
   },
 });

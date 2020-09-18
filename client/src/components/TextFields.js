@@ -1,13 +1,15 @@
 import 'date-fns';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import {
   Typography,
   Container,
-  makeStyles,
   Box,
   TextField,
   Grid,
   Paper,
+  GridList,
+  GridListTile,
+  Button,
 } from '@material-ui/core';
 
 import DateFnsUtils from '@date-io/date-fns';
@@ -16,69 +18,12 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-
-const useStyles = makeStyles((theme) => ({
-  navLinks: {
-    color: theme.palette.secondary.light,
-    marginRight: theme.spacing(3),
-    borderColor: '#ffffff',
-  },
-  tempBackground: {
-    height: '100vh',
-  },
-
-  mainBox: {
-    height: '50rem',
-    margin: 'auto',
-  },
-
-  textInputBox: {
-    height: '24rem',
-    width: '100%',
-    margin: 'auto',
-  },
-
-  prizeTimeBox: {
-    paddingTop: theme.spacing(6),
-  },
-
-  innerContainer: {
-    maxWidth: '75%',
-    height: '48rem',
-  },
-
-  title: {
-    flexGrow: 1,
-    textAlign: 'center',
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(8),
-    fontFamily: 'Poppins-Semibold',
-  },
-  subtitle: {
-    textAlign: 'left',
-    paddingTop: theme.spacing(6),
-    fontFamily: 'Poppins-Semibold',
-  },
-  subtext: {
-    color: theme.palette.grey.dark,
-    marginTop: theme.spacing(1),
-  },
-  prizeTimeSub: {
-    textAlign: 'left',
-    fontFamily: 'Poppins-Semibold',
-  },
-  textFieldOne: {
-    width: '100%',
-    marginTop: theme.spacing(1),
-  },
-  paper: {
-    backgroundColor: 'white',
-  },
-}));
+import imgData from '../imgData';
+import useStyles from '../styles/styles';
 
 const TextFields = () => {
   // The first commit of Material-UI
-  const [selectedDate, setSelectedDate] = React.useState(
+  const [selectedDate, setSelectedDate] = useState(
     new Date('2014-08-18T21:11:54')
   );
 
@@ -92,7 +37,7 @@ const TextFields = () => {
       <Typography variant="h4" m={3} className={classes.title}>
         Create New Contest
       </Typography>
-      <Container className={classes.tempBackground} boxShadow={3} maxWidth="md">
+      <Container boxShadow={3} maxWidth="md">
         <Box boxShadow={3} className={classes.mainBox}>
           <Container className={classes.innerContainer}>
             <Box className={classes.textInputBox}>
@@ -180,6 +125,26 @@ const TextFields = () => {
                   Let's start by helping your designers understands which stype
                   you prefer.
                 </Typography>
+                <div className={classes.grid}>
+                  <GridList
+                    cellHeight={160}
+                    className={classes.gridList}
+                    cols={3}
+                  >
+                    {imgData.map((tile) => (
+                      <GridListTile key={tile.img} cols={tile.cols || 1}>
+                        <img src={tile.img} alt={tile.title} />
+                      </GridListTile>
+                    ))}
+                  </GridList>
+                </div>
+              </Box>
+              <Box className={classes.alignItemsAndJustifyContent}>
+                <Button variant="contained" className={classes.contestButton}>
+                  <Typography className={classes.buttonText}>
+                    Create Contest
+                  </Typography>
+                </Button>
               </Box>
             </Box>
           </Container>

@@ -48,9 +48,4 @@ export const theme = createMuiTheme({
     primary: { main: '#000000', light: '#ffffff' },
     grey: { main: '#dddddd', dark: '#888888' },
   },
-  subtitle: {
-    textAlign: 'left',
-    paddingTop: 50,
-    fontFamily: ['Poppins', 'Poppins-Semibold'],
-  },
 });

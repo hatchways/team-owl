@@ -1,13 +1,13 @@
 import 'date-fns';
 import React, { Fragment } from 'react';
 import Navbar from '../components/Navbar';
-import TextFields from '../components/TextFields';
+import InputFields from '../components/InputFields';
 
 const Contest = () => {
   return (
     <Fragment>
       <Navbar />
-      <TextFields />
+      <InputFields />
     </Fragment>
   );
 };

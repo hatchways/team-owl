@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import {
   Typography,
   Container,
-  makeStyles,
   AppBar,
   Toolbar,
   IconButton,
@@ -12,29 +11,7 @@ import {
   Avatar,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-
-const useStyles = makeStyles((theme) => ({
-  navLinks: {
-    color: theme.palette.primary.light,
-    marginRight: theme.spacing(3),
-    borderColor: '#ffffff',
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  appBar: {
-    backgroundColor: theme.palette.primary.main,
-  },
-  container: {
-    width: '100%',
-  },
-  toolBar: {
-    margin: 'auto',
-  },
-}));
+import useStyles from '../styles/styles';
 
 const Navbar = () => {
   const classes = useStyles();
@@ -53,7 +30,7 @@ const Navbar = () => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h6" className={classes.titleLogo}>
               <Box letterSpacing={8} m={1}>
                 TATTOO ART
               </Box>

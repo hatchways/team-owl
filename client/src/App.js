@@ -1,17 +1,15 @@
 import React from 'react';
-import { MuiThemeProvider } from '@material-ui/core';
+import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
 import { theme } from './themes/theme';
 import LandingPage from './pages/Landing';
 import ImgTest from './pages/ImgTest';
 import Contest from './pages/Contest';
 
-import './App.css';
-
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
+      <CssBaseline />
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={LandingPage} />

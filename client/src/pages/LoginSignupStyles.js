@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useLoginSignupStyles = makeStyles(() => ({
+const LoginSignupStyles = makeStyles(() => ({
   button: {
     padding: '1rem 2rem',
     width: '50%',
@@ -21,4 +21,4 @@ const useLoginSignupStyles = makeStyles(() => ({
   },
 }));
 
-export default useLoginSignupStyles;
+export default LoginSignupStyles;

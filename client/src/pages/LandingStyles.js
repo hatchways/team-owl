@@ -1,9 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useLandingStyles = makeStyles(() => ({
+const LandingStyles = makeStyles(() => ({
   grid: {
     height: '80vh',
   },
 }));
 
-export default useLandingStyles;
+export default LandingStyles;

@@ -19,10 +19,9 @@ const SubmissionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  urlAWS: {
-    type: String,
-    default: 'default url to AWS',
-    required: true, //required??
+  submissionPic: {
+    type: Array,
+    required: true,
   },
 });
 

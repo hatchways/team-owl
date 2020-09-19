@@ -1,11 +1,11 @@
 import axios from 'axios';
-const server_Url = 'http://localhost:3001';
+const server_url = process.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
 
 // helper for verifying token
 //
 const verifyToken = async (token) => {
   const user = await axios
-    .post(`${server_Url}/api/user/verifytoken/`, null, {
+    .post(`${server_url}/api/user/verifytoken/`, null, {
       headers: {
         auth_token: `Bearer ${token}`,
       },
@@ -20,7 +20,7 @@ const verifyToken = async (token) => {
 //
 const login = async (email, password) => {
   const user = await axios
-    .post(`${server_Url}/api/user/login`, {
+    .post(`${server_url}/api/user/login`, {
       email,
       password,
     })
@@ -34,7 +34,7 @@ const login = async (email, password) => {
 //
 const signUp = async (name, email, password) => {
   const user = await axios
-    .post(`${server_Url}/api/user/`, {
+    .post(`${server_url}/api/user/`, {
       name,
       email,
       password,

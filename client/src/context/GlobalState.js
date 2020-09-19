@@ -16,14 +16,14 @@ const GlobalState = (props) => {
   });
 
   const handleLogout = () => {
-    removeFromStorage('auth_Token');
+    removeFromStorage('auth_token');
     dispatch({ type: 'LOG_OUT' });
   };
 
   const handleLogin = async (email, password) => {
     const user = await login(email, password);
     if (user.token) {
-      setInStorage('auth_Token', user.token);
+      setInStorage('auth_token', user.token);
       dispatch({
         type: 'LOG_IN',
         payload: { token: user.token, user: user.user },
@@ -41,7 +41,7 @@ const GlobalState = (props) => {
       });
       return;
     }
-    let user = await signUp(name, email, password);
+    const user = await signUp(name, email, password);
     if (user.name) {
       handleLogin(email, password);
     } else {
@@ -51,12 +51,12 @@ const GlobalState = (props) => {
 
   useEffect(() => {
     const checkLogin = async () => {
-      let token = getFromStorage('auth_Token') || '';
+      let token = getFromStorage('auth_token') || '';
       const user = await verifyToken(token);
-      if (user) {
+      if (!user.error) {
         dispatch({ type: 'VERIFY_TOKEN', payload: { token, user: user } });
       } else {
-        console.log(user);
+        console.log(user.error.message);
       }
     };
     checkLogin();

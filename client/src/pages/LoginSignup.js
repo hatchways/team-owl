@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Toast from '../components/Toast';
 import UserContext from '../context/UserContext';
-import useLoginSignupStyles from './LoginSignup_Css';
+import LoginSignupStyles from './LoginSignupStyles';
 import { Paper, Typography, TextField, Button, Grid } from '@material-ui/core';
 
 export default function LoginSignup(props) {
@@ -12,7 +12,7 @@ export default function LoginSignup(props) {
   const [rePassword, setRePassword] = useState('');
   const context = useContext(UserContext);
   const history = useHistory();
-  const classes = useLoginSignupStyles();
+  const classes = LoginSignupStyles();
   const isSignIn = props.isSignIn;
 
   useEffect(() => {

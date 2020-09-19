@@ -74,7 +74,14 @@ exports.loginUser = async (req, res, next) => {
 
 //POST -  verfiy Token - Logged in
 exports.verifyToken = async (req, res, next) => {
-	return res.status(200).json(req.user);
+	const search = await User.findOne({ _id: req.user.userId });
+	const user = {
+		avatar: search.avatar,
+		_id: search._id,
+		name: search.name,
+		email: search.email,
+	};
+	return res.status(200).json(user);
 };
 
 //GET - get User by Id

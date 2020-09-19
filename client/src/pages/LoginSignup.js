@@ -17,7 +17,7 @@ export default function LoginSignup(props) {
 
   useEffect(() => {
     if (context.state.user) {
-      history.push('/');
+      history.push('/profile');
     }
   });
   const login = (e) => {

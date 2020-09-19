@@ -13,14 +13,17 @@ const GlobalState = (props) => {
     user: undefined,
     token: undefined,
     toast: { open: false, message: '' },
+    isLoading: true,
   });
 
   const handleLogout = () => {
+    dispatch({ type: 'IS_LOADING' });
     removeFromStorage('auth_Token');
     dispatch({ type: 'LOG_OUT' });
   };
 
   const handleLogin = async (email, password) => {
+    dispatch({ type: 'IS_LOADING' });
     const user = await login(email, password);
     if (user.token) {
       setInStorage('auth_Token', user.token);
@@ -34,6 +37,7 @@ const GlobalState = (props) => {
   };
 
   const handleSignUp = async (name, email, password, rePassword) => {
+    dispatch({ type: 'IS_LOADING' });
     if (password !== rePassword) {
       dispatch({
         type: 'TOAST',
@@ -53,10 +57,15 @@ const GlobalState = (props) => {
     const checkLogin = async () => {
       let token = getFromStorage('auth_Token') || '';
       const user = await verifyToken(token);
-      if (user.data) {
-        dispatch({ type: 'VERIFY_TOKEN', payload: { token, user: user.data } });
+      if (user) {
+        setTimeout(() => {
+          dispatch({
+            type: 'VERIFY_TOKEN',
+            payload: { token, user: user, isLoading: false },
+          });
+        }, 1000);
       } else {
-        // console.log(user);
+        console.log(user);
       }
     };
     checkLogin();

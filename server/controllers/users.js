@@ -1,8 +1,12 @@
+
 const User = require('../models/User');
 const validator = require('email-validator');
 const bcrypt = require('bcryptjs');
 const aws = require('aws-sdk');
 const fs = require('fs');
+const jwt = require("jsonwebtoken");
+
+
 
 //POST - create user
 exports.createUser = async (req, res, next) => {
@@ -84,34 +88,40 @@ exports.createUser = async (req, res, next) => {
 
 //POST - log in user - missing JWT
 exports.loginUser = async (req, res, next) => {
-  const { email, password } = req.body;
+	const { email, password } = req.body;
+	try {
+		if (!email || !password) {
+			return res.status(400).json({ msg: "Email and password required" });
+		}
+		const user = await User.findOne({ email });
+		if (!user) {
+			return res.status(400).json({ msg: "Email / Password invalid" });
+		}
+		const isMatch = await bcrypt.compare(password, user.password);
+		if (!isMatch) {
+			return res.status(400).json({ msg: "Email / Password invalid" });
+		}
+		const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET_KEY);
+		res.status(200).json({
+			token,
+			user: { name: user.name, id: user._id },
+			msg: "Login Successful",
+		});
+	} catch (error) {
+		console.error(error.message);
+		res.status(500).json({ msg: "Server error - 500" });
+	}
+};
 
-  try {
-    if (!email || !password) {
-      return res.status(400).json({ msg: 'Email and password required' });
-    }
 
-    const user = User.findOne({ email });
-
-    if (!user) {
-      return res.status(404).json({ msg: 'Email invalid' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(401).json({ msg: 'Password invalid' });
-    }
-
-    res.status(200).json({ user });
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ msg: 'Server error - 500' });
-  }
+//POST -  verfiy Token - Logged in
+exports.verifyToken = async (req, res, next) => {
+	return res.status(200).json(req.user);
 };
 
 //GET - get User by Id
 exports.getUserById = async (req, res, next) => {
+
   const user = await User.findOne({ _id: req.params.id });
 
   try {
@@ -128,26 +138,26 @@ exports.getUserById = async (req, res, next) => {
 
 //GET - get all Users
 exports.getAllUsers = async (req, res, next) => {
-  const users = await User.find();
+	const users = await User.find();
+	try {
+		if (!users) {
+			return res.status(400).json({ msg: "No users exists" });
+		}
 
-  try {
-    if (!users) {
-      return res.status(404).json({ msg: 'No users exists' });
-    }
+		res.status(200).json(users);
+	} catch (error) {
+		console.error(error.message);
+		res.status(500).json({ msg: "Server error - 500" });
+	}
 
-    res.status(200).json(users);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ msg: 'Server error - 500' });
-  }
 };
 
 //PUT - update User by Id - auth
 exports.updateUser = async (req, res, next) => {
-  return res.status(200).json({ msg: 'Update User' });
+	return res.status(200).json({ msg: "Update User" });
 };
 
 //DELETE - delete User by Id - auth
 exports.deleteUser = async (req, res, next) => {
-  return res.status(200).json({ msg: 'Delete User' });
+	return res.status(200).json({ msg: "Delete User" });
 };

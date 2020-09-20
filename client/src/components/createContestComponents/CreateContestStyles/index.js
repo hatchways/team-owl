@@ -140,6 +140,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(10),
     color: theme.palette.primary.light,
+    '&:hover': {
+      backgroundColor: '#f4f4f4',
+      color: '#1c1b1b',
+    },
   },
 
   buttonText: {

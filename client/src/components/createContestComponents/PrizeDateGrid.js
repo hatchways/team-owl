@@ -8,7 +8,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { ContestContext } from './ContestContext';
-import useStyles from '../CreateContestStyles';
+import useStyles from './CreateContestStyles';
 
 const PrizeDateGrid = () => {
   const contest = useContext(ContestContext);

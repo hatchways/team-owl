@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import axios from 'axios';
 import { Typography, Box, Button } from '@material-ui/core';
 import { ContestContext } from './ContestContext';
-import useStyles from '../CreateContestStyles';
+import useStyles from './CreateContestStyles';
 
 export const CreateContest = () => {
   const classes = useStyles();
@@ -14,18 +14,7 @@ export const CreateContest = () => {
   const deadline = contest.selectedDate;
   const contestPics = contest.pics;
 
-  const contestData = {
-    title,
-    description,
-    prize,
-    deadline,
-    contestPics,
-  };
-
-  console.log(contestPics);
-
   const createContest = async () => {
-    console.log(contestData);
     if (
       !title ||
       !description ||

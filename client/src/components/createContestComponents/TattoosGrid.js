@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Typography, Box, GridList, GridListTile } from '@material-ui/core';
 import { ContestContext } from './ContestContext';
-import imgData from '../imgDataS3';
-import useStyles from '../CreateContestStyles';
+import imgData from '../../imgDataS3';
+import useStyles from './CreateContestStyles';
 
 const TattoosGrid = () => {
   const classes = useStyles();

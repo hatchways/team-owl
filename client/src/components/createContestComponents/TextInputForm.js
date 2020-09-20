@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ContestContext } from './ContestContext';
 import { Typography, Box, TextField } from '@material-ui/core';
-import useStyles from '../CreateContestStyles';
+import useStyles from './CreateContestStyles';
 
 const TextInputForm = () => {
   const classes = useStyles();

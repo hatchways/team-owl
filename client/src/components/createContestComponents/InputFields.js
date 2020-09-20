@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Typography, Container, Box } from '@material-ui/core';
-import useStyles from '../CreateContestStyles';
+import useStyles from './CreateContestStyles';
 import TattoosGrid from './TattoosGrid';
 import PrizeDateGrid from './PrizeDateGrid';
 import TextInputForm from './TextInputForm';

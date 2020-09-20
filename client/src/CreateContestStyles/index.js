@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  //nav bar
+  //app bar
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -21,14 +21,10 @@ const useStyles = makeStyles((theme) => ({
     borderColor: '#ffffff',
   },
 
+  //input fields
   mainBox: {
-    height: '90rem',
-    margin: 'auto',
-  },
-
-  textInputBox: {
-    height: '24rem',
-    width: '100%',
+    display: 'block',
+    overflow: 'auto',
     margin: 'auto',
   },
 
@@ -78,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
 
+  //tattoo grid
   paper: {
     backgroundColor: 'white',
   },
@@ -87,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
-    paddingTop: theme.spacing(2),
+    paddingTop: theme.spacing(1),
   },
 
   gridList: {
@@ -95,6 +92,40 @@ const useStyles = makeStyles((theme) => ({
     height: 400,
   },
 
+  gridListTile: {
+    position: 'relative',
+    cursor: 'pointer',
+    display: 'inline-block',
+  },
+
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'black',
+    opacity: 0.6,
+    visibility: 'hidden',
+  },
+
+  overlayText: {
+    textAlign: 'center',
+    position: 'relative',
+    top: '40%',
+    color: '#fff',
+  },
+
+  overlayImg: {
+    position: 'relative',
+    top: '20%',
+    left: '34%',
+    width: 60,
+    height: 90,
+    color: '#fff',
+  },
+
+  //create contest button
   alignItemsAndJustifyContent: {
     width: '100%',
     display: 'flex',
@@ -107,6 +138,7 @@ const useStyles = makeStyles((theme) => ({
     width: 240,
     backgroundColor: 'black',
     marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(10),
     color: theme.palette.primary.light,
   },
 
@@ -114,6 +146,15 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-60%)',
+  },
+
+  //timezone form
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
   },
 }));
 

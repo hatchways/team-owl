@@ -1,25 +1,22 @@
 import 'date-fns';
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Typography, Grid, Paper, TextField } from '@material-ui/core';
-
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import useStyles from '../styles/styles';
+import { ContestContext } from './ContestContext';
+import useStyles from '../CreateContestStyles';
 
 const PrizeDateGrid = () => {
-  // The first commit of Material-UI
-  const [selectedDate, setSelectedDate] = useState(
-    new Date('2014-08-18T21:11:54')
-  );
+  const contest = useContext(ContestContext);
+  const classes = useStyles();
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    contest.setSelectedDate(date);
   };
-  const classes = useStyles();
 
   return (
     <Grid container spacing={2} className={classes.prizeTimeBox}>
@@ -28,10 +25,13 @@ const PrizeDateGrid = () => {
         <Paper className={classes.paper} elevation={0}>
           <form className={classes.root} noValidate autoComplete="off">
             <TextField
-              id="outlined-basic"
+              id="prize"
               label="$"
+              defaultValue="100"
               variant="outlined"
+              required
               className={classes.textFieldOne}
+              onChange={(e) => contest.setPrize(Number(e.target.value))}
             />
           </form>
         </Paper>
@@ -42,10 +42,11 @@ const PrizeDateGrid = () => {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               margin="normal"
-              id="date-picker-dialog"
+              id="date-picker"
               label="Date"
               format="MM/dd/yyyy"
-              value={selectedDate}
+              required
+              value={contest.selectedDate}
               onChange={handleDateChange}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
@@ -55,7 +56,8 @@ const PrizeDateGrid = () => {
               margin="normal"
               id="time-picker"
               label="Time"
-              value={selectedDate}
+              required
+              value={contest.selectedDate}
               onChange={handleDateChange}
               KeyboardButtonProps={{
                 'aria-label': 'change time',

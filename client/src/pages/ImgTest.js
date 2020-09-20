@@ -38,7 +38,8 @@ const ImgTest = () => {
         '/api/contest/5f610a2b2a60880de9af58ae/submission',
         formData
       );
-      const { submission } = res.data;
+      const submission = res.data;
+      console.log(submission);
     } catch (error) {
       if (error.response.status === 500) {
         console.log('There was a problem with the server');

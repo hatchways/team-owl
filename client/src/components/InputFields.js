@@ -1,10 +1,11 @@
-import 'date-fns';
 import React, { Fragment } from 'react';
-import { Typography, Container, Box, Button } from '@material-ui/core';
+import { Typography, Container, Box } from '@material-ui/core';
+import useStyles from '../CreateContestStyles';
 import TattoosGrid from './TattoosGrid';
-import PrizeDateGrid from './prizeDateGrid';
+import PrizeDateGrid from './PrizeDateGrid';
 import TextInputForm from './TextInputForm';
-import useStyles from '../styles/styles';
+import CreateContest from './CreateContest';
+import { ContestContextProvider } from './ContestContext';
 
 const TextFields = () => {
   const classes = useStyles();
@@ -14,21 +15,16 @@ const TextFields = () => {
       <Typography variant="h4" m={3} className={classes.title}>
         Create New Contest
       </Typography>
-      <Container boxShadow={3} maxWidth="md">
+
+      <Container maxWidth="md">
         <Box boxShadow={3} className={classes.mainBox}>
           <Container className={classes.innerContainer}>
-            <Box className={classes.textInputBox}>
+            <ContestContextProvider>
               <TextInputForm />
               <PrizeDateGrid />
               <TattoosGrid />
-              <Box className={classes.alignItemsAndJustifyContent}>
-                <Button variant="contained" className={classes.contestButton}>
-                  <Typography className={classes.buttonText}>
-                    Create Contest
-                  </Typography>
-                </Button>
-              </Box>
-            </Box>
+              <CreateContest />
+            </ContestContextProvider>
           </Container>
         </Box>
       </Container>

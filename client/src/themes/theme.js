@@ -6,28 +6,28 @@ export const theme = createMuiTheme({
       borderColor: '#ddd',
     },
     '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'black',
+      borderColor: '#000',
     },
     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'black',
+      borderColor: '#000',
     },
     '& .MuiOutlinedInput-input': {
       color: '#ddd',
     },
     '&:hover .MuiOutlinedInput-input': {
-      color: 'black',
+      color: '#000',
     },
     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-input': {
-      color: 'black',
+      color: '#000',
     },
     '& .MuiInputLabel-outlined': {
       color: '#ddd',
     },
     '&:hover .MuiInputLabel-outlined': {
-      color: 'black',
+      color: '#000',
     },
     '& .MuiInputLabel-outlined.Mui-focused': {
-      color: 'black',
+      color: '#000',
     },
     '&:hover .MuiButton-contained': {
       color: '#ddd',
@@ -45,7 +45,11 @@ export const theme = createMuiTheme({
     },
   },
   palette: {
-    primary: { main: '#000000', light: '#ffffff' },
-    grey: { main: '#dddddd', dark: '#888888' },
+    primary: { main: '#000', light: '#fff' },
+    grey: { main: '#ddd', dark: '#888' },
+    background: {
+      paper: '#fff',
+      default: '#fff',
+    },
   },
 });

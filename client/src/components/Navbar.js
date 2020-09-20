@@ -11,7 +11,7 @@ import {
   Avatar,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import useStyles from '../styles/styles';
+import useStyles from '../CreateContestStyles';
 
 const Navbar = () => {
   const classes = useStyles();

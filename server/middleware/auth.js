@@ -4,9 +4,8 @@ const jwt = require('jsonwebtoken');
 
 exports.auth = async (req, res, next) => {
   try {
-    // const authHeader = req.headers['auth_token'];
-    // const token = authHeader && authHeader.split(' ')[1];
-    const token = req.headers['auth_token'];
+    const authHeader = req.headers['auth_token'];
+    const token = authHeader && authHeader.split(' ')[1];
     if (!token) return res.status(401).json({ msg: 'No authorisation Token' });
     jwt.verify(token, process.env.TOKEN_SECRET_KEY, (err, user) => {
       if (err) {

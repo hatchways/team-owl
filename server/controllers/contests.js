@@ -4,7 +4,7 @@ const { userCheck } = require('../helpers/userCheck');
 
 //POST - create contest - auth
 exports.createContest = async (req, res, next) => {
-  const { title, description, prize, deadline } = req.body;
+  const { title, description, prize, deadline, contestPics } = req.body;
 
   //problem: possible to have unlimited contests and identical contests by the same user
   //potential solution: store total contests in array as user property in DB
@@ -12,13 +12,15 @@ exports.createContest = async (req, res, next) => {
   //todo: convert local time to UTC time before saving to contest
 
   try {
-    const user = await User.findOne({ _id: req.user.userId });
+    const user = await User.findOne({ _id: '5f61089819261d0d5680307f' });
+    //const user = await User.findOne({ _id: req.user.userId });
 
     const contest = new Contest({
       title,
       description,
       prize,
       deadline,
+      contestPics,
       user,
     });
 

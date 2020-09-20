@@ -10,7 +10,7 @@ const {
   deleteContest,
 } = require('../controllers/contests');
 
-router.post('/', auth, createContest);
+router.post('/', createContest); //auth temporarily removed for FE testing purposes
 router.get('/', getAllContests);
 router.delete('/:id', auth, deleteContest);
 router.get('/:id', getContestById);

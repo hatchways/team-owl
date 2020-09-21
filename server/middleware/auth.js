@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 // authrisation middleware to verify user with correct access token
-
 exports.auth = async (req, res, next) => {
   try {
     const authHeader = req.headers['auth_token'];

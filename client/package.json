@@ -10,6 +10,8 @@
     "axios": "^0.20.0",
     "date-fns": "^2.8.1",
     "material-ui-icons": "^1.0.0-beta.36",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
@@ -36,5 +38,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {}
 }

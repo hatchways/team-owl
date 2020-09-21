@@ -41,7 +41,7 @@ const TattoosGrid = () => {
       </Typography>
       <div className={classes.grid}>
         <GridList cellHeight={160} className={classes.gridList} cols={3}>
-          {imgData.map((tile) => (
+          {imgData.map((tile, i) => (
             <GridListTile
               key={tile.img}
               cols={tile.cols || 1}

@@ -152,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
     transform: 'translateY(-60%)',
   },
 
-  //timezone form
+  //date / timezone form
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,

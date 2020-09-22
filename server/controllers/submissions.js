@@ -9,9 +9,10 @@ exports.createSubmission = async (req, res, next) => {
   req.params.id = req.id;
   try {
     const contest = await Contest.findOne({ _id: req.params.id });
-    const user = await User.findOne({ _id: '5f60095f5d46b01ceecd35a2' });
-
     //problem - same user can submit multiple submissions
+    //Hardcoding the userId for img upload test on FE for now, req.user.userId and auth work
+    //Shiv id: 5f61089819261d0d5680307f
+    const user = await User.findOne({ _id: '5f61089819261d0d5680307f' });
 
     let uploads = req.files;
     aws.config.setPromisesDependency();
@@ -50,19 +51,15 @@ exports.createSubmission = async (req, res, next) => {
           locationURL.push(data.Location);
         }
 
+        //submissionPic only created when all uploads are completed
+        //submission only gets saved then
         if (picArray.length == uploads.length) {
           console.log('Files are supposed to be uploaded');
+          submission.submissionPic = locationURL;
+          await submission.save();
+          res.status(201).json(submission);
         }
-
-        submission.submissionPic = locationURL;
-        await submission.save();
       });
-    });
-
-    res.status(201).json({
-      msg:
-        'locationURL saved to submissionPic but not able to json them because of asynchronus issues',
-      submission,
     });
   } catch (error) {
     console.error(error.message);
@@ -72,9 +69,9 @@ exports.createSubmission = async (req, res, next) => {
 
 //GET - get submission by Id
 exports.getSubmissionById = async (req, res, next) => {
-  const submission = await Submission.findOne({ _id: req.params.id });
-
   try {
+    const submission = await Submission.findOne({ _id: req.params.id });
+
     if (!submission) {
       return res.status(404).json({ msg: 'This submission does not exist' });
     }
@@ -87,9 +84,9 @@ exports.getSubmissionById = async (req, res, next) => {
 
 //GET - get all submissions
 exports.getAllSubmissions = async (req, res, next) => {
-  const submissions = await Submission.find();
-
   try {
+    const submissions = await Submission.find();
+
     if (!submissions) {
       return res.status(404).json({ msg: 'There are no submissions' });
     }
@@ -107,5 +104,19 @@ exports.updateSubmission = async (req, res, next) => {
 
 //DELETE - create submission by Id - auth
 exports.deleteSubmission = async (req, res, next) => {
-  return res.status(200).json({ msg: 'Delete submission' });
+  try {
+    const submission = await Submission.findOne({ _id: req.params.id });
+    const user = req.user;
+    const verify = userCheck(submission, user);
+    if (!verify) {
+      return res
+        .status(401)
+        .json({ msg: 'You are not authorized to delete this submission' });
+    }
+    await Submission.findOneAndRemove({ _id: req.params.id });
+    res.json({ msg: 'Submission removed' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
 };

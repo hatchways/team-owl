@@ -17,6 +17,10 @@ const ContestSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  contestPics: {
+    type: Array,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now(),

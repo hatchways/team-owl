@@ -4,10 +4,20 @@ export const theme = createMuiTheme({
   typography: {
     fontFamily: 'Poppins , sans-serif',
     fontSize: 12,
+          h6: {
+      fontSize: 16,
+    },
+    button: {
+      fontSize: 9,
+    },
   },
   palette: {
-    primary: { main: '#1c1b1b' },
+    primary: { main: '#1c1b1b', light: '#f4f4f4' },
     secondary: { main: '#f4f4f4' },
+    grey: { main: '#ddd', dark: '#888' },
+    background: {
+      paper: '#fff',
+      default: '#fff',                     
   },
   overrides: {
     MuiButton: {

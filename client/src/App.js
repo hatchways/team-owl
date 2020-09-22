@@ -6,6 +6,8 @@ import { theme } from './themes/theme';
 import Nav from './components/Nav';
 import LandingPage from './pages/Landing';
 import LoginSignup from './pages/LoginSignup';
+import ImgTest from './pages/ImgTest';
+import Contest from './pages/Contest';
 
 const App = () => {
   return (
@@ -20,6 +22,8 @@ const App = () => {
             path="/signup"
             render={() => <LoginSignup isSignIn={false} />}
           />
+            <Route exact path="/imgtest" component={ImgTest} />
+          <Route exact path="/contest" component={Contest} />
         </Switch>
       </BrowserRouter>
     </MuiThemeProvider>

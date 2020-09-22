@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
+const { auth } = require('../middleware/auth');
 
 const {
   createContest,
@@ -10,10 +10,10 @@ const {
   deleteContest,
 } = require('../controllers/contests');
 
-router.post('/', createContest);
+router.post('/', createContest); //auth temporarily removed for FE testing purposes
 router.get('/', getAllContests);
-router.delete('/', deleteContest);
+router.delete('/:id', auth, deleteContest);
 router.get('/:id', getContestById);
-router.put('/:id', updateContest);
+router.put('/:id', auth, updateContest);
 
 module.exports = router;

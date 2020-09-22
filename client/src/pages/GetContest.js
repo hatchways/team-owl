@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react';
 import Navbar from '../components/createContestComponents/Navbar';
-import InputFields from '../components/createContestComponents/InputFields';
+import ViewContest from '../components/getContestComponents/ContestInfo';
 
-const Contest = () => {
+const GetContest = () => {
   return (
     <Fragment>
       <Navbar />
-      <InputFields />
+      <ViewContest />
     </Fragment>
   );
 };
 
-export default Contest;
+export default GetContest;

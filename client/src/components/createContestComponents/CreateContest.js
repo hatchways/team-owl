@@ -7,8 +7,14 @@ import useStyles from './CreateContestStyles';
 export const CreateContest = () => {
   const classes = useStyles();
   const contest = useContext(ContestContext);
-  
-  const {title, description, prize, selectedDate: deadline, pics: contestPics} = contest;
+
+  const {
+    title,
+    description,
+    prize,
+    selectedDate: deadline,
+    pics: contestPics,
+  } = contest;
 
   const createContest = async () => {
     if (

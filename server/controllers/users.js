@@ -1,4 +1,3 @@
-
 const User = require('../models/User');
 const validator = require('email-validator');
 const bcrypt = require('bcryptjs');
@@ -135,10 +134,10 @@ exports.loginUser = async (req, res, next) => {
     console.error(error.message);
     res.status(500).json({ msg: 'Server error - 500' });
   }
-
+};
 //POST -  verfiy Token - Logged in
 exports.verifyToken = async (req, res, next) => {
-	return res.status(200).json(req.user);
+  return res.status(200).json(req.user);
 };
 
 //GET - get User by Id
@@ -165,16 +164,16 @@ exports.getAllUsers = async (req, res, next) => {
     if (!users) {
       return res.status(404).json({ msg: 'No users exists' });
     }
-		res.status(200).json(users);
-	} catch (error) {
-		console.error(error.message);
-		res.status(500).json({ msg: "Server error - 500" });
-	}
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ msg: 'Server error - 500' });
+  }
 };
 
 //PUT - update User by Id - auth
 exports.updateUser = async (req, res, next) => {
-	return res.status(200).json({ msg: "Update User" });
+  return res.status(200).json({ msg: 'Update User' });
 };
 
 //DELETE - delete User by Id - auth

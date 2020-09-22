@@ -8,11 +8,13 @@ export const CreateContest = () => {
   const classes = useStyles();
   const contest = useContext(ContestContext);
 
-  const title = contest.title;
-  const description = contest.description;
-  const prize = contest.prize;
-  const deadline = contest.selectedDate;
-  const contestPics = contest.pics;
+  const {
+    title,
+    description,
+    prize,
+    selectedDate: deadline,
+    pics: contestPics,
+  } = contest;
 
   const createContest = async () => {
     if (

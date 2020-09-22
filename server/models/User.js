@@ -20,7 +20,8 @@ const UserSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    default: 'AWS url to default profile pic',
+    default:
+      'https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/userAvatar/avatarplaceholder.png',
   },
   date: {
     type: Date,

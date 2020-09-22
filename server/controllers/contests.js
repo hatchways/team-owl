@@ -35,7 +35,10 @@ exports.createContest = async (req, res, next) => {
 //GET - get contest by Id
 exports.getContestById = async (req, res, next) => {
   try {
-    const contest = await Contest.findOne({ _id: req.params.id });
+    const contest = await Contest.findOne({ _id: req.params.id }).populate(
+      'user'
+    );
+    console.log(req.params.id);
 
     if (!contest) {
       return res.status(404).json({ msg: 'This contest ID does not exist' });

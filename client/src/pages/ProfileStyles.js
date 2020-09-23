@@ -13,8 +13,11 @@ const useProfileStyles = makeStyles((theme) => ({
     fontWeight: 600,
   },
   button: {
-    fontWeight: 800,
+    fontWeight: 600,
     borderColor: theme.palette.primary.light,
+  },
+  tab: {
+    fontWeight: 700,
   },
 }));
 

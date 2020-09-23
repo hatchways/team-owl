@@ -1,13 +1,16 @@
 import React, { useContext } from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
-import { Grid, MuiThemeProvider, CircularProgress } from '@material-ui/core';
+import { MuiThemeProvider } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { theme } from './themes/theme';
 import Nav from './components/Nav';
 import LandingPage from './pages/Landing';
 import LoginSignup from './pages/LoginSignup';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 import UserContext from './context/UserContext';
+import IsLoading from './components/IsLoading';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   const context = useContext(UserContext);
@@ -16,14 +19,7 @@ const App = () => {
       <CssBaseline />
       <BrowserRouter>
         {context.state.isLoading ? (
-          <Grid
-            container
-            justify="center"
-            alignContent="center"
-            style={{ height: '100vh' }}
-          >
-            <CircularProgress />
-          </Grid>
+          <IsLoading />
         ) : (
           <>
             <Nav />
@@ -37,7 +33,16 @@ const App = () => {
                 path="/signup"
                 render={() => <LoginSignup isSignIn={false} />}
               />
-              <Route path="/Profile" render={() => <Profile />} />
+              <PrivateRoute
+                authed={context.state.authed}
+                path="/Profile"
+                component={Profile}
+              />
+              <PrivateRoute
+                authed={context.state.authed}
+                path="/edit_profile"
+                component={EditProfile}
+              />
             </Switch>
           </>
         )}

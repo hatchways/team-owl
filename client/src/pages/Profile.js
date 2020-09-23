@@ -1,23 +1,17 @@
 import React, { useContext } from 'react';
-import {
-  AppBar,
-  Avatar,
-  Grid,
-  Button,
-  Paper,
-  Tabs,
-  Tab,
-  Typography,
-} from '@material-ui/core';
-import useProfileStyles from './Profile_Css';
+import { Link } from 'react-router-dom';
+import { Avatar, Grid, Button, Tabs, Tab, Typography } from '@material-ui/core';
+import TabPanel from '../components/TabPanel';
+import ContestCardPanel from '../components/ContestCardPanel';
+import useProfileStyles from './ProfileStyles';
 import UserContext from '../context/UserContext';
-import avImage from '../assets/7c0c914fd9b8665800d4f0e4cc8e01c7042aaea8.png';
 
 export default function Profile() {
   const classes = useProfileStyles();
+  const [value, setValue] = React.useState(0);
   const context = useContext(UserContext);
-  const [value, setValue] = React.useState(2);
-
+  const { contests, user } = context.state;
+  user.profileImage = '7c0c914fd9b8665800d4f0e4cc8e01c7042aaea8.png';
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -25,15 +19,21 @@ export default function Profile() {
     <Grid container direction="column" justify="center" alignContent="center">
       <Grid container item className={classes.grid}>
         <Grid container item justify="center" alignContent="center">
-          <Avatar alt="Remy Sharp" src={avImage} className={classes.avatar} />
+          <Avatar
+            alt="Remy Sharp"
+            src={require(`../assets/${user.profileImage}`)}
+            className={classes.avatar}
+          />
         </Grid>
         <Grid container item justify="center" alignContent="center">
           <Typography variant="h5" className={classes.name}>
-            {context.state.user.name}
+            {user.name}
           </Typography>
         </Grid>
         <Grid container item justify="center" alignContent="center">
           <Button
+            component={Link}
+            to="/edit_profile"
             size="large"
             variant="outlined"
             color="primary"
@@ -47,16 +47,33 @@ export default function Profile() {
       </Grid>
       <Grid item className={classes.grid}>
         <Tabs
+          TabIndicatorProps={{
+            style: {
+              height: '4px',
+            },
+          }}
           value={value}
           onChange={handleChange}
           indicatorColor="primary"
           textColor="primary"
           centered
+          variant="fullWidth"
         >
-          <Tab label="My Contest" />
-          <Tab label="Submitted Contest" />
+          <Tab label="My Contest" className={classes.tab} />
+          <Tab label="Submitted Contest" className={classes.tab} />
         </Tabs>
-        <Paper className={classes.root}></Paper>
+        {contests.created.map((contest, i) => {
+          return (
+            <TabPanel
+              key={i}
+              value={value}
+              index={i}
+              contest={contest}
+              isPaper={true}
+              Component={ContestCardPanel}
+            />
+          );
+        })}
       </Grid>
     </Grid>
   );

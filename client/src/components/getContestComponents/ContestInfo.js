@@ -19,7 +19,7 @@ const ViewContest = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get('/api/contest/5f67e4c59f50f3070e5cceb8');
+      const res = await axios.get('/api/contest/5f6a8f01fdeb0e1ab02947c5');
       setData(res.data);
     }
     fetchData();

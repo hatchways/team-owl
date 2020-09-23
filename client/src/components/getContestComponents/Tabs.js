@@ -10,8 +10,6 @@ import {
   GridListTile,
 } from '@material-ui/core';
 import useStyles from './GetContestStyles';
-import imgData from '../../imgDataS3';
-import shortImgData from '../../imgDataS3/shortImgData';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,8 +52,6 @@ export default function SimpleTabs({ data }) {
     setValue(newValue);
   };
 
-  console.log(data);
-
   return (
     <Box mt={3}>
       <AppBar position="static" className={classes.tabs}>
@@ -75,35 +71,36 @@ export default function SimpleTabs({ data }) {
       </AppBar>
       <Box boxShadow={4} mb={8}>
         <TabPanel value={value} index={0}>
-          <GridList cellHeight={160} className={classes.gridList} cols={3}>
-            {imgData.map((tile) => (
-              <GridListTile
-                key={tile.img}
-                cols={tile.cols || 1}
-                className={classes.gridListTile}
-              >
-                <img src={tile.img} alt={tile.title} />
-              </GridListTile>
-            ))}
-          </GridList>
+          {data.submissions ? (
+            <GridList cellHeight={160} className={classes.gridList} cols={3}>
+              {data.submissions &&
+                data.submissions.map((pic, i) => (
+                  <GridListTile
+                    key={i}
+                    cols={1}
+                    className={classes.gridListTile}
+                  >
+                    <img src={pic} alt={pic} />
+                  </GridListTile>
+                ))}
+            </GridList>
+          ) : null}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Box>
-            <Typography>{data.description}</Typography>
-            <Box mt={3}>
-              <GridList cellHeight={160} className={classes.gridList} cols={3}>
-                {data.contestPics &&
-                  data.contestPics.map((pic, i) => (
-                    <GridListTile
-                      key={i}
-                      cols={pic.cols || 1}
-                      className={classes.gridListTile}
-                    >
-                      <img src={pic} alt={pic} />
-                    </GridListTile>
-                  ))}
-              </GridList>
-            </Box>
+          <Typography>{data.description}</Typography>
+          <Box mt={3}>
+            <GridList cellHeight={160} className={classes.gridList} cols={3}>
+              {data.contestPics &&
+                data.contestPics.map((pic, i) => (
+                  <GridListTile
+                    key={i}
+                    cols={1}
+                    className={classes.gridListTile}
+                  >
+                    <img src={pic} alt={pic} />
+                  </GridListTile>
+                ))}
+            </GridList>
           </Box>
         </TabPanel>
       </Box>

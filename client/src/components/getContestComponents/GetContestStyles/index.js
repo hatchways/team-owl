@@ -1,22 +1,8 @@
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  // root: {
-  //   flexGrow: 1,
-  // },
-
-  //app bar
   menuButton: {
     marginRight: theme.spacing(2),
-  },
-
-  appBar: {
-    backgroundColor: theme.palette.primary.main,
-  },
-
-  toolBar: {
-    maxWidth: 900,
-    margin: 'auto',
   },
 
   navLinks: {
@@ -60,13 +46,13 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(8),
-    fontFamily: theme.typography.fontFamily[1],
+    fontFamily: 'Poppins-Semibold',
   },
 
   subtitle: {
     textAlign: 'left',
     fontSize: 16,
-    fontFamily: theme.typography.fontFamily[1],
+    fontFamily: 'Poppins-Semibold',
   },
 
   subtext: {
@@ -77,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
   prizeTimeSub: {
     textAlign: 'left',
-    fontFamily: theme.typography.fontFamily[1],
+    fontFamily: 'Poppins-Semibold',
   },
 
   textFieldOne: {
@@ -153,8 +139,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     '&:hover': {
       backgroundColor: theme.palette.primary.main,
-      color: theme.palette.primary.light,
-      borderColor: theme.palette.primary.light,
+      color: theme.palette.secondary.main,
+      borderColor: theme.palette.secondary.main,
     },
   },
 
@@ -168,7 +154,7 @@ const useStyles = makeStyles((theme) => ({
   userName: {
     textAlign: 'left',
     paddingTop: theme.spacing(1),
-    fontFamily: theme.typography.fontFamily[1],
+    fontFamily: 'Poppins-Semibold',
   },
 
   //tabs
@@ -185,7 +171,7 @@ const useStyles = makeStyles((theme) => ({
 
   //prize in get contest
   prizeStandout: {
-    color: theme.palette.primary.light,
+    color: theme.palette.secondary.main,
     backgroundColor: theme.palette.primary.main,
     paddingTop: 2,
     paddingBottom: 2,

@@ -101,6 +101,7 @@ exports.verifyToken = async (req, res, next) => {
 //GET - Loggedin user - self
 exports.getLoggedinUser = async (req, res, next) => {
   try {
+    console.log(req.user);
     const user = await User.findOne({ _id: req.user.userId });
 
     if (!user) {
@@ -134,10 +135,6 @@ exports.loginUser = async (req, res, next) => {
     console.error(error.message);
     res.status(500).json({ msg: 'Server error - 500' });
   }
-};
-//POST -  verfiy Token - Logged in
-exports.verifyToken = async (req, res, next) => {
-  return res.status(200).json(req.user);
 };
 
 //GET - get User by Id

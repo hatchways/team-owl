@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   navLinks: {
-    color: theme.palette.primary.light,
+    color: theme.palette.secondary.main,
     marginRight: theme.spacing(3),
     borderColor: '#ffffff',
   },
@@ -50,14 +50,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(8),
     fontFamily: 'Poppins-Semibold',
-    //fontFamily: theme.typography.fontFamily[1],
   },
 
   subtitle: {
     textAlign: 'left',
     paddingTop: theme.spacing(6),
     fontFamily: 'Poppins-Semibold',
-    //fontFamily: theme.typography.fontFamily[1],
   },
 
   subtext: {
@@ -69,7 +67,6 @@ const useStyles = makeStyles((theme) => ({
   prizeTimeSub: {
     textAlign: 'left',
     fontFamily: 'Poppins-Semibold',
-    //fontFamily: theme.typography.fontFamily[1],
   },
 
   textFieldOne: {
@@ -142,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'black',
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(10),
-    color: theme.palette.primary.light,
+    color: theme.palette.secondary.main,
     '&:hover': {
       backgroundColor: '#f4f4f4',
       color: '#1c1b1b',

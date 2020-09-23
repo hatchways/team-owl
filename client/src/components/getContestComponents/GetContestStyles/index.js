@@ -1,27 +1,24 @@
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  //app bar
   menuButton: {
     marginRight: theme.spacing(2),
   },
 
-  appBar: {
-    backgroundColor: theme.palette.primary.main,
-  },
-
-  toolBar: {
-    maxWidth: 900,
-    margin: 'auto',
-  },
-
   navLinks: {
-    color: theme.palette.secondary.main,
+    color: theme.palette.grey.dark,
     marginRight: theme.spacing(3),
-    borderColor: '#ffffff',
+    cursor: 'pointer',
   },
 
   //input fields
+
+  infoBox: {
+    display: 'block',
+    overflow: 'auto',
+    margin: 'auto',
+  },
+
   mainBox: {
     display: 'block',
     overflow: 'auto',
@@ -37,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   innerContainer: {
-    maxWidth: '75%',
+    maxWidth: '85%',
   },
 
   titleLogo: {
@@ -46,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
   title: {
     flexGrow: 1,
-    textAlign: 'center',
+    textAlign: 'left',
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(8),
     fontFamily: 'Poppins-Semibold',
@@ -54,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
   subtitle: {
     textAlign: 'left',
-    paddingTop: theme.spacing(6),
+    fontSize: 16,
     fontFamily: 'Poppins-Semibold',
   },
 
@@ -134,15 +131,16 @@ const useStyles = makeStyles((theme) => ({
   },
 
   contestButton: {
-    height: 80,
-    width: 240,
-    backgroundColor: 'black',
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(10),
-    color: theme.palette.secondary.main,
+    height: 60,
+    width: 160,
+    borderColor: theme.palette.primary.main,
+    backgroundColor: '#fff',
+    marginBottom: theme.spacing(2),
+    color: theme.palette.primary.main,
     '&:hover': {
-      backgroundColor: '#f4f4f4',
-      color: '#1c1b1b',
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
+      borderColor: theme.palette.secondary.main,
     },
   },
 
@@ -152,13 +150,33 @@ const useStyles = makeStyles((theme) => ({
     transform: 'translateY(-60%)',
   },
 
-  //date / timezone form
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
+  //user name
+  userName: {
+    textAlign: 'left',
+    paddingTop: theme.spacing(1),
+    fontFamily: 'Poppins-Semibold',
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
+
+  //tabs
+  tabs: {
+    backgroundColor: '#fff',
+    color: theme.palette.primary.main,
+    boxShadow: 'none',
+  },
+
+  tabLabels: {
+    minWidth: '50%',
+    width: '50%',
+  },
+
+  //prize in get contest
+  prizeStandout: {
+    color: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingLeft: 8,
+    paddingRight: 8,
   },
 }));
 

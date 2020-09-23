@@ -10,9 +10,7 @@ exports.createSubmission = async (req, res, next) => {
   try {
     const contest = await Contest.findOne({ _id: req.params.id });
     //problem - same user can submit multiple submissions
-    //Hardcoding the userId for img upload test on FE for now, req.user.userId and auth work
-    //Shiv id: 5f61089819261d0d5680307f
-    const user = await User.findOne({ _id: '5f61089819261d0d5680307f' });
+    const user = await User.findOne({ _id: req.user.userId });
 
     let uploads = req.files;
     aws.config.setPromisesDependency();
@@ -54,9 +52,11 @@ exports.createSubmission = async (req, res, next) => {
         //submissionPic only created when all uploads are completed
         //submission only gets saved then
         if (picArray.length == uploads.length) {
-          console.log('Files are supposed to be uploaded');
+          console.log('Files are uploaded');
           submission.submissionPic = locationURL;
           await submission.save();
+          contest.submissions.push(submission.submissionPic[0]);
+          await contest.save();
           res.status(201).json(submission);
         }
       });

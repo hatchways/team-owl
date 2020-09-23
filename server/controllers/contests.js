@@ -9,11 +9,9 @@ exports.createContest = async (req, res, next) => {
   //problem: possible to have unlimited contests and identical contests by the same user
   //potential solution: store total contests in array as user property in DB
 
-  //todo: convert local time to UTC time before saving to contest
-
   try {
-    const user = await User.findOne({ _id: '5f61089819261d0d5680307f' });
-    //const user = await User.findOne({ _id: req.user.userId });
+    //const user = await User.findOne({ _id: '5f61089819261d0d5680307f' });
+    const user = await User.findOne({ _id: req.user.userId });
 
     const contest = new Contest({
       title,
@@ -35,7 +33,9 @@ exports.createContest = async (req, res, next) => {
 //GET - get contest by Id
 exports.getContestById = async (req, res, next) => {
   try {
-    const contest = await Contest.findOne({ _id: req.params.id });
+    const contest = await Contest.findOne({ _id: req.params.id }).populate(
+      'user'
+    );
 
     if (!contest) {
       return res.status(404).json({ msg: 'This contest ID does not exist' });

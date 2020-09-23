@@ -16,7 +16,7 @@ const multerMultiple = multer({
   limits: { fieldSize: 8 * 1024 * 1024 },
 }).array('submissionPic');
 
-router.post('/', multerMultiple, createSubmission); //temp removed auth for img upload test
+router.post('/', auth, multerMultiple, createSubmission);
 router.get('/', getAllSubmissions);
 router.delete('/:id', auth, deleteSubmission);
 router.get('/:id', getSubmissionById);

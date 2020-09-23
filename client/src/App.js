@@ -8,6 +8,7 @@ import LandingPage from './pages/Landing';
 import LoginSignup from './pages/LoginSignup';
 import ImgTest from './pages/ImgTest';
 import Contest from './pages/Contest';
+import GetContest from './pages/GetContest';
 
 const App = () => {
   return (
@@ -22,8 +23,9 @@ const App = () => {
             path="/signup"
             render={() => <LoginSignup isSignIn={false} />}
           />
-            <Route exact path="/imgtest" component={ImgTest} />
+          <Route exact path="/imgtest" component={ImgTest} />
           <Route exact path="/contest" component={Contest} />
+          <Route exact path="/contest/123" component={GetContest} />
         </Switch>
       </BrowserRouter>
     </MuiThemeProvider>

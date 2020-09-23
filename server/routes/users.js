@@ -19,12 +19,12 @@ const multerSingle = multer({
   limits: { fieldSize: 8 * 1024 * 1024 },
 }).single('avatar');
 
-router.post('/', multerSingle, createUser);
+router.post('/', createUser);
 router.get('/me', auth, getLoggedinUser);
 router.get('/', getAllUsers);
 router.delete('/', auth, deleteUser);
 router.get('/:id', getUserById);
-router.put('/:id', auth, updateUser);
+router.put('/:id', auth, multerSingle, updateUser);
 router.post('/login', loginUser);
 router.post('/verifytoken', auth, verifyToken);
 

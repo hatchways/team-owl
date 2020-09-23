@@ -1,9 +1,8 @@
 const User = require('../models/User');
 const validator = require('email-validator');
 const bcrypt = require('bcryptjs');
-const aws = require('aws-sdk');
-const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const { avatarUpload } = require('../helpers/avatarUpload');
 
 //POST - create user
 exports.createUser = async (req, res, next) => {
@@ -30,63 +29,17 @@ exports.createUser = async (req, res, next) => {
     if (user) {
       return res.status(400).json({ msg: 'User already exists.' });
     }
+    //if no avatar is provided
+    user = new User({ ...req.body });
 
-    if (req.file) {
-      //if avatar is provided
-      aws.config.setPromisesDependency();
-      aws.config.update({
-        accessKeyId: process.env.ACCESSKEYID,
-        secretAccessKey: process.env.SECRETACCESSKEY,
-        region: process.env.REGION,
-      });
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
 
-      const s3 = new aws.S3();
+    await user.save();
 
-      const params = {
-        ACL: 'public-read',
-        Bucket: process.env.BUCKET_NAME,
-        Body: fs.createReadStream(req.file.path),
-        Key: `userAvatar/${req.file.originalname}`,
-      };
-
-      s3.upload(params, async (err, data) => {
-        if (err) {
-          console.log('Error occured while trying to upload to S3 bucket', err);
-        }
-
-        if (data) {
-          fs.unlinkSync(req.file.path); // Empty temp folder
-          user = new User({ ...req.body, avatar: data.Location });
-
-          const salt = await bcrypt.genSalt(10);
-          user.password = await bcrypt.hash(password, salt);
-
-          await user.save();
-          const token = jwt.sign(
-            { userId: user._id },
-            process.env.TOKEN_SECRET_KEY,
-            { expiresIn: 36000 }
-          );
-
-          res.status(201).json({ user, token });
-        }
-      });
-    } else {
-      //if no avatar is provided
-      user = new User({ ...req.body });
-
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-
-      await user.save();
-
-      //token
-      const token = jwt.sign(
-        { userId: user._id },
-        process.env.TOKEN_SECRET_KEY
-      );
-      res.status(201).json({ user, token });
-    }
+    //token
+    const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET_KEY);
+    res.status(201).json({ user, token });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ msg: 'Server error - 500' });
@@ -170,7 +123,25 @@ exports.getAllUsers = async (req, res, next) => {
 
 //PUT - update User by Id - auth
 exports.updateUser = async (req, res, next) => {
-  return res.status(200).json({ msg: 'Update User' });
+  const { name, email } = req.body;
+
+  try {
+    let user = await User.findOne({ _id: req.user.userId });
+
+    user.name = name;
+    user.email = email;
+
+    await user.save();
+
+    //if avatar is provided
+    if (req.file) {
+      const reqFile = req.file;
+      avatarUpload(user, reqFile, res);
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ msg: 'Server error - 500' });
+  }
 };
 
 //DELETE - delete User by Id - auth

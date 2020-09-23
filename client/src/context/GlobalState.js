@@ -23,6 +23,7 @@ const GlobalState = (props) => {
           prize: 150,
           id: 1,
           thumbnail: '0de773f98a983912282d4a303e355329d5f592da.png',
+          submissions: Array(26), // just to emulate number of submission until we have actual data
         },
         {
           title: 'Lightning in a bolt',
@@ -30,9 +31,25 @@ const GlobalState = (props) => {
           prize: 300,
           id: 2,
           thumbnail: 'c91c45b97085fa64186472d903c1d1ef475d14d1.png',
+          submissions: Array(31), // just to emulate number of submission until we have actual data
         },
       ],
-      submitted: {},
+      submitted: [
+        {
+          title: 'Lightning in a bolt',
+          subtitle: 'Looking for an inspirational lightning image ',
+          prize: 500,
+          id: 22,
+          thumbnail: 'c91c45b97085fa64186472d903c1d1ef475d14d1.png',
+        },
+        {
+          title: 'Lion Tatto concept in minimal style',
+          subtitle: 'Looking for cool simplicity ideas for Lion',
+          prize: 900,
+          id: 11,
+          thumbnail: '0de773f98a983912282d4a303e355329d5f592da.png',
+        },
+      ],
     },
   });
 

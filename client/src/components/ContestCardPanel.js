@@ -6,7 +6,7 @@ export default function ContestCardPanel(props) {
   const { contest } = props;
   const classes = ContestCardPanelStyles();
   return (
-    <Grid container justify="center">
+    <Grid container justify="center" className={classes.cardGrid}>
       <Grid container item xs={3}>
         <Card className={classes.card}>
           <CardMedia
@@ -15,14 +15,16 @@ export default function ContestCardPanel(props) {
             title="hi"
             height="140"
           />
-          <Typography
-            className={classes.cardText}
-            variant="subtitle1"
-            align="center"
-            color="secondary"
-          >
-            21 SKETCHES
-          </Typography>
+          {contest.submissions && (
+            <Typography
+              className={classes.cardText}
+              variant="subtitle1"
+              align="center"
+              color="secondary"
+            >
+              {contest.submissions.length} SKETCHES
+            </Typography>
+          )}
         </Card>
       </Grid>
       <Grid container item xs={9} className={classes.textGrid}>

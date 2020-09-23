@@ -2,14 +2,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const EditProfileStyles = makeStyles((theme) => ({
   grid: {
-    padding: '5% 5%',
-    height: '100vh',
+    padding: '5% 10%',
   },
   title: {
     height: '10vh',
   },
   tabs: {
-    borderRight: `1px solid ${theme.palette.primary}`,
+    borderRight: `1px solid ${theme.palette.primary.light}`,
   },
   tab: {
     fontSize: '1rem',

@@ -62,18 +62,21 @@ export default function Profile() {
           <Tab label="My Contest" className={classes.tab} />
           <Tab label="Submitted Contest" className={classes.tab} />
         </Tabs>
-        {contests.created.map((contest, i) => {
-          return (
-            <TabPanel
-              key={i}
-              value={value}
-              index={i}
-              contest={contest}
-              isPaper={true}
-              Component={ContestCardPanel}
-            />
-          );
-        })}
+        {value === 0 ? (
+          <TabPanel
+            value={0}
+            index={0}
+            contests={contests.created}
+            Component={ContestCardPanel}
+          />
+        ) : (
+          <TabPanel
+            value={1}
+            index={1}
+            contests={contests.submitted}
+            Component={ContestCardPanel}
+          />
+        )}
       </Grid>
     </Grid>
   );

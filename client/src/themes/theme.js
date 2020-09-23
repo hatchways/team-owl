@@ -7,7 +7,7 @@ export const theme = createMuiTheme({
   },
   palette: {
     primary: { main: '#1c1b1b', light: '#d0d0d0' },
-    secondary: { main: '#f4f4f4' },
+    secondary: { main: '#f4f4f4', dark: '#a29e9e' },
   },
   overrides: {
     MuiButton: {

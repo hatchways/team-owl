@@ -1,9 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const ContestCardPanelStyles = makeStyles(() => ({
-  paper: {
-    borderRadius: 0,
-    padding: '5%',
+  cardGrid: {
+    marginBottom: '5%',
   },
   card: {
     position: 'relative',

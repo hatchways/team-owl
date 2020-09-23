@@ -1,79 +1,58 @@
-import 'date-fns';
-import React from 'react';
-import { Avatar, Grid, TextField } from '@material-ui/core';
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-
+import React, { useContext } from 'react';
+import { Avatar, Box, Grid, Typography } from '@material-ui/core';
+import UserContext from '../context/UserContext';
 import UserInfoStyles from './UserInfoStyles';
 
-export default function UserInfo({ value }) {
+export default function UserInfo() {
   const classes = UserInfoStyles();
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date('2014-08-18T21:11:54'),
-  );
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-  const formLabels = [
-    ['Name', false],
-    ['Email', false],
-    ['Location', false],
-    ['Birthday', true],
-    ['Name', false],
-    ['Name', false],
-  ];
+  const context = useContext(UserContext);
+  const { user } = context.state;
+
   const profileImage = '7c0c914fd9b8665800d4f0e4cc8e01c7042aaea8.png';
   return (
     <Grid
       container
-      justify="center"
-      alignContent="center"
-      className={classes.grid}
+      alignContent="space-between"
+      className={classes.upperBorder}
     >
-      <Grid container justify="center" alignItems="center">
+      <Box mb={5}>
+        <Typography variant="h5">User Profile</Typography>
+      </Box>
+      <Grid container alignItems="center" justify="space-between">
         <Avatar
           alt="Remy Sharp"
           src={require(`../assets/${profileImage}`)}
           className={classes.avatar}
         />
-      </Grid>
-      <Grid container className={classes.forms} justify="center">
-        {formLabels.map((formlabel, i) => {
-          return (
-            <Grid item key={i} xs={4} className={classes.form}>
-              {' '}
-              {!formlabel[1] ? (
-                <TextField
-                  id="outlined-basic"
-                  label={formlabel[0]}
-                  variant="outlined"
-                  fullWidth
-                  type={formlabel[1] ? 'date' : ''}
-                />
-              ) : (
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    margin="none"
-                    variant="inline"
-                    inputVariant="outlined"
-                    id="date-picker-dialog"
-                    label={formlabel[0]}
-                    format="dd/MM/yyyy"
-                    value={selectedDate}
-                    fullWidth
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </MuiPickersUtilsProvider>
-              )}
-            </Grid>
-          );
-        })}
+        <Box>
+          <Box mr={5} fontSize="2rem" align="right">
+            {user.name} <br />
+          </Box>
+          <Box mr={5} fontSize="1rem" align="right" color="secondary.dark">
+            {user.email}
+          </Box>
+        </Box>
+        <Typography variant="h6">
+          <Box ml={5} align="right" color="secondary.dark">
+            <b>12</b> Contests Created <br />
+            <b>8</b> Complete <br />
+            <b>4</b> Ongoing
+          </Box>{' '}
+        </Typography>
+        <Typography variant="h6">
+          <Box ml={5} align="right" color="secondary.dark">
+            <b>25</b> Contests Submissions <br />
+            <b>11</b> Won <br />
+            <b>14</b> Ongoing <br />
+          </Box>{' '}
+        </Typography>
+        <Typography variant="h6">
+          <Box ml={5} align="right" color="secondary.dark">
+            Total Prize Amount <br />
+            <b>$365</b> Won <br />
+            <b>$200</b> Paid <br />
+          </Box>{' '}
+        </Typography>
       </Grid>
     </Grid>
   );

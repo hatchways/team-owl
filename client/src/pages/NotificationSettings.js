@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Grid, Typography } from '@material-ui/core';
-import PaymentsStyles from './PaymentsStyles';
+import NotificationSettingsStyles from './NotificationSettingsStyles';
 
 export default function Payments() {
-  const classes = PaymentsStyles();
+  const classes = NotificationSettingsStyles();
   return (
     <Grid
       container
@@ -11,7 +11,7 @@ export default function Payments() {
       className={classes.upperBorder}
     >
       <Box mb={5}>
-        <Typography variant="h5">Payments</Typography>
+        <Typography variant="h5">Notification Settings</Typography>
       </Box>
       <Grid container alignItems="center" justify="space-between"></Grid>
     </Grid>

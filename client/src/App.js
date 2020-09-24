@@ -54,17 +54,18 @@ const App = () => {
               />
               <PrivateRoute
                 authed={context.state.authed}
+                exact
                 path="/contest"
                 component={Contest}
               />
-              <Route
-                //authed={context.state.authed}
+              <PrivateRoute
+                authed={context.state.authed}
                 exact
                 path="/contest/:id"
                 component={GetContest}
               />
-              <Route
-                //authed={context.state.authed}
+              <PrivateRoute
+                authed={context.state.authed}
                 exact
                 path="/contest/:id/submission"
                 component={CreateSubmission}

@@ -95,9 +95,15 @@ exports.createUser = async (req, res, next) => {
 
 //POST -  verfiy Token - Logged in
 exports.verifyToken = async (req, res, next) => {
-  return res.status(200).json(req.user);
-};
-
+	const search = await User.findOne({ _id: req.user.userId });
+	const user = {
+		avatar: search.avatar,
+		_id: search._id,
+		name: search.name,
+		email: search.email,
+	};
+  return res.status(200).json(user);
+}
 //GET - Loggedin user - self
 exports.getLoggedinUser = async (req, res, next) => {
   try {
@@ -146,11 +152,11 @@ exports.getUserById = async (req, res, next) => {
       return res.status(404).json({ msg: 'User ID does not exist' });
     }
 
-    res.status(200).json(user);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ msg: 'Server error - 500' });
-  }
+		res.status(200).json(user);
+	} catch (error) {
+		console.error(error.message);
+		res.status(500).json({ msg: "Server error - 500" });
+	}
 };
 
 //GET - get all Users

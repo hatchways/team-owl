@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -6,27 +6,64 @@ import { theme } from './themes/theme';
 import Nav from './components/Nav';
 import LandingPage from './pages/Landing';
 import LoginSignup from './pages/LoginSignup';
+import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
+import UserContext from './context/UserContext';
+import IsLoading from './components/IsLoading';
+import PrivateRoute from './components/PrivateRoute';
 import ImgTest from './pages/ImgTest';
 import Contest from './pages/Contest';
 import GetContest from './pages/GetContest';
 
 const App = () => {
+  const context = useContext(UserContext);
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <Nav />
-        <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route path="/login" render={() => <LoginSignup isSignIn={true} />} />
-          <Route
-            path="/signup"
-            render={() => <LoginSignup isSignIn={false} />}
-          />
-          <Route exact path="/imgtest" component={ImgTest} />
-          <Route exact path="/contest" component={Contest} />
-          <Route exact path="/contest/123" component={GetContest} />
-        </Switch>
+        {context.state.isLoading ? (
+          <IsLoading />
+        ) : (
+          <>
+            <Nav />
+            <Switch>
+              <Route exact path="/" component={LandingPage} />
+              <Route
+                path="/login"
+                render={() => <LoginSignup isSignIn={true} />}
+              />
+              <Route
+                path="/signup"
+                render={() => <LoginSignup isSignIn={false} />}
+              />
+              <PrivateRoute
+                authed={context.state.authed}
+                path="/Profile"
+                component={Profile}
+              />
+              <PrivateRoute
+                authed={context.state.authed}
+                path="/edit_profile"
+                component={EditProfile}
+              />
+              <PrivateRoute
+                authed={context.state.authed}
+                path="/imgtest"
+                component={ImgTest}
+              />
+              <PrivateRoute
+                authed={context.state.authed}
+                path="/contest"
+                component={Contest}
+              />
+              <PrivateRoute
+                authed={context.state.authed}
+                path="/contest/123"
+                component={GetContest}
+              />
+            </Switch>
+          </>
+        )}
       </BrowserRouter>
     </MuiThemeProvider>
   );

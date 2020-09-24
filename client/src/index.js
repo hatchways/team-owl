@@ -9,3 +9,4 @@ ReactDOM.render(
   </GlobalState>,
   document.getElementById('root'),
 );
+

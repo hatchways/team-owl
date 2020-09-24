@@ -11,6 +11,9 @@ import EditProfile from './pages/EditProfile';
 import UserContext from './context/UserContext';
 import IsLoading from './components/IsLoading';
 import PrivateRoute from './components/PrivateRoute';
+import ImgTest from './pages/ImgTest';
+import Contest from './pages/Contest';
+import GetContest from './pages/GetContest';
 
 const App = () => {
   const context = useContext(UserContext);
@@ -42,6 +45,21 @@ const App = () => {
                 authed={context.state.authed}
                 path="/edit_profile"
                 component={EditProfile}
+              />
+              <PrivateRoute
+                authed={context.state.authed}
+                path="/imgtest"
+                component={ImgTest}
+              />
+              <PrivateRoute
+                authed={context.state.authed}
+                path="/contest"
+                component={Contest}
+              />
+              <PrivateRoute
+                authed={context.state.authed}
+                path="/contest/123"
+                component={GetContest}
               />
             </Switch>
           </>

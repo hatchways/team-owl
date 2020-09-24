@@ -17,10 +17,20 @@ const ContestSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  contestPics: {
+    type: Array,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now(),
   },
+  submissions: {
+    type: Array,
+  },
+  // submissionFirstPics: {
+  //   type: Array,
+  // },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

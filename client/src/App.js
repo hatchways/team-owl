@@ -14,6 +14,7 @@ import PrivateRoute from './components/PrivateRoute';
 import ImgTest from './pages/ImgTest';
 import Contest from './pages/Contest';
 import GetContest from './pages/GetContest';
+import CreateSubmission from './pages/CreateSubmission';
 
 const App = () => {
   const context = useContext(UserContext);
@@ -56,10 +57,17 @@ const App = () => {
                 path="/contest"
                 component={Contest}
               />
-              <PrivateRoute
-                authed={context.state.authed}
-                path="/contest/123"
+              <Route
+                //authed={context.state.authed}
+                exact
+                path="/contest/:id"
                 component={GetContest}
+              />
+              <Route
+                //authed={context.state.authed}
+                exact
+                path="/contest/:id/submission"
+                component={CreateSubmission}
               />
             </Switch>
           </>

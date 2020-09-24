@@ -21,7 +21,7 @@ export default function UserInfo() {
       <Grid container alignItems="center" justify="space-between">
         <Avatar
           alt="Remy Sharp"
-          src={require(`../assets/${profileImage}`)}
+          src="https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/userAvatar/avatarplaceholder.png"
           className={classes.avatar}
         />
         <Box>

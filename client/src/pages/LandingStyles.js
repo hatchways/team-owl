@@ -3,22 +3,30 @@ import { makeStyles } from '@material-ui/core/styles';
 const LandingStyles = makeStyles((theme) => ({
   grid: {
     padding: '5% 10%',
+    height: '200vh',
   },
   featureGrid: {
-    height: '60vh',
+    height: '70vh',
     borderRight: `1px solid ${theme.palette.secondary.dark}`,
     padding: '0 5%',
   },
-  cardGrid: {
-    height: '100%',
+  featureTitle: {
     width: '100%',
+  },
+  cardGrid: {
+    height: '70%',
+    paddingBottom: '5%',
+  },
+  cardAction: {
+    height: '100%',
   },
   recommendedGrid: {
     padding: '0 5%',
   },
   media: {
-    width: 'auto',
-    objectFit: 'cover',
+    height: '100%',
+    objectFit: 'contain',
+    margin: '5% 0',
   },
 }));
 

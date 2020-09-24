@@ -15,42 +15,40 @@ export default function Landing() {
   const classes = LandingStyles();
 
   return (
-    <Grid
-      container
-      justify="center"
-      alignContent="center"
-      className={classes.grid}
-    >
+    <Grid container className={classes.grid}>
       <Grid container>
         <Grid
           container
           item
           xs={7}
-          justify="center"
+          alignItems="center"
+          direction="column"
           className={classes.featureGrid}
         >
-          <Grid>
-            <Box width="100%">
+          <Grid className={classes.featureTitle}>
+            <Box width="100%" height="100%" align="left" color="secondary.dark">
               <Typography variant="h5" align="left">
                 Featured
               </Typography>
             </Box>
           </Grid>
           <Grid container className={classes.cardGrid}>
-            <CardActionArea>
+            <CardActionArea className={classes.cardAction}>
               <CardMedia
                 className={classes.media}
                 image={require('../assets/jamesdiscombe.jpg')}
                 // image={image1}
                 title="Contemplative Reptile"
               />
-              <Typography gutterBottom variant="h5" component="h2">
-                Lizard
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Lizards are a widespread group of squamate reptiles, with over
-                6,000 species, ranging across all continents except Antarctica
-              </Typography>
+              <Box p={(2, 0)}>
+                <Typography gutterBottom variant="h5" component="h2">
+                  <b>Roses</b>
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  The rose is recognized everywhere as an important, ubiquitous
+                  flower that holds deep meaning and respect.
+                </Typography>
+              </Box>
             </CardActionArea>
           </Grid>
         </Grid>
@@ -61,8 +59,9 @@ export default function Landing() {
           justify="center"
           className={classes.recommendedGrid}
         >
-          {' '}
-          <Typography variant="h6">Recomended for you</Typography>
+          <Box width="100%" height="100%" align="left" color="secondary.dark">
+            <Typography variant="h6">Recomended for you</Typography>
+          </Box>
         </Grid>
       </Grid>
       <Grid container justify="center"></Grid>

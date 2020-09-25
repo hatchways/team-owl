@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { Typography, Box, Button, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -11,7 +12,9 @@ export const CreateContest = () => {
   const contest = useContext(ContestContext);
   const [open, setOpen] = useState(false);
   const [alertText, setAlertText] = useState('');
-  const [severity, setSeverity] = useState('');
+  const [severity, setSeverity] = useState('info');
+
+  const history = useHistory();
 
   const {
     title,
@@ -70,10 +73,8 @@ export const CreateContest = () => {
           },
         }
       );
-      setSeverity('success');
-      setAlertText('Contest successfully created!');
-      Alert();
-      return res.data;
+
+      history.push(`/contest/${res.data._id}`);
     } catch (error) {
       console.log(error.response);
     }

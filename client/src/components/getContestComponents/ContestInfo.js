@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import {
   Container,
@@ -14,16 +15,18 @@ import Tabs from './Tabs';
 
 const ViewContest = () => {
   const classes = useStyles();
-
   const [data, setData] = useState({});
 
+  const params = useParams();
+  const history = useHistory();
+
   useEffect(() => {
-    async function fetchData() {
-      const res = await axios.get('/api/contest/5f6a8f01fdeb0e1ab02947c5');
+    async function fetchData(contestId) {
+      const res = await axios.get(`/api/contest/${contestId}`);
       setData(res.data);
     }
-    fetchData();
-  }, []);
+    fetchData(params.id);
+  }, [params.id]);
 
   return (
     <Fragment>
@@ -47,7 +50,7 @@ const ViewContest = () => {
                       <Grid container spacing={1}>
                         <Grid item xs={2}>
                           <Avatar
-                            alt="Remy Sharp"
+                            alt={data.user && data.user.name}
                             className={classes.navLinks}
                             src={data.user && data.user.avatar}
                           />
@@ -66,6 +69,9 @@ const ViewContest = () => {
                       variant={'outlined'}
                       className={classes.contestButton}
                       align={'right'}
+                      onClick={() =>
+                        history.push(`/contest/${params.id}/submission`)
+                      }
                     >
                       Submit Design
                     </Button>

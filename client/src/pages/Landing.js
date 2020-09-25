@@ -9,7 +9,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import LandingStyles from './LandingStyles';
-import image1 from '../assets/jamesdiscombe.jpg';
 
 export default function Landing() {
   const classes = LandingStyles();
@@ -36,7 +35,7 @@ export default function Landing() {
             <CardActionArea className={classes.cardAction}>
               <CardMedia
                 className={classes.media}
-                image={require('../assets/jamesdiscombe.jpg')}
+                image="https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/tattoos/tattoo19.png"
                 // image={image1}
                 title="Contemplative Reptile"
               />

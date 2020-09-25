@@ -1,6 +1,7 @@
-const Contest = require("../models/Contest");
-const User = require("../models/User");
-const { userCheck } = require("../helpers/userCheck");
+const Contest = require('../models/Contest');
+const User = require('../models/User');
+const Submissions = require('../models/Submission');
+const { userCheck } = require('../helpers/userCheck');
 
 //POST - create contest - auth
 exports.createContest = async (req, res, next) => {
@@ -49,8 +50,8 @@ exports.getContestById = async (req, res, next) => {
 
 //GET - get all contests
 exports.getAllContests = async (req, res, next) => {
-	try {
-		const contests = await Contest.find().populate("user");
+  try {
+    const contests = await Contest.find().populate('user');
 
 		if (!contests) {
 			return res.status(404).json({ msg: "There are no contests" });
@@ -111,4 +112,33 @@ exports.deleteContest = async (req, res, next) => {
 		console.error(error.message);
 		res.status(500).json({ msg: "Server error - 500" });
 	}
+};
+
+//GET - All submissions by contest Id - auth
+exports.getAllSubmissionsByContestId = async (req, res, next) => {
+  //5f6a8f01fdeb0e1ab02947c5 - creator: Shiv
+  const contestId = req.params.contestId;
+  const user = req.user;
+
+  //get all submissions under the same contest Id
+  const submissions = await Submissions.find({ contest: req.params.contestId });
+
+  //make sure only the creator gets to view the data
+  const contest = await Contest.findOne({ _id: contestId });
+
+  const verify = userCheck(contest, user);
+
+  if (!verify) {
+    return res.status(401).json({
+      msg:
+        'You are not authorized to view this page. Only the contest creator can see all submissions.',
+    });
+  }
+
+  res.status(200).json(submissions);
+  try {
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
 };

@@ -21,7 +21,7 @@ export default function Profile() {
         <Grid container item justify="center" alignContent="center">
           <Avatar
             alt="Remy Sharp"
-            src={require(`../assets/${user.profileImage}`)}
+            src="https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/userAvatar/avatarplaceholder.png"
             className={classes.avatar}
           />
         </Grid>

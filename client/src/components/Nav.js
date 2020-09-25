@@ -20,17 +20,37 @@ export default function Nav() {
             </Grid>
             <Grid container item xs={6} justify="flex-end">
               {context.state.user ? (
-                <Button
-                  onClick={() => {
-                    context.handleLogout();
-                  }}
-                  size="large"
-                  variant="outlined"
-                  color="primary"
-                  className={classes.button}
-                >
-                  <Typography variant="button">LogOut</Typography>
-                </Button>
+                <>
+                  <Button
+                    component={Link}
+                    to="/contest"
+                    size="large"
+                    color="primary"
+                    className={classes.button}
+                  >
+                    <Typography variant="button">Create Contest</Typography>
+                  </Button>
+                  <Button
+                    component={Link}
+                    to="/profile"
+                    size="large"
+                    color="primary"
+                    className={classes.button}
+                  >
+                    <Typography variant="button">Profile</Typography>
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      context.handleLogout();
+                    }}
+                    size="large"
+                    variant="outlined"
+                    color="primary"
+                    className={classes.button}
+                  >
+                    <Typography variant="button">LogOut</Typography>
+                  </Button>
+                </>
               ) : (
                 <>
                   <Button

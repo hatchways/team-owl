@@ -55,7 +55,6 @@ const GlobalState = (props) => {
   });
 
   const handleLogout = () => {
-    dispatch({ type: 'IS_LOADING' });
     removeFromStorage('auth_token');
     dispatch({ type: 'LOG_OUT' });
   };
@@ -96,27 +95,25 @@ const GlobalState = (props) => {
 
   const getAllContests = async () => {
     const contests = await getContest();
-    dispatch({ type: 'ALL_CONTESTS', payload: { contests } });
+    contests && dispatch({ type: 'ALL_CONTESTS', payload: { contests } });
   };
 
   const checkLogin = async () => {
     let token = getFromStorage('auth_token') || '';
     const user = await verifyToken(token);
     if (!user.msg) {
-      setTimeout(() => {
-        dispatch({
-          type: 'VERIFY_TOKEN',
-          payload: { token, user: user, isLoading: false },
-        });
-      }, 1000);
+      dispatch({
+        type: 'VERIFY_TOKEN',
+        payload: { token, user: user, isLoading: false },
+      });
     } else {
       dispatch({ type: 'IS_LOADING', payload: false });
     }
   };
 
   useEffect(() => {
-    getAllContests({ contestId: '6c6s1d65sd16s5f1s6' });
     checkLogin();
+    getAllContests({ contestId: '6c6s1d65sd16s5f1s6' });
   }, []);
 
   return (

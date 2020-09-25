@@ -38,16 +38,19 @@ const App = () => {
               />
               <PrivateRoute
                 authed={context.state.authed}
+                exact
                 path="/Profile"
                 component={Profile}
               />
               <PrivateRoute
                 authed={context.state.authed}
+                exact
                 path="/edit_profile"
                 component={EditProfile}
               />
               <PrivateRoute
                 authed={context.state.authed}
+                exact
                 path="/imgtest"
                 component={ImgTest}
               />
@@ -60,7 +63,7 @@ const App = () => {
               <PrivateRoute
                 authed={context.state.authed}
                 exact
-                path="/contest/123"
+                path="/contest/:id"
                 component={GetContest}
               />
             </Switch>

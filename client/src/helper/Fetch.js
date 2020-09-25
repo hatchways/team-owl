@@ -51,7 +51,6 @@ const getContest = async () => {
     .catch((error) => {
       return error.response;
     });
-  console.log(contests.data);
   return contests.data;
 };
 

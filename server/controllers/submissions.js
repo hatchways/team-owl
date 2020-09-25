@@ -3,6 +3,7 @@ const Contest = require('../models/Contest');
 const User = require('../models/User');
 const aws = require('aws-sdk');
 const fs = require('fs');
+const { userCheck } = require('../helpers/userCheck');
 
 //POST - create contest - auth
 exports.createSubmission = async (req, res, next) => {
@@ -55,7 +56,13 @@ exports.createSubmission = async (req, res, next) => {
           console.log('Files are uploaded');
           submission.submissionPic = locationURL;
           await submission.save();
-          contest.submissions.push(submission.submissionPic[0]);
+          const subObj = {
+            user: user.id,
+            id: submission.id,
+            submissionPic: locationURL,
+          };
+          console.log(subObj);
+          contest.submissions.push(subObj);
           await contest.save();
           res.status(201).json(submission);
         }
@@ -104,6 +111,7 @@ exports.updateSubmission = async (req, res, next) => {
 
 //DELETE - create submission by Id - auth
 exports.deleteSubmission = async (req, res, next) => {
+  //todo: go to corresponding contest and delete the submission obj there as well
   try {
     const submission = await Submission.findOne({ _id: req.params.id });
     const user = req.user;

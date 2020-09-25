@@ -8,7 +8,8 @@ export default function UserInfo() {
   const context = useContext(UserContext);
   const { user } = context.state;
 
-  const profileImage = '7c0c914fd9b8665800d4f0e4cc8e01c7042aaea8.png';
+  const profileImage =
+    'https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/userAvatar/avatarplaceholder.png';
   return (
     <Grid
       container
@@ -21,7 +22,7 @@ export default function UserInfo() {
       <Grid container alignItems="center" justify="space-between">
         <Avatar
           alt="Remy Sharp"
-          src="https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/userAvatar/avatarplaceholder.png"
+          src={profileImage}
           className={classes.avatar}
         />
         <Box>

@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const aws = require('aws-sdk');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const { avatarUpload } = require('../helpers/avatarUpload');
 
 //POST - create user
 exports.createUser = async (req, res, next) => {

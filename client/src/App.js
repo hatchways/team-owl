@@ -53,11 +53,13 @@ const App = () => {
               />
               <PrivateRoute
                 authed={context.state.authed}
+                exact
                 path="/contest"
                 component={Contest}
               />
               <PrivateRoute
                 authed={context.state.authed}
+                exact
                 path="/contest/123"
                 component={GetContest}
               />

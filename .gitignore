@@ -25,3 +25,5 @@ yarn-error.log*
 # Eslint files
 .eslintrc.js
 .prettierrc.js
+
+temp.js

@@ -45,4 +45,13 @@ const signUp = async (name, email, password) => {
   return user.data;
 };
 
-export { verifyToken, login, signUp };
+const getContest = async () => {
+  const contests = await axios
+    .get(`${server_url}/api/contest`)
+    .catch((error) => {
+      return error.response;
+    });
+  return contests.data;
+};
+
+export { verifyToken, login, signUp, getContest };

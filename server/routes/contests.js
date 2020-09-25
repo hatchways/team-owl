@@ -8,6 +8,7 @@ const {
   getAllContests,
   updateContest,
   deleteContest,
+  getAllSubmissionsByContestId,
 } = require('../controllers/contests');
 
 router.post('/', auth, createContest);
@@ -15,5 +16,6 @@ router.get('/', getAllContests);
 router.delete('/:id', auth, deleteContest);
 router.get('/:id', getContestById);
 router.put('/:id', auth, updateContest);
+router.get('/:contestId/submissions', auth, getAllSubmissionsByContestId);
 
 module.exports = router;

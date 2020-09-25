@@ -21,5 +21,6 @@ router.get('/', getAllSubmissions);
 router.delete('/:id', auth, deleteSubmission);
 router.get('/:id', getSubmissionById);
 router.put('/:id', auth, updateSubmission);
+//router.get('/:contestId/submissions/', auth, getAllSubmissionsByContestId);
 
 module.exports = router;

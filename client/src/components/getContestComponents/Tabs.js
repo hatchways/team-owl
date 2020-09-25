@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   AppBar,
@@ -10,6 +10,7 @@ import {
   GridListTile,
 } from '@material-ui/core';
 import useStyles from './GetContestStyles';
+import UserContext from '../../context/UserContext';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,6 +47,9 @@ function a11yProps(index) {
 
 export default function SimpleTabs({ data }) {
   const classes = useStyles();
+  const context = useContext(UserContext);
+  const { user } = context.state;
+
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -73,16 +77,31 @@ export default function SimpleTabs({ data }) {
         <TabPanel value={value} index={0}>
           {data.submissions ? (
             <GridList cellHeight={160} className={classes.gridList} cols={3}>
-              {data.submissions &&
-                data.submissions.map((pic, i) => (
-                  <GridListTile
-                    key={i}
-                    cols={1}
-                    className={classes.gridListTile}
-                  >
-                    <img src={pic} alt={pic} />
-                  </GridListTile>
-                ))}
+              {data.user && data.user._id === user._id
+                ? data.submissions.map((sub) =>
+                    sub.submissionPic.map((pic, i) => (
+                      <GridListTile
+                        key={i}
+                        cols={1}
+                        className={classes.gridListTile}
+                      >
+                        <img src={pic} alt={pic} />
+                      </GridListTile>
+                    ))
+                  )
+                : data.submissions
+                    .filter((sub) => sub.user === user._id)
+                    .map((pic) =>
+                      pic.submissionPic.map((pic, i) => (
+                        <GridListTile
+                          key={i}
+                          cols={1}
+                          className={classes.gridListTile}
+                        >
+                          <img src={pic} alt={pic} />
+                        </GridListTile>
+                      ))
+                    )}
             </GridList>
           ) : null}
         </TabPanel>

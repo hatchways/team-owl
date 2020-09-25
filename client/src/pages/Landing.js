@@ -1,10 +1,8 @@
 import React from 'react';
 import {
   Box,
-  Card,
   CardMedia,
   CardActionArea,
-  CardContent,
   Grid,
   Typography,
 } from '@material-ui/core';

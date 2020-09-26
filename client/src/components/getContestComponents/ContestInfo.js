@@ -11,20 +11,19 @@ import {
   Avatar,
 } from '@material-ui/core';
 import useStyles from './GetContestStyles';
+import { convertMS } from '../../helper/CountDown';
 import Tabs from './Tabs';
 
 const ViewContest = () => {
   const classes = useStyles();
   const dateNow = Date.now();
-  const [data, setData] = useState({});
+  const [data, setData] = useState({}); //data is contest info from useEffect
   const [date, setDate] = useState(dateNow);
-
-  setTimeout(() => {
-    setDate(dateNow);
-  }, 1000);
 
   const params = useParams();
   const history = useHistory();
+
+  //let timer = setTimeout(() => setDate(dateNow), 1000);
 
   useEffect(() => {
     async function fetchData(contestId) {
@@ -34,22 +33,16 @@ const ViewContest = () => {
     fetchData(params.id);
   }, [params.id]);
 
-  function convertMS(ms) {
-    var d, h, m, s;
-    s = Math.floor(ms / 1000);
-    m = Math.floor(s / 60);
-    s = s % 60;
-    h = Math.floor(m / 60);
-    m = m % 60;
-    d = Math.floor(h / 24);
-    h = h % 24;
-    return d + ' days, ' + h + ' hours, ' + m + ' minutes';
-  }
-
   const deadlineJS = new Date(data.deadline);
   const deadlineEpoch = deadlineJS.getTime();
   const timeTilDeadlineEpoch = deadlineEpoch - date;
   const countDown = convertMS(timeTilDeadlineEpoch);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    history.push(`/contest/${params.id}/submission`);
+    //clearTimeout(timer);
+  };
 
   return (
     <Fragment>
@@ -92,9 +85,7 @@ const ViewContest = () => {
                       variant={'outlined'}
                       className={classes.contestButton}
                       align={'right'}
-                      onClick={() =>
-                        history.push(`/contest/${params.id}/submission`)
-                      }
+                      onClick={(e) => onSubmit(e)}
                     >
                       Submit Design
                     </Button>
@@ -103,8 +94,6 @@ const ViewContest = () => {
               </Box>
             </Box>
             <Box mt={4}>
-              {/* <Typography>Deadline: {data.deadline}</Typography>
-              <Typography>Deadline Epoch: {deadlineEpoch}</Typography> */}
               <Typography>Time to Deadline: {countDown}</Typography>
             </Box>
             <Tabs data={data} />

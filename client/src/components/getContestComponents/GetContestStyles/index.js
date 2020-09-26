@@ -97,20 +97,26 @@ const useStyles = makeStyles((theme) => ({
 
   overlay: {
     position: 'absolute',
+    zIndex: 10,
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: 'black',
-    opacity: 0.6,
+    opacity: 0.1,
     visibility: 'hidden',
   },
 
   overlayText: {
     textAlign: 'center',
-    position: 'relative',
-    top: '40%',
+    position: 'absolute',
+    zIndex: 10,
+    bottom: 0,
+    right: 0,
+    top: '70%',
+    left: 0,
     color: '#fff',
+    visibility: 'visible',
   },
 
   overlayImg: {

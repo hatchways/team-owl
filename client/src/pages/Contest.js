@@ -1,11 +1,12 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import { ContestContextProvider } from '../context/ContestContext';
 import InputFields from '../components/createContestComponents/InputFields';
 
 const Contest = () => {
   return (
-    <Fragment>
+    <ContestContextProvider>
       <InputFields />
-    </Fragment>
+    </ContestContextProvider>
   );
 };
 

@@ -1,20 +1,17 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { Typography, Box, Button, Snackbar } from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
-import { ContestContext } from './ContestContext';
+import { Typography, Box, Button } from '@material-ui/core';
+import { ContestContext } from '../../context/ContestContext';
 import { getFromStorage } from '../../helper/localStorage';
 import useStyles from './CreateContestStyles';
+import Alert from './Alert';
 
-export const CreateContest = () => {
+const CreateContest = () => {
   const classes = useStyles();
-  const contest = useContext(ContestContext);
-  const [open, setOpen] = useState(false);
-  const [alertText, setAlertText] = useState('');
-  const [severity, setSeverity] = useState('info');
-
   const history = useHistory();
+
+  const context = useContext(ContestContext);
 
   const {
     title,
@@ -22,21 +19,11 @@ export const CreateContest = () => {
     prize,
     selectedDate: deadline,
     pics: contestPics,
-  } = contest;
+    alertFn,
+  } = context;
 
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  const createContest = async () => {
-    setOpen(true);
+  const createContest = async (e) => {
+    e.preventDefault();
 
     if (
       !title ||
@@ -45,18 +32,17 @@ export const CreateContest = () => {
       !deadline ||
       contestPics.length < 1
     ) {
-      setSeverity('warning');
-      setAlertText('Please fill out all fields and pick the tattoos you like');
-      return Alert();
+      return alertFn(
+        'Please complete all fields and select at least one image.'
+      );
     }
 
     if (typeof prize !== 'number') {
-      setSeverity('warning');
-      setAlertText('Prize must be a number');
-      return Alert();
+      return alertFn('Prize must be a number.');
     }
 
     const token = getFromStorage('auth_token');
+
     try {
       const res = await axios.post(
         '/api/contest',
@@ -76,7 +62,7 @@ export const CreateContest = () => {
 
       history.push(`/contest/${res.data._id}`);
     } catch (error) {
-      console.log(error.response);
+      return alertFn('Sever error. Please re-try.');
     }
   };
 
@@ -89,11 +75,7 @@ export const CreateContest = () => {
       >
         <Typography className={classes.buttonText}>Create Contest</Typography>
       </Button>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={severity}>
-          {alertText}
-        </Alert>
-      </Snackbar>
+      <Alert />
     </Box>
   );
 };

@@ -1,11 +1,12 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import { ContestContextProvider } from '../context/ContestContext';
 import ViewContest from '../components/getContestComponents/ContestInfo';
 
 const GetContest = () => {
   return (
-    <Fragment>
+    <ContestContextProvider>
       <ViewContest />
-    </Fragment>
+    </ContestContextProvider>
   );
 };
 

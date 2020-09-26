@@ -113,7 +113,7 @@ const GlobalState = (props) => {
 
   useEffect(() => {
     checkLogin();
-    getAllContests({ contestId: '6c6s1d65sd16s5f1s6' });
+    getAllContests();
   }, []);
 
   return (

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import {
   Box,
-  Button,
   CardActions,
   CardContent,
   CardMedia,

@@ -54,12 +54,20 @@ exports.createSubmission = async (req, res, next) => {
         //submission only gets saved then
         if (picArray.length == uploads.length) {
           console.log('Files are uploaded');
+
+          //this line below for S3 URL
           submission.submissionPic = locationURL;
           await submission.save();
+
+          //this subObj is to be saved onto contest data
           const subObj = {
             user: user.id,
+            name: user.name,
             id: submission.id,
-            submissionPic: locationURL,
+            submissionPic: {
+              url: locationURL,
+              name: user.name,
+            },
           };
           console.log(subObj);
           contest.submissions.push(subObj);

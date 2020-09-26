@@ -1,13 +1,17 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useParams, useHistory } from 'react-router-dom';
 import { Typography, Container, Box, Button } from '@material-ui/core';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { getFromStorage } from '../../helper/localStorage';
+import { ContestContext } from '../../context/ContestContext';
+import Alert from '../createContestComponents/Alert';
 import useStyles from './SubmissionUploadStyles';
 
 const SubmissionUpload = () => {
   const classes = useStyles();
+  const context = useContext(ContestContext);
+
   const [files, setFiles] = useState([]);
   const [data, setData] = useState({});
 
@@ -31,9 +35,19 @@ const SubmissionUpload = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    const uploadCount = [];
+
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
       formData.append(`submissionPic`, files[i]);
+    }
+
+    for (let pic of formData.entries()) {
+      uploadCount.push(pic);
+    }
+
+    if (uploadCount.length < 1) {
+      return context.alertFn('Please upload at least one picture.');
     }
     try {
       const res = await axios.post(
@@ -45,14 +59,15 @@ const SubmissionUpload = () => {
           },
         }
       );
-      const submission = res.data;
-      console.log(submission);
+      console.log(res.data);
       history.push(`/contest/${params.id}`);
     } catch (error) {
       if (error.response.status === 500) {
-        console.log('There was a problem with the server');
+        return context.alertFn(
+          'There was a problem with the server. Please try again.'
+        );
       } else {
-        console.log(error.response.data.msg);
+        return context.alertFn(error.response.data.msg);
       }
     }
   };
@@ -81,6 +96,7 @@ const SubmissionUpload = () => {
                 Send Submission for {data.user && data.user.name}
               </Button>
             </Box>
+            <Alert />
           </Container>
         </Box>
       </Container>

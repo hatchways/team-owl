@@ -87,7 +87,7 @@ export default function SimpleTabs({ data }) {
                       >
                         <img src={pic} alt={pic} />
                       </GridListTile>
-                    ))
+                    )),
                   )
                 : data.submissions
                     .filter((sub) => sub.user === user._id)
@@ -100,7 +100,7 @@ export default function SimpleTabs({ data }) {
                         >
                           <img src={pic} alt={pic} />
                         </GridListTile>
-                      ))
+                      )),
                     )}
             </GridList>
           ) : null}

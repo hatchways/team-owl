@@ -144,26 +144,3 @@ exports.getAllSubmissionsByContestId = async (req, res, next) => {
     res.status(500).send('Server error');
   }
 };
-
-//GET - All one submitter's submissions under a contest Id - auth
-exports.getSubmissionsBySubmitterByContestId = async (req, res, next) => {
-  const contestId = req.params.contestId;
-  const user = req.user;
-
-  try {
-    //get all submissions under the same contest Id
-    const submissions = await Submissions.find({
-      contest: contestId,
-    });
-
-    //filter out submission(s) by the logged in user
-    const SubmissionsBySubmitterByContestId = submissions.filter(
-      (sub) => sub.user == user.userId
-    );
-
-    res.status(200).json(SubmissionsBySubmitterByContestId);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Server error');
-  }
-};

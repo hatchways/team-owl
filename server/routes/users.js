@@ -12,6 +12,8 @@ const {
   deleteUser,
   loginUser,
   verifyToken,
+  getAllContestsByUserId,
+  getAllSubmissionsByUserId,
 } = require('../controllers/users');
 
 const multerSingle = multer({
@@ -27,5 +29,7 @@ router.get('/:id', getUserById);
 router.put('/:id', auth, multerSingle, updateUser);
 router.post('/login', loginUser);
 router.post('/verifytoken', auth, verifyToken);
+router.get('/:id/contests', getAllContestsByUserId);
+router.get('/:id/submissions', getAllSubmissionsByUserId);
 
 module.exports = router;

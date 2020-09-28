@@ -11,6 +11,12 @@ export const contestReducer = (state, { type, payload }) => {
         },
         isLoading: false,
       };
+    case 'GET_CONTEST_BY_ID':
+      return {
+        ...state,
+        contest: payload.contest,
+        isLoading: false,
+      };
     default:
       return state;
   }

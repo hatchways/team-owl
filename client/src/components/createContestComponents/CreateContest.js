@@ -41,6 +41,11 @@ const CreateContest = () => {
       return alertFn('Prize must be a number.');
     }
 
+    const date = Date.now();
+    if (deadline < date) {
+      return alertFn('Please pick a date and time in the future.');
+    }
+
     const token = getFromStorage('auth_token');
 
     try {
@@ -62,7 +67,7 @@ const CreateContest = () => {
 
       history.push(`/contest/${res.data._id}`);
     } catch (error) {
-      return alertFn('Sever error. Please re-try.');
+      return alertFn('Server error. Please re-try.');
     }
   };
 

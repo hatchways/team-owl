@@ -1,5 +1,7 @@
 import React, { createContext, useState, useReducer } from 'react';
+import axios from 'axios';
 import { contestReducer } from './contestReducers';
+import { getFromStorage } from '../helper/localStorage';
 
 export const ContestContext = createContext();
 
@@ -16,13 +18,35 @@ export const ContestContextProvider = ({ children }) => {
   //Snackbar
   const [state, dispatch] = useReducer(contestReducer, {
     toast: { open: false, message: '' },
+    contest: {},
+    isLoading: true,
   });
+
+  const token = getFromStorage('auth_token');
 
   const alertFn = (message) => {
     dispatch({
       type: 'TOAST',
-      payload: { open: true, message: message },
+      payload: { open: true, message: message, isLoading: false },
     });
+  };
+
+  const getContestById = async (contestId) => {
+    const res = await axios
+      .get(`/api/contest/${contestId}`, {
+        headers: {
+          auth_token: `Bearer ${token}`,
+        },
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    const contest = res.data;
+    contest &&
+      dispatch({
+        type: 'GET_CONTEST_BY_ID',
+        payload: { contest: contest, isLoading: false },
+      });
   };
 
   return (
@@ -41,9 +65,23 @@ export const ContestContextProvider = ({ children }) => {
         setPics,
         alertFn,
         dispatch,
+        getContestById,
       }}
     >
       {children}
     </ContestContext.Provider>
   );
 };
+
+// const getOneContest = async (contestId) => {
+//   const contest = await axios
+//     .get(`/api/contest/${contestId}`, {
+//       headers: {
+//         auth_token: `Bearer ${token}`,
+//       },
+//     })
+//     .catch((error) => {
+//       return error.response;
+//     });
+//   return contest.data;
+// };

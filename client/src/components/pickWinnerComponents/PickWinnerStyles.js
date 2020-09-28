@@ -8,10 +8,6 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
   },
 
-  prizeTimeBox: {
-    paddingTop: theme.spacing(6),
-  },
-
   container: {
     width: '100%',
   },
@@ -44,11 +40,6 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
 
-  prizeTimeSub: {
-    textAlign: 'left',
-    fontFamily: 'Poppins-Semibold',
-  },
-
   //tattoo grid
   root: {
     display: 'flex',
@@ -62,33 +53,6 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'nowrap',
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
-  },
-
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'black',
-    opacity: 0.6,
-    visibility: 'hidden',
-  },
-
-  overlayText: {
-    textAlign: 'center',
-    position: 'relative',
-    top: '40%',
-    color: '#fff',
-  },
-
-  overlayImg: {
-    position: 'relative',
-    top: '20%',
-    left: '34%',
-    width: 60,
-    height: 90,
-    color: '#fff',
   },
 
   //create contest button
@@ -116,15 +80,6 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-60%)',
-  },
-
-  //date / timezone form
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
   },
 }));
 

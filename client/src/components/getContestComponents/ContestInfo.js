@@ -104,19 +104,3 @@ const ViewContest = () => {
 };
 
 export default ViewContest;
-
-//const token = getFromStorage('auth_token');
-
-//let timer = setTimeout(() => setDate(dateNow), 5000);
-
-// useEffect(() => {
-//   const fetchContest = async (contestId) => {
-//     const res = await axios.get(`/api/contest/${contestId}`, {
-//       headers: {
-//         auth_token: `Bearer ${token}`,
-//       },
-//     });
-//     setData(res.data);
-//   };
-//   fetchContest(params.id);
-// }, [token, params.id]);

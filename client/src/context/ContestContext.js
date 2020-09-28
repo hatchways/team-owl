@@ -72,16 +72,3 @@ export const ContestContextProvider = ({ children }) => {
     </ContestContext.Provider>
   );
 };
-
-// const getOneContest = async (contestId) => {
-//   const contest = await axios
-//     .get(`/api/contest/${contestId}`, {
-//       headers: {
-//         auth_token: `Bearer ${token}`,
-//       },
-//     })
-//     .catch((error) => {
-//       return error.response;
-//     });
-//   return contest.data;
-// };

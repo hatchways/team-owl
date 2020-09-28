@@ -60,31 +60,6 @@ const PickWinner = () => {
                 </Box>
               );
             })}
-
-            {/* <GridList className={classes.gridList} cols={2.5}>
-              {contest.submissions.map((tile) => {
-                return tile.submissionPic.url.map((tile, i) => (
-                  <GridListTile key={i}>
-                    <img src={tile} alt={tile} />
-                  </GridListTile>
-                ));
-              })}
-            </GridList>
-            <Button variant="contained" color="primary">
-              Select Winner
-            </Button> */}
-            {/* <GridList className={classes.gridList} cols={2.5}>
-              {contest.submissions.map((tile) => {
-                return tile.submissionPic.url.map((tile, i) => (
-                  <GridListTile key={i}>
-                    <img src={tile} alt={tile} />
-                  </GridListTile>
-                ));
-              })}
-            </GridList>
-            <Button variant="contained" color="primary">
-              Select Winner
-            </Button> */}
           </Container>
         </Box>
       </Container>
@@ -93,30 +68,3 @@ const PickWinner = () => {
 };
 
 export default PickWinner;
-
-{
-  /* <div className={classes.root}>
-            <GridList className={classes.gridList} cols={2.5}>
-              {contest.submissions.map((pic) => {
-                return pic.submissionPic.map((pic, i) => (
-                  <GridListTile key={i}>
-                    <img src={pic.submissionPic} alt={pic} />
-                    <GridListTileBar
-                      title={pic}
-                      classes={{
-                        root: classes.titleBar,
-                        title: classes.title,
-                      }}
-                      actionIcon={
-                        <IconButton aria-label={`star ${pic}`}>
-                          <StarBorderIcon className={classes.title} />
-                        </IconButton>
-                      }
-                    />
-                  </GridListTile>
-                ));
-              })}
-            </GridList>
-            ))
-          </div> */
-}

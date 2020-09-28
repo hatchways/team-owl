@@ -126,29 +126,3 @@ const SimpleTabs = ({ contestData }) => {
 };
 
 export default SimpleTabs;
-
-// {contestData.user && contestData.user._id !== user._id
-//   ? userSub.map((sub, i) => (
-//       <GridListTile
-//         key={i}
-//         cols={1}
-//         className={classes.gridListTile}
-//       >
-//         <img src={sub.submissionPic} alt={sub.submissionPic} />
-//       </GridListTile>
-//     ))
-//   : contestData.submissions &&
-//     contestData.submissions.map((sub) =>
-//       sub.submissionPic.url.map((pic, i) => (
-//         <GridListTile
-//           key={i}
-//           cols={1}
-//           className={classes.gridListTile}
-//         >
-// <p className={classes.overlayText}>
-//   {sub.submissionPic.name}
-// </p>
-//           <img src={pic} alt={pic} />
-//         </GridListTile>
-//       ))
-//     )}

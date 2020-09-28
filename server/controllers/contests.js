@@ -7,11 +7,7 @@ const { userCheck } = require('../helpers/userCheck');
 exports.createContest = async (req, res, next) => {
   const { title, description, prize, deadline, contestPics } = req.body;
 
-  //problem: possible to have unlimited contests and identical contests by the same user
-  //potential solution: store total contests in array as user property in DB
-
   try {
-    //const user = await User.findOne({ _id: '5f61089819261d0d5680307f' });
     const user = await User.findOne({ _id: req.user.userId });
 
     const contest = new Contest({

@@ -41,6 +41,15 @@ export const userReducer = (state, { type, payload }) => {
         allContests: payload.contests,
         isLoading: false,
       };
+    case 'ALL_CONTESTS_BY_USER':
+      return {
+        ...state,
+        contests: {
+          created: payload.contests,
+          submitted: [...state.contests.submitted],
+        },
+        isLoading: false,
+      };
     default:
       return state;
   }

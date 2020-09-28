@@ -7,6 +7,5 @@ ReactDOM.render(
   <GlobalState>
     <App />
   </GlobalState>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );
-

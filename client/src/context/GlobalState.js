@@ -5,7 +5,13 @@ import {
   setInStorage,
   removeFromStorage,
 } from '../helper/localStorage';
-import { verifyToken, login, signUp, getContest } from '../helper/Fetch';
+import {
+  verifyToken,
+  login,
+  signUp,
+  getContest,
+  getContestsByUser,
+} from '../helper/Fetch';
 import { userReducer } from './reducers';
 
 const GlobalState = (props) => {
@@ -111,14 +117,31 @@ const GlobalState = (props) => {
     }
   };
 
+  const getAllContestsByUser = async () => {
+    let token = getFromStorage('auth_token') || '';
+    const user = await verifyToken(token);
+    const contests = await getContestsByUser(user._id);
+    contests &&
+      dispatch({ type: 'ALL_CONTESTS_BY_USER', payload: { contests } });
+  };
+
+  console.log(state);
+
   useEffect(() => {
     checkLogin();
     getAllContests();
+    getAllContestsByUser();
   }, []);
 
   return (
     <UserContext.Provider
-      value={{ state, handleLogout, handleLogin, handleSignUp }}
+      value={{
+        state,
+        handleLogout,
+        handleLogin,
+        handleSignUp,
+        getAllContestsByUser,
+      }}
     >
       {props.children}
     </UserContext.Provider>

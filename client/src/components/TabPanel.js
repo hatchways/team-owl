@@ -6,7 +6,7 @@ export default function TabPanel(props) {
   const { value, index, contests, Component, ...other } = props;
   const classes = TabPanelStyles();
   const cardsJSX = contests.map((contest, i) => {
-    return <Component key={contest.id || 1} value={value} contest={contest} />;
+    return <Component key={i} value={value} contest={contest} />;
   });
 
   return (

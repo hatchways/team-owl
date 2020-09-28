@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   //create contest button
-  alignItemsAndJustifyContent: {
+  boxAroundButton: {
     width: '100%',
     display: 'flex',
     alignItems: 'center',

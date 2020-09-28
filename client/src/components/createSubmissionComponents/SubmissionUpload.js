@@ -35,31 +35,21 @@ const SubmissionUpload = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const uploadCount = [];
-
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
       formData.append(`submissionPic`, files[i]);
     }
 
-    for (let pic of formData.entries()) {
-      uploadCount.push(pic);
-    }
-
-    if (uploadCount.length < 1) {
+    if (formData.entries().length < 1) {
       return context.alertFn('Please upload at least one picture.');
     }
+
     try {
-      const res = await axios.post(
-        `/api/contest/${params.id}/submission`,
-        formData,
-        {
-          headers: {
-            auth_token: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log(res.data);
+      await axios.post(`/api/contest/${params.id}/submission`, formData, {
+        headers: {
+          auth_token: `Bearer ${token}`,
+        },
+      });
       history.push(`/contest/${params.id}`);
     } catch (error) {
       if (error.response.status === 500) {
@@ -87,7 +77,7 @@ const SubmissionUpload = () => {
               acceptedFiles={['image/jpeg', 'image/png']}
               onChange={handleChange}
             />
-            <Box className={classes.alignItemsAndJustifyContent}>
+            <Box className={classes.boxAroundButton}>
               <Button
                 variant="contained"
                 className={classes.contestButton}

@@ -29,8 +29,8 @@ exports.getSubmissions = async (req, res, next) => {
   }
 };
 
-//GET - Dynamic getContest route
-exports.dynamicGetSubmissions = async (req, res, next) => {
+//GET - get submissions by contest Id and loggedin user - auth
+exports.getSubmissionsByContestAndLoggedUser = async (req, res, next) => {
   const contestId = req.params.contestId;
   const loggedUser = req.user;
   const loggedUserId = loggedUser.userId;

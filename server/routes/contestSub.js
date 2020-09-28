@@ -4,10 +4,14 @@ const { auth } = require('../middleware/auth');
 
 const {
   getSubmissions,
-  dynamicGetSubmissions,
+  getSubmissionsByContestAndLoggedUser,
 } = require('../controllers/contestSub');
 
 router.get('/:contestId/', auth, getSubmissions);
-router.get('/:contestId/submissions', auth, dynamicGetSubmissions);
+router.get(
+  '/:contestId/submissions',
+  auth,
+  getSubmissionsByContestAndLoggedUser
+);
 
 module.exports = router;

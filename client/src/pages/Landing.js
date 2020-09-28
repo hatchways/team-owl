@@ -24,22 +24,27 @@ export default function Landing() {
     history.push(`/contest/${id}`);
   };
   return (
-    <Grid className={classes.grid}>
+    <Grid container className={classes.grid} spacing={5}>
       <Grid container item sm={12} className={classes.highlightGrid}>
         <Grid
           container
           item
           xs={12}
+          md={6}
           lg={6}
-          alignItems="center"
-          direction="column"
+          justify="center"
+          alignContent="flex-start"
           className={classes.featureGrid}
         >
           <Grid className={classes.featureTitle}>
-            <Box width="100%" height="100%" align="left" color="secondary.dark">
-              <Typography variant="h5" align="left">
-                Featured
-              </Typography>
+            <Box
+              width="100%"
+              height="100%"
+              align="left"
+              color="secondary.dark"
+              mb={2}
+            >
+              <Typography variant="h5">Featured</Typography>
             </Box>
           </Grid>
           <Grid container className={classes.cardGrid}>
@@ -47,13 +52,17 @@ export default function Landing() {
               <CardMedia
                 className={classes.media}
                 image={require('../assets/5.jpg')}
-                title="Contemplative Reptile"
               />
               <Box p={(2, 0)}>
                 <Typography gutterBottom variant="h5" component="h2">
                   <b>{allContests[0] ? allContests[0].title : 'Roses'}</b>
                 </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  component="p"
+                  align="justify"
+                >
                   {allContests[0]
                     ? allContests[0].description.substr(0, 200)
                     : ' '}
@@ -65,28 +74,34 @@ export default function Landing() {
         <Grid
           container
           item
-          s={12}
-          lg={6}
-          alignContent="space-between"
+          sm={12}
+          md={6}
+          alignContent="flex-start"
+          justify="center"
           className={classes.endingGrid}
         >
-          <Grid item sm={12}>
-            <Box align="left" color="secondary.dark" marginBottom="10%">
+          <Grid item xs={12}>
+            <Box
+              width="100%"
+              height="100%"
+              align="left"
+              color="secondary.dark"
+              mb={2}
+            >
               <Typography variant="h6">Ending Soon</Typography>
             </Box>
           </Grid>
           <Grid
             container
             item
-            sm={12}
+            xs={12}
             justify="space-between"
             alignContent="space-between"
-            className={classes.endingCards}
           >
             {allContests.map((contest, i) => {
               if (i < 4) {
                 return (
-                  <Grid item md={12} lg={5}>
+                  <Grid item xs={12} sm={5} md={5} lg={5} key={i}>
                     <CardActionArea
                       onClick={() => {
                         handleCardClick(contest._id);
@@ -105,8 +120,7 @@ export default function Landing() {
                       <CardContent>
                         <Typography
                           gutterBottom
-                          variant="body2"
-                          component="h4"
+                          variant="subtitle1"
                           align="center"
                           noWrap
                         >
@@ -121,7 +135,13 @@ export default function Landing() {
           </Grid>
         </Grid>
       </Grid>
-      <Grid container className={classes.allContestGrid} spacing={6}>
+      <Grid
+        container
+        item
+        sm={12}
+        className={classes.allContestGrid}
+        spacing={5}
+      >
         <Grid item sm={12}>
           <Box my={3}>
             <Typography variant="h5" align="center">
@@ -132,14 +152,7 @@ export default function Landing() {
         {allContests.map((contest, i) => {
           if (i > 3) {
             return (
-              <Grid
-                key={i}
-                item
-                sm={12}
-                md={6}
-                lg={3}
-                className={classes.cardGrid}
-              >
+              <Grid key={i} item xs={12} sm={6} md={4} lg={3}>
                 <CardActionArea
                   onClick={() => {
                     handleCardClick(contest._id);

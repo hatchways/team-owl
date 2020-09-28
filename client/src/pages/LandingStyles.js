@@ -4,20 +4,17 @@ const LandingStyles = makeStyles((theme) => ({
   grid: {
     padding: '2% 10%',
   },
-  highlightGrid: {
-    marginBottom: '10%',
-  },
   allContestGrid: {
     borderTop: `1px solid ${theme.palette.secondary.dark}`,
-    marginBottom: '10%',
+    margin: '5% 0',
   },
   featureGrid: {
-    height: '80vh',
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('md')]: {
       paddingRight: '5%',
       borderRight: `1px solid ${theme.palette.secondary.dark}`,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
+      paddingBottom: '10%',
       height: '100vh',
       borderBottom: `1px solid ${theme.palette.secondary.dark}`,
     },
@@ -26,24 +23,24 @@ const LandingStyles = makeStyles((theme) => ({
     width: '100%',
   },
   cardGrid: {
-    height: '70%',
-    paddingBottom: '5%',
+    height: '75%',
   },
   cardAction: {
     height: '100%',
   },
   endingGrid: {
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('md')]: {
       paddingLeft: '5%',
     },
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '5%',
+    },
   },
-  endingCards: {
-    height: '90%',
-  },
+
   media: {
     height: '100%',
     objectFit: 'contain',
-    margin: '5% 0',
+    marginBottom: '5%',
   },
   img: {
     objectFit: 'cover',

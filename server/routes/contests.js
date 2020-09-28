@@ -14,7 +14,7 @@ const {
 router.post('/', auth, createContest);
 router.get('/', getAllContests);
 router.delete('/:id', auth, deleteContest);
-router.get('/:id', getContestById);
+router.get('/:id', getContestById); //auth removed due to 401, plus it should not be auth anyways
 router.put('/:id', auth, updateContest);
 router.get('/:contestId/submissions', auth, getAllSubmissionsByContestId);
 

@@ -1,4 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import {
   AppBar,
@@ -10,7 +12,7 @@ import {
   GridListTile,
 } from '@material-ui/core';
 import useStyles from './GetContestStyles';
-import UserContext from '../../context/UserContext';
+import { getFromStorage } from '../../helper/localStorage';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -45,16 +47,30 @@ function a11yProps(index) {
   };
 }
 
-export default function SimpleTabs({ data }) {
+const SimpleTabs = ({ contestData }) => {
   const classes = useStyles();
-  const context = useContext(UserContext);
-  const { user } = context.state;
+  const params = useParams();
 
   const [value, setValue] = useState(0);
+  const [imgData, setImgData] = useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const token = getFromStorage('auth_token');
+
+  useEffect(() => {
+    const fetchImgData = async (contestId) => {
+      const res = await axios.get(`/api/contestSub/${contestId}/submissions`, {
+        headers: {
+          auth_token: `Bearer ${token}`,
+        },
+      });
+      setImgData(res.data);
+    };
+    fetchImgData(params.id);
+  }, [params.id, token]);
 
   return (
     <Box mt={3}>
@@ -75,42 +91,28 @@ export default function SimpleTabs({ data }) {
       </AppBar>
       <Box boxShadow={4} mb={8}>
         <TabPanel value={value} index={0}>
-          {data.submissions ? (
-            <GridList cellHeight={160} className={classes.gridList} cols={3}>
-              {data.user && data.user._id === user._id
-                ? data.submissions.map((sub) =>
-                    sub.submissionPic.map((pic, i) => (
-                      <GridListTile
-                        key={i}
-                        cols={1}
-                        className={classes.gridListTile}
-                      >
-                        <img src={pic} alt={pic} />
-                      </GridListTile>
-                    ))
-                  )
-                : data.submissions
-                    .filter((sub) => sub.user === user._id)
-                    .map((pic) =>
-                      pic.submissionPic.map((pic, i) => (
-                        <GridListTile
-                          key={i}
-                          cols={1}
-                          className={classes.gridListTile}
-                        >
-                          <img src={pic} alt={pic} />
-                        </GridListTile>
-                      ))
-                    )}
-            </GridList>
-          ) : null}
+          <GridList cellHeight={160} className={classes.gridList} cols={3}>
+            {imgData.map((img) => {
+              return img.submissionPic.map((pic, i) => (
+                <GridListTile
+                  key={pic}
+                  cols={1}
+                  className={classes.gridListTile}
+                >
+                  <p className={classes.overlayText}>{img.user.name}</p>
+                  <img src={pic} alt={pic} />
+                </GridListTile>
+              ));
+            })}
+            <Box></Box>
+          </GridList>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Typography>{data.description}</Typography>
+          <Typography>{contestData.description}</Typography>
           <Box mt={3}>
             <GridList cellHeight={160} className={classes.gridList} cols={3}>
-              {data.contestPics &&
-                data.contestPics.map((pic, i) => (
+              {contestData.contestPics &&
+                contestData.contestPics.map((pic, i) => (
                   <GridListTile
                     key={i}
                     cols={1}
@@ -125,4 +127,6 @@ export default function SimpleTabs({ data }) {
       </Box>
     </Box>
   );
-}
+};
+
+export default SimpleTabs;

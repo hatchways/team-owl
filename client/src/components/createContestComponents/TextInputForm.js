@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ContestContext } from './ContestContext';
+import { ContestContext } from '../../context/ContestContext';
 import { Typography, Box, TextField } from '@material-ui/core';
 import useStyles from './CreateContestStyles';
 

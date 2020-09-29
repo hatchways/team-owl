@@ -11,10 +11,12 @@ const useNavStyles = makeStyles(() => ({
     color: 'inherit',
   },
   button: {
-    // borderRadius: 0,
     borderColor: 'white',
     marginLeft: '10%',
     color: '#f4f4f4',
+  },
+  buttonText: {
+    textTransform: 'none',
   },
 }));
 

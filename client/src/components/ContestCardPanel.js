@@ -6,6 +6,7 @@ import {
   CardMedia,
   Card,
   CircularProgress,
+  Box,
 } from '@material-ui/core';
 import ContestCardPanelStyles from './ContestCardPanelStyles';
 
@@ -49,14 +50,16 @@ export default function ContestCardPanel(props) {
             {contest.title}
           </Typography>
           <Typography variant="body2" className={classes.contestSubTitle}>
-            {contest.subtitle}
+            {contest.description.substr(0, 80)}
           </Typography>
         </Grid>
-        <Grid container item xs={12} alignContent="center">
-          <Button variant="contained" color="primary">
-            ${contest.prize}
-          </Button>
-        </Grid>
+        <Box mt={2}>
+          <Grid container item xs={12} alignContent="center">
+            <Button variant="contained" color="primary">
+              ${contest.prize}
+            </Button>
+          </Grid>
+        </Box>
       </Grid>
     </Grid>
   );

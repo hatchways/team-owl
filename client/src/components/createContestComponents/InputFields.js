@@ -5,7 +5,6 @@ import TattoosGrid from './TattoosGrid';
 import PrizeDateGrid from './PrizeDateGrid';
 import TextInputForm from './TextInputForm';
 import CreateContest from './CreateContest';
-import { ContestContextProvider } from './ContestContext';
 
 const TextFields = () => {
   const classes = useStyles();
@@ -15,16 +14,13 @@ const TextFields = () => {
       <Typography variant="h4" m={3} className={classes.title}>
         Create New Contest
       </Typography>
-
       <Container maxWidth="md">
         <Box boxShadow={3} className={classes.mainBox}>
           <Container className={classes.innerContainer}>
-            <ContestContextProvider>
-              <TextInputForm />
-              <PrizeDateGrid />
-              <TattoosGrid />
-              <CreateContest />
-            </ContestContextProvider>
+            <TextInputForm />
+            <PrizeDateGrid />
+            <TattoosGrid />
+            <CreateContest />
           </Container>
         </Box>
       </Container>

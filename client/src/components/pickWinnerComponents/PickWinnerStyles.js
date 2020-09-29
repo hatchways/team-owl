@@ -13,39 +13,54 @@ const useStyles = makeStyles((theme) => ({
   },
 
   innerContainer: {
-    maxWidth: '75%',
+    maxWidth: '80%',
+  },
+
+  titleLogo: {
+    flexGrow: 1,
   },
 
   title: {
     flexGrow: 1,
     textAlign: 'center',
-    marginTop: theme.spacing(6),
-    marginBottom: theme.spacing(6),
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(5),
     fontFamily: 'Poppins-Semibold',
   },
 
   subtitle: {
     textAlign: 'left',
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(1),
+    paddingTop: theme.spacing(6),
     fontFamily: 'Poppins-Semibold',
   },
 
-  //create contest button
-  boxAroundButton: {
-    width: '100%',
+  subtext: {
+    color: theme.palette.grey.dark,
+    paddingTop: theme.spacing(1),
+    position: 'relative',
+  },
+
+  //tattoo grid
+  root: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper,
+  },
+
+  gridList: {
+    flexWrap: 'nowrap',
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: 'translateZ(0)',
   },
 
   contestButton: {
     height: 80,
     width: 240,
-    margin: 'auto',
     backgroundColor: 'black',
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(10),
     color: theme.palette.secondary.main,
     '&:hover': {
       backgroundColor: '#f4f4f4',

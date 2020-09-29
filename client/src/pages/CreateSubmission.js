@@ -1,11 +1,12 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import { ContestContextProvider } from '../context/ContestContext';
 import SubmissionUpload from '../components/createSubmissionComponents/SubmissionUpload';
 
 const CreateSubmission = () => {
   return (
-    <Fragment>
+    <ContestContextProvider>
       <SubmissionUpload />
-    </Fragment>
+    </ContestContextProvider>
   );
 };
 

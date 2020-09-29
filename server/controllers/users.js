@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const Contest = require('../models/Contest');
+const Submission = require('../models/Submission');
 const validator = require('email-validator');
 const bcrypt = require('bcryptjs');
 const aws = require('aws-sdk');
@@ -203,6 +205,32 @@ exports.deleteUser = async (req, res, next) => {
   try {
     await User.findOneAndRemove({ _id: req.user.userId });
     res.json({ msg: 'User removed' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+};
+
+//GET - all contests by user ID
+exports.getAllContestsByUserId = async (req, res, nex) => {
+  try {
+    const userId = await User.findOne({ _id: req.params.id });
+    const contests = await Contest.find({ user: userId });
+    res.status(200).json(contests);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+};
+
+//GET - all submissions by user ID
+exports.getAllSubmissionsByUserId = async (req, res, nex) => {
+  try {
+    const userId = await User.findOne({ _id: req.params.id });
+    const submissions = await Submission.find({ user: userId }).populate(
+      'contest'
+    );
+    res.status(200).json(submissions);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server error');

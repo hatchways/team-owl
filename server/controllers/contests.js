@@ -7,11 +7,7 @@ const { userCheck } = require("../helpers/userCheck");
 exports.createContest = async (req, res, next) => {
 	const { title, description, prize, deadline, contestPics } = req.body;
 
-	//problem: possible to have unlimited contests and identical contests by the same user
-	//potential solution: store total contests in array as user property in DB
-
 	try {
-		//const user = await User.findOne({ _id: '5f61089819261d0d5680307f' });
 		const user = await User.findOne({ _id: req.user.userId });
 
 		const contest = new Contest({
@@ -115,14 +111,17 @@ exports.deleteContest = async (req, res, next) => {
 	}
 };
 
-//GET - All submissions by contest Id - auth
+//GET - All submissions by contest Id - auth - viewable only by contest creator
 exports.getAllSubmissionsByContestId = async (req, res, next) => {
-	//5f6a8f01fdeb0e1ab02947c5 - creator: Shiv
 	const contestId = req.params.contestId;
 	const user = req.user;
 
 	//get all submissions under the same contest Id
 	const submissions = await Submissions.find({ contest: req.params.contestId });
+
+	if (!submissions) {
+		res.status(404).json({ msg: "There are no submissions under this ID." });
+	}
 
 	//make sure only the creator gets to view the data
 	const contest = await Contest.findOne({ _id: contestId });

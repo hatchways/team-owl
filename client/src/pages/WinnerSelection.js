@@ -1,13 +1,13 @@
 import React from 'react';
 import { ContestContextProvider } from '../context/ContestContext';
-import InputFields from '../components/createContestComponents/InputFields';
+import PickWinner from '../components/pickWinnerComponents/PickWinner';
 
-const Contest = () => {
+const WinnerSelection = () => {
   return (
     <ContestContextProvider>
-      <InputFields />
+      <PickWinner />
     </ContestContextProvider>
   );
 };
 
-export default Contest;
+export default WinnerSelection;

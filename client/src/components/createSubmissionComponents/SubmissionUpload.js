@@ -1,13 +1,17 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useParams, useHistory } from 'react-router-dom';
 import { Typography, Container, Box, Button } from '@material-ui/core';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { getFromStorage } from '../../helper/localStorage';
+import { ContestContext } from '../../context/ContestContext';
+import Alert from '../createContestComponents/Alert';
 import useStyles from './SubmissionUploadStyles';
 
 const SubmissionUpload = () => {
   const classes = useStyles();
+  const context = useContext(ContestContext);
+
   const [files, setFiles] = useState([]);
   const [data, setData] = useState({});
 
@@ -35,24 +39,25 @@ const SubmissionUpload = () => {
     for (let i = 0; i < files.length; i++) {
       formData.append(`submissionPic`, files[i]);
     }
+
+    if (formData.entries().length < 1) {
+      return context.alertFn('Please upload at least one picture.');
+    }
+
     try {
-      const res = await axios.post(
-        `/api/contest/${params.id}/submission`,
-        formData,
-        {
-          headers: {
-            auth_token: `Bearer ${token}`,
-          },
-        }
-      );
-      const submission = res.data;
-      console.log(submission);
+      await axios.post(`/api/contest/${params.id}/submission`, formData, {
+        headers: {
+          auth_token: `Bearer ${token}`,
+        },
+      });
       history.push(`/contest/${params.id}`);
     } catch (error) {
       if (error.response.status === 500) {
-        console.log('There was a problem with the server');
+        return context.alertFn(
+          'There was a problem with the server. Please try again.'
+        );
       } else {
-        console.log(error.response.data.msg);
+        return context.alertFn(error.response.data.msg);
       }
     }
   };
@@ -72,7 +77,7 @@ const SubmissionUpload = () => {
               acceptedFiles={['image/jpeg', 'image/png']}
               onChange={handleChange}
             />
-            <Box className={classes.alignItemsAndJustifyContent}>
+            <Box className={classes.boxAroundButton}>
               <Button
                 variant="contained"
                 className={classes.contestButton}
@@ -81,6 +86,7 @@ const SubmissionUpload = () => {
                 Send Submission for {data.user && data.user.name}
               </Button>
             </Box>
+            <Alert />
           </Container>
         </Box>
       </Container>

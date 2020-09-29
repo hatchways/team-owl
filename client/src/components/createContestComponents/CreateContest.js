@@ -72,7 +72,7 @@ const CreateContest = () => {
   };
 
   return (
-    <Box className={classes.alignItemsAndJustifyContent}>
+    <Box className={classes.boxAroundBUtton}>
       <Button
         variant="contained"
         className={classes.contestButton}

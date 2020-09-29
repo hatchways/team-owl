@@ -1,5 +1,5 @@
 const convertMS = (ms) => {
-  var d, h, m, s;
+  let d, h, m, s;
   s = Math.floor(ms / 1000);
   m = Math.floor(s / 60);
   s = s % 60;

@@ -3,10 +3,10 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { Snackbar } from '@material-ui/core';
 import { ContestContext } from '../../context/ContestContext';
 
-function Alert(props) {
+function Alert() {
   const context = useContext(ContestContext);
 
-  let [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setOpen(context.state.toast.open);

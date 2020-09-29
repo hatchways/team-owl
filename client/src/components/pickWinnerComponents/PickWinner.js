@@ -26,6 +26,8 @@ const PickWinner = () => {
   const { user } = userContext.state;
   const { contest } = contestContext.state;
 
+  console.log(contest);
+
   return !contest.user ? (
     IsLoading()
   ) : user._id !== contest.user._id ? (
@@ -38,12 +40,12 @@ const PickWinner = () => {
             Pick your winner, {contest.user.name}!
           </Typography>
           <Container className={classes.innerContainer}>
-            {contest.submissions.map((sub, i) => {
+            {contest.submissions.map((sub) => {
               return (
-                <Box mb={5} key={i}>
+                <Box mb={5} key={sub.id}>
                   <GridList className={classes.gridList} cols={2.5}>
-                    {sub.submissionPic.url.map((tile, j) => (
-                      <GridListTile key={j}>
+                    {sub.submissionPic.url.map((tile) => (
+                      <GridListTile key={tile}>
                         <img src={tile} alt={tile} />
                       </GridListTile>
                     ))}

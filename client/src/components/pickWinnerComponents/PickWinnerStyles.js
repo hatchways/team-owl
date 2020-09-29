@@ -55,14 +55,6 @@ const useStyles = makeStyles((theme) => ({
     transform: 'translateZ(0)',
   },
 
-  //create contest button
-  alignItemsAndJustifyContent: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
   contestButton: {
     height: 80,
     width: 240,

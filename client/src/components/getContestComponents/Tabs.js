@@ -94,7 +94,11 @@ const SimpleTabs = ({ contestData }) => {
           <GridList cellHeight={160} className={classes.gridList} cols={3}>
             {imgData.map((img) => {
               return img.submissionPic.map((pic, i) => (
-                <GridListTile key={i} cols={1} className={classes.gridListTile}>
+                <GridListTile
+                  key={pic}
+                  cols={1}
+                  className={classes.gridListTile}
+                >
                   <p className={classes.overlayText}>{img.user.name}</p>
                   <img src={pic} alt={pic} />
                 </GridListTile>

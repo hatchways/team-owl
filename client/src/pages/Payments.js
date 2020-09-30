@@ -1,14 +1,12 @@
 import React from 'react';
+import { Box, Grid, Typography } from '@material-ui/core';
+import PaymentsStyles from './PaymentsStyles';
 import CheckoutForm from '../components/paymentComponents/CheckoutForm';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-import { Box, Grid, Typography } from '@material-ui/core';
-import PaymentsStyles from './PaymentsStyles';
 
 export default function Payments() {
-  //const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-  //const stripePublicKey = process.env.STRIPE_PUBLIC_KEY;
-  const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+  const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
   const classes = PaymentsStyles();
   return (

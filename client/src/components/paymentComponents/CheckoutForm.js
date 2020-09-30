@@ -6,6 +6,14 @@ const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
 
+  //code to fetch client secret from paymentIntent object. Not sure where this goes.
+  // var response = fetch('/secret').then(function(response) {
+  //   return response.json();
+  // }).then(function(responseJson) {
+  //   var clientSecret = responseJson.client_secret;
+  //   // Call stripe.confirmCardPayment() with the client secret.
+  // });
+
   const cardOptions = {
     style: {
       base: {

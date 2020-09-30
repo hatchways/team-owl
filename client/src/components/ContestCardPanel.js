@@ -1,5 +1,13 @@
 import React from 'react';
-import { Button, Typography, Grid, CardMedia, Card } from '@material-ui/core';
+import {
+  Button,
+  Typography,
+  Grid,
+  CardMedia,
+  Card,
+  CircularProgress,
+  Box,
+} from '@material-ui/core';
 import ContestCardPanelStyles from './ContestCardPanelStyles';
 
 export default function ContestCardPanel(props) {
@@ -9,13 +17,21 @@ export default function ContestCardPanel(props) {
     <Grid container justify="center" className={classes.cardGrid}>
       <Grid container item xs={3}>
         <Card className={classes.card}>
-          <CardMedia
-            className={classes.media}
-            //image={require(`../assets/${contest.thumbnail}`)}
-            image="https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/tattoos/tattoo1.png"
-            title="hi"
-            height="140"
-          />
+          {contest.contestPics ? (
+            <CardMedia
+              className={classes.media}
+              //image={require(`../assets/${contest.thumbnail}`)}
+              image={
+                contest.contestPics[0] ||
+                'https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/tattoos/tattoo1.png'
+              } //using Brief pic instead
+              title="hi"
+              height="140"
+            />
+          ) : (
+            <CircularProgress />
+          )}
+
           {contest.submissions && (
             <Typography
               className={classes.cardText}
@@ -23,7 +39,7 @@ export default function ContestCardPanel(props) {
               align="center"
               color="secondary"
             >
-              {contest.submissions.length} SKETCHES
+              {contest.submissions.length} SUBMISSIONS
             </Typography>
           )}
         </Card>
@@ -34,14 +50,16 @@ export default function ContestCardPanel(props) {
             {contest.title}
           </Typography>
           <Typography variant="body2" className={classes.contestSubTitle}>
-            {contest.subtitle}
+            {contest.description.substr(0, 80)}
           </Typography>
         </Grid>
-        <Grid container item xs={12} alignContent="center">
-          <Button variant="contained" color="primary">
-            ${contest.prize}
-          </Button>
-        </Grid>
+        <Box mt={2}>
+          <Grid container item xs={12} alignContent="center">
+            <Button variant="contained" color="primary">
+              ${contest.prize}
+            </Button>
+          </Grid>
+        </Box>
       </Grid>
     </Grid>
   );

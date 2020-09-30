@@ -5,8 +5,11 @@ import TabPanelStyles from './TabPanelStyles';
 export default function TabPanel(props) {
   const { value, index, contests, Component, ...other } = props;
   const classes = TabPanelStyles();
-  const cardsJSX = contests.map((contest, i) => {
-    return <Component key={i} value={value} contest={contest} />;
+  console.log(contests);
+  const cardsJSX = contests.map((contest) => {
+    return (
+      <Component key={contest.description} value={value} contest={contest} />
+    );
   });
 
   return (

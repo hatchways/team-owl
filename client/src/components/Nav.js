@@ -12,7 +12,7 @@ export default function Nav() {
     <>
       <AppBar position="sticky" className={classes.appBar}>
         <Toolbar>
-          <Grid container spacing={5}>
+          <Grid container>
             <Grid container item xs={6} alignContent="center">
               <Link to="/" className={classes.logo}>
                 <Typography variant="subtitle1">TATTO ART</Typography>

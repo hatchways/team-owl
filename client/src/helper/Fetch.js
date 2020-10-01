@@ -54,4 +54,13 @@ const getContest = async () => {
   return contests.data;
 };
 
-export { verifyToken, login, signUp, getContest };
+const getContestsByUser = async (userId) => {
+  const contests = await axios
+    .get(`${server_url}/api/user/${userId}/contests`)
+    .catch((error) => {
+      return error.response;
+    });
+  return contests.data;
+};
+
+export { verifyToken, login, signUp, getContest, getContestsByUser };

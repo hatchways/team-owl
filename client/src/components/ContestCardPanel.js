@@ -20,7 +20,6 @@ export default function ContestCardPanel(props) {
           {contest.contestPics ? (
             <CardMedia
               className={classes.media}
-              //image={require(`../assets/${contest.thumbnail}`)}
               image={
                 contest.contestPics[0] ||
                 'https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/tattoos/tattoo1.png'

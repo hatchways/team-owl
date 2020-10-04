@@ -107,6 +107,7 @@ exports.verifyToken = async (req, res, next) => {
   };
   return res.status(200).json(user);
 };
+
 //GET - Loggedin user - self
 exports.getLoggedinUser = async (req, res, next) => {
   try {

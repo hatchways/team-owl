@@ -10,7 +10,7 @@ export default function Nav() {
 
   return (
     <>
-      <AppBar position="sticky" className={classes.appBar}>
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <Grid container>
             <Grid container item xs={4} alignContent="center">

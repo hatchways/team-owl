@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import GlobalState from './context/GlobalState';
+import UserState from './context/UserState';
+import ConversationState from './context/ConversationState'
 
 ReactDOM.render(
-  <GlobalState>
-    <App />
-  </GlobalState>,
+  <UserState>
+    <ConversationState>
+      <App />
+    </ConversationState>
+  </UserState>,
   document.getElementById('root'),
 );
-

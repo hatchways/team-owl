@@ -52,9 +52,9 @@ export default function Profile() {
               height: '4px',
             },
           }}
+          indicatorColor="primary"
           value={value}
           onChange={handleChange}
-          indicatorColor="primary"
           textColor="primary"
           centered
           variant="fullWidth"

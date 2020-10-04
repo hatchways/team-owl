@@ -45,6 +45,7 @@ const signUp = async (name, email, password) => {
   return user.data;
 };
 
+// get all contest
 const getContest = async () => {
   const contests = await axios
     .get(`${server_url}/api/contest`)
@@ -54,4 +55,19 @@ const getContest = async () => {
   return contests.data;
 };
 
-export { verifyToken, login, signUp, getContest };
+// get all conversations of the logged in user
+const fetchAllConversations = async (token) => {
+  try {
+    const conversations = await axios.get(`${server_url}/api/conversations/`, {
+      headers: {
+        auth_token: `Bearer ${token}`,
+      },
+    });
+    return conversations.data;
+  } catch (error) {
+    console.log(error.msg);
+    return error.msg;
+  }
+};
+
+export { verifyToken, login, signUp, getContest, fetchAllConversations };

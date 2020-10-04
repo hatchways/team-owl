@@ -1,14 +1,14 @@
 import React, { useReducer, useEffect } from 'react';
-import UserContext from '../context/UserContext';
+import UserContext from './UserContext';
 import {
   getFromStorage,
   setInStorage,
   removeFromStorage,
 } from '../helper/localStorage';
 import { verifyToken, login, signUp, getContest } from '../helper/Fetch';
-import { userReducer } from './reducers';
+import { userReducer } from './UserReducers';
 
-const GlobalState = (props) => {
+const UserState = (props) => {
   const [state, dispatch] = useReducer(userReducer, {
     user: undefined,
     token: undefined,
@@ -125,4 +125,4 @@ const GlobalState = (props) => {
   );
 };
 
-export default GlobalState;
+export default UserState;

@@ -214,9 +214,9 @@ exports.deleteUser = async (req, res, next) => {
 };
 
 //GET - all contests by user ID
-exports.getAllContestsByUserId = async (req, res, nex) => {
+exports.getAllContestsByUserId = async (req, res, next) => {
 	try {
-		const userId = await User.findOne({ _id: req.params.id });
+		const userId = await User.findOne({ _id: req.user.userId });
 		const contests = await Contest.find({ user: userId });
 		res.status(200).json(contests);
 	} catch (error) {
@@ -226,7 +226,7 @@ exports.getAllContestsByUserId = async (req, res, nex) => {
 };
 
 //GET - all submissions by user ID
-exports.getAllSubmissionsByUserId = async (req, res, nex) => {
+exports.getAllSubmissionsByUserId = async (req, res, next) => {
 	try {
 		const userId = await User.findOne({ _id: req.params.id });
 		const submissions = await Submission.find({ user: userId }).populate(

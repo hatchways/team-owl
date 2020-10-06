@@ -9,7 +9,8 @@ import {
   verifyToken,
   login,
   signUp,
-  getContest,
+  fetchAllContest,
+  fetchAllContestByUserId,
   uploadAvatar,
 } from '../helper/Fetch';
 import { userReducer } from './UserReducers';
@@ -22,40 +23,8 @@ const UserState = (props) => {
     isLoading: true,
     authed: false,
     contests: {
-      created: [
-        {
-          title: 'Lion Tatto concept in minimal style',
-          subtitle: 'Looking for cool simplicity ideas for Lion',
-          prize: 150,
-          id: 1,
-          thumbnail: '0de773f98a983912282d4a303e355329d5f592da.png',
-          submissions: Array(26), // just to emulate number of submission until we have actual data
-        },
-        {
-          title: 'Lightning in a bolt',
-          subtitle: 'Looking for an inspirational lightning image ',
-          prize: 300,
-          id: 2,
-          thumbnail: 'c91c45b97085fa64186472d903c1d1ef475d14d1.png',
-          submissions: Array(31), // just to emulate number of submission until we have actual data
-        },
-      ],
-      submitted: [
-        {
-          title: 'Lightning in a bolt',
-          subtitle: 'Looking for an inspirational lightning image ',
-          prize: 500,
-          id: 22,
-          thumbnail: 'c91c45b97085fa64186472d903c1d1ef475d14d1.png',
-        },
-        {
-          title: 'Lion Tatto concept in minimal style',
-          subtitle: 'Looking for cool simplicity ideas for Lion',
-          prize: 900,
-          id: 11,
-          thumbnail: '0de773f98a983912282d4a303e355329d5f592da.png',
-        },
-      ],
+      created: [],
+      submitted: [],
     },
     allContests: [],
   });
@@ -122,28 +91,47 @@ const UserState = (props) => {
     }
   };
 
-  const getAllContests = async () => {
-    const contests = await getContest();
-    contests && dispatch({ type: 'ALL_CONTESTS', payload: { contests } });
-  };
-
-  const checkLogin = async () => {
-    let token = getFromStorage('auth_token') || '';
-    const user = await verifyToken(token);
-    if (!user.msg) {
-      dispatch({
-        type: 'VERIFY_TOKEN',
-        payload: { token, user: user, isLoading: false },
-      });
-    } else {
-      dispatch({ type: 'IS_LOADING', payload: false });
-    }
-  };
-
+  // get all contest
   useEffect(() => {
+    dispatch({ type: 'IS_LOADING', payload: true });
+    const getAllContests = async () => {
+      const contests = await fetchAllContest();
+      contests && dispatch({ type: 'ALL_CONTESTS', payload: { contests } });
+    };
+
+    const checkLogin = async () => {
+      let token = getFromStorage('auth_token') || '';
+      const user = await verifyToken(token);
+      if (!user.msg) {
+        dispatch({
+          type: 'VERIFY_TOKEN',
+          payload: { token, user: user, isLoading: false },
+        });
+      } else {
+        dispatch({ type: 'IS_LOADING', payload: false });
+      }
+    };
+
     checkLogin();
     getAllContests();
   }, []);
+
+  // get all contests and submission by userID
+  useEffect(() => {
+    dispatch({ type: 'IS_LOADING', payload: true });
+    if (state.user && state.user._id && state.token) {
+      const getAllContestByUserId = async () => {
+        const contests = await fetchAllContestByUserId(
+          state.user._id,
+          state.token,
+        );
+        if (contests) {
+          dispatch({ type: 'USER_CONTESTS', payload: contests });
+        }
+      };
+      getAllContestByUserId();
+    }
+  }, [state.user, state.token]);
 
   return (
     <UserContext.Provider

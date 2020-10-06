@@ -8,7 +8,7 @@ import {
   InputBase,
 } from '@material-ui/core';
 import UseMessagesPanelStyles from './MessagesPanelStyles';
-import { format, parseISO } from 'date-fns';
+import { isToday, format, parseISO } from 'date-fns';
 
 import UserContext from '../context/UserContext';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -54,7 +54,9 @@ export default function MessagePanel({ sendMessage, activeConversation }) {
           >
             <Typography variant="subtitle2">{message.message}</Typography>
             <Box fontSize="0.5rem" color="secondary.dark" align="right">
-              {format(parseISO(message.sent), 'hh:mm a')}
+              {isToday(parseISO(message.sent))
+                ? format(parseISO(message.sent), 'HH:MM')
+                : format(parseISO(message.sent), 'dd/MM/yy hh a')}
             </Box>
           </Box>
         </Box>

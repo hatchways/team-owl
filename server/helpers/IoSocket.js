@@ -7,10 +7,9 @@ const Conversation = require("../models/Conversations");
 module.exports = function (server) {
 	const io = socket(server);
 
-	//middleware
+	//Auth middleware
 	io.use((client, next) => {
 		client.request.token = client.handshake.query.token;
-
 		auth(client.request, client.request.res, next);
 	});
 
@@ -53,6 +52,7 @@ module.exports = function (server) {
 			);
 			io.to(userId).emit("getOneConversation", oneConversation);
 		});
+
 		// starting a conversation
 		client.on("startConversation", async (data) => {
 			const firstUserId = client.request.user.userId; //logged in user

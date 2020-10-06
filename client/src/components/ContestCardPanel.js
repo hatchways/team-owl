@@ -3,10 +3,24 @@ import { Button, Typography, Grid, CardMedia, Card } from '@material-ui/core';
 import ContestCardPanelStyles from './ContestCardPanelStyles';
 
 export default function ContestCardPanel(props) {
-  const { contest } = props;
+  const { contest, submitted } = props;
   const classes = ContestCardPanelStyles();
+  let thumbnail;
+  // if(submitted){
+  //   thumbnail = contest.submissionPic[0]
+  // }
+  // else{
+
+  // }
   return (
-    <Grid container justify="center" className={classes.cardGrid}>
+    <Grid
+      container
+      justify="center"
+      className={classes.cardGrid}
+      onClick={() => {
+        console.log('clicked');
+      }}
+    >
       <Grid container item xs={3}>
         <Card className={classes.card}>
           <CardMedia

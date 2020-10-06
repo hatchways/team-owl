@@ -68,6 +68,7 @@ export default function Profile() {
             value={0}
             index={0}
             contests={contests.created}
+            submitted={false}
             Component={ContestCardPanel}
           />
         ) : (
@@ -75,6 +76,7 @@ export default function Profile() {
             value={1}
             index={1}
             contests={contests.submitted}
+            submitted={true}
             Component={ContestCardPanel}
           />
         )}

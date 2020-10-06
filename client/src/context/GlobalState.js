@@ -1,4 +1,5 @@
 import React, { useReducer, useEffect } from 'react';
+import axios from 'axios';
 import UserContext from '../context/UserContext';
 import {
   getFromStorage,
@@ -15,6 +16,9 @@ import {
 import { userReducer } from './reducers';
 
 const GlobalState = (props) => {
+  const token = getFromStorage('auth_token');
+  const header = { headers: { auth_token: `Bearer ${token}` } };
+
   const [state, dispatch] = useReducer(userReducer, {
     user: undefined,
     token: undefined,
@@ -125,12 +129,42 @@ const GlobalState = (props) => {
       dispatch({ type: 'ALL_CONTESTS_BY_USER', payload: { contests } });
   };
 
-  console.log(state);
+  const createCustomer = async () => {
+    try {
+      console.log('create cus running');
+      const user = await verifyToken(token);
+      const res = await axios.post('/api/v1/customers', null, header);
+      const data = res.data;
+      console.log(user);
+      dispatch({
+        type: 'CREATE_STRIPE_CREDIT_ACCOUNT',
+        payload: { user: data, isLoading: false },
+      });
+    } catch (error) {
+      return console.error(error.message);
+    }
+  };
+
+  const createAccount = async () => {
+    try {
+      console.log('create acct running');
+      const user = await verifyToken(token);
+      const res = await axios.post('/api/v1/accounts', null, header);
+      const acctData = res.data;
+      console.log(user);
+      dispatch({
+        type: 'CREATE_STRIPE_BANK_ACCOUNT',
+        payload: { user: acctData, isLoading: false },
+      });
+    } catch (error) {
+      return console.error(error.message);
+    }
+  };
 
   useEffect(() => {
     checkLogin();
     getAllContests();
-    getAllContestsByUser();
+    //getAllContestsByUser();
   }, []);
 
   return (
@@ -141,6 +175,9 @@ const GlobalState = (props) => {
         handleLogin,
         handleSignUp,
         getAllContestsByUser,
+        verifyToken,
+        createCustomer,
+        createAccount,
       }}
     >
       {props.children}

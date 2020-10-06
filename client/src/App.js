@@ -15,7 +15,6 @@ import ImgTest from './pages/ImgTest';
 import Contest from './pages/Contest';
 import GetContest from './pages/GetContest';
 import CreateSubmission from './pages/CreateSubmission';
-import WinnerSelection from './pages/WinnerSelection';
 
 const App = () => {
   const context = useContext(UserContext);
@@ -73,12 +72,6 @@ const App = () => {
                 exact
                 path="/contest/:id/submission"
                 component={CreateSubmission}
-              />
-              <PrivateRoute
-                authed={context.state.authed}
-                exact
-                path="/contest/:id/winner/"
-                component={WinnerSelection}
               />
             </Switch>
           </>

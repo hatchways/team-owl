@@ -27,6 +27,12 @@ const PickWinner = () => {
   const { contest } = contestContext.state;
 
   console.log(contest);
+  console.log(user);
+
+  const pickWinnerFn = (e) => {
+    e.preventDefault();
+    const winner = contestContext.setWinningSub(e.target.value);
+  };
 
   return !contest.user ? (
     IsLoading()
@@ -54,7 +60,7 @@ const PickWinner = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => console.log(sub.name)}
+                      onClick={(e) => pickWinnerFn(e)}
                     >
                       Select {sub.name}
                     </Button>

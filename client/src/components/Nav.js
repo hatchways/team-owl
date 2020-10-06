@@ -15,7 +15,7 @@ export default function Nav() {
           <Grid container>
             <Grid container item xs={6} alignContent="center">
               <Link to="/" className={classes.logo}>
-                <Typography variant="subtitle1">TATTO ART</Typography>
+                <Typography variant="subtitle1">TATTOO ART</Typography>
               </Link>
             </Grid>
             <Grid container item xs={6} justify="flex-end">

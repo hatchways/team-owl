@@ -98,21 +98,19 @@ exports.createUser = async (req, res, next) => {
 
 //POST -  verfiy Token - Logged in
 exports.verifyToken = async (req, res, next) => {
-  const search = await User.findOne({ _id: req.user.userId });
-  const user = {
-    avatar: search.avatar,
-    _id: search._id,
-    name: search.name,
-    email: search.email,
-  };
+  const user = await User.findOne({ _id: req.user.userId });
+  // const user = {
+  //   avatar: search.avatar,
+  //   _id: search._id,
+  //   name: search.name,
+  //   email: search.email,
+  // };
   return res.status(200).json(user);
 };
 //GET - Loggedin user - self
 exports.getLoggedinUser = async (req, res, next) => {
   try {
-    console.log(req.user);
     const user = await User.findOne({ _id: req.user.userId });
-
     if (!user) {
       return res.status(401).json({ msg: 'You are not authorized' });
     }
@@ -139,7 +137,8 @@ exports.loginUser = async (req, res, next) => {
       return res.status(400).json({ msg: 'Password invalid' });
     }
     const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET_KEY);
-    res.status(200).json({ token, user: { name: user.name, id: user._id } });
+    //res.status(200).json({ token, user: { name: user.name, id: user._id } });
+    res.status(200).json({ token, user });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ msg: 'Server error - 500' });
@@ -183,6 +182,7 @@ exports.updateUser = async (req, res, next) => {
 
   try {
     let user = await User.findOne({ _id: req.user.userId });
+    //user.stripeBankAcct = undefined;
 
     user.name = name;
     user.email = email;
@@ -194,6 +194,7 @@ exports.updateUser = async (req, res, next) => {
       const reqFile = req.file;
       avatarUpload(user, reqFile, res);
     }
+    res.status(200).json(user);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ msg: 'Server error - 500' });

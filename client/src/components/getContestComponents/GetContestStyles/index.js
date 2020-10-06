@@ -184,6 +184,11 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 8,
     paddingRight: 8,
   },
+
+  //dialog
+  decisionButton: {
+    margin: 5,
+  },
 }));
 
 export default useStyles;

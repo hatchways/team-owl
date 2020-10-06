@@ -55,19 +55,14 @@ const getContest = async () => {
   return contests.data;
 };
 
-// get all conversations of the logged in user
-const fetchAllConversations = async (token) => {
-  try {
-    const conversations = await axios.get(`${server_url}/api/conversations/`, {
-      headers: {
-        auth_token: `Bearer ${token}`,
-      },
-    });
-    return conversations.data;
-  } catch (error) {
-    console.log(error.msg);
-    return error.msg;
-  }
+// uploadAvatar
+const uploadAvatar = async (form, token, userId) => {
+  const user = await axios.put(`${server_url}/api/user/${userId}`, form, {
+    headers: {
+      auth_token: `Bearer ${token}`,
+    },
+  });
+  return user.data;
 };
 
-export { verifyToken, login, signUp, getContest, fetchAllConversations };
+export { verifyToken, login, signUp, getContest, uploadAvatar };

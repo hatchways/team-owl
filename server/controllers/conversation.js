@@ -9,7 +9,7 @@ const Contest = require("../models/Contest");
 exports.initiateConversation = async (req, res, next) => {
 	const firstUserId = req.user.userId;
 	const { secondUserId } = req.body;
-	const userIds = [firstUserId, secondUserId];
+
 	try {
 		const conversation = await Conversation.initiateConversation(userIds);
 		res.status(201).json(conversation);

@@ -9,6 +9,9 @@ const UserInfoStyles = makeStyles((theme) => ({
   forms: {
     margin: '2% 0',
   },
+  input: {
+    display: 'none',
+  },
   form: {
     marginRight: '5%',
   },

@@ -1,15 +1,21 @@
 import React, { useContext } from 'react';
-import { Avatar, Box, Grid, Typography } from '@material-ui/core';
+import { Avatar, Box, Button, Grid, Typography } from '@material-ui/core';
 import UserContext from '../context/UserContext';
 import UserInfoStyles from './UserInfoStyles';
 
 export default function UserInfo() {
   const classes = UserInfoStyles();
   const context = useContext(UserContext);
+  const { changeAvatar } = context;
   const { user } = context.state;
+  
 
-  const profileImage =
-    'https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/userAvatar/avatarplaceholder.png';
+  const handlechange = (e) => {
+    e.preventDefault();
+    const file = e.target.files;
+    changeAvatar(file[0]);
+  };
+
   return (
     <Grid
       container
@@ -20,11 +26,22 @@ export default function UserInfo() {
         <Typography variant="h5">User Profile</Typography>
       </Box>
       <Grid container alignItems="center" justify="space-between">
-        <Avatar
-          alt="Remy Sharp"
-          src={profileImage}
-          className={classes.avatar}
+        <input
+          accept="image/*"
+          className={classes.input}
+          id="upload-file"
+          type="file"
+          onChange={(e) => {
+            handlechange(e);
+          }}
         />
+        <label htmlFor="upload-file">
+          <Avatar
+            alt="Remy Sharp"
+            src={user.avatar}
+            className={classes.avatar}
+          />
+        </label>
         <Box>
           <Box mr={5} fontSize="2rem" align="right">
             {user.name} <br />

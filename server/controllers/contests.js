@@ -60,6 +60,8 @@ exports.getAllContests = async (req, res, next) => {
 	}
 };
 
+// GET - get conntests 
+
 //PUT - update contest by Id - auth
 exports.updateContest = async (req, res, next) => {
 	try {

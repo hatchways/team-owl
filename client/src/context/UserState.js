@@ -5,7 +5,13 @@ import {
   setInStorage,
   removeFromStorage,
 } from '../helper/localStorage';
-import { verifyToken, login, signUp, getContest } from '../helper/Fetch';
+import {
+  verifyToken,
+  login,
+  signUp,
+  getContest,
+  uploadAvatar,
+} from '../helper/Fetch';
 import { userReducer } from './UserReducers';
 
 const UserState = (props) => {
@@ -93,6 +99,29 @@ const UserState = (props) => {
     }
   };
 
+  // change the profile avatar
+  const changeAvatar = async (file) => {
+    dispatch({ type: 'IS_LOADING', payload: true });
+    const formData = new FormData();
+    formData.append('avatar', file);
+    const user = await uploadAvatar(formData, state.token, state.user._id);
+    if (user) {
+      dispatch({
+        type: 'UPDATE_USER',
+        payload: user,
+      });
+      dispatch({
+        type: 'TOAST',
+        payload: { open: true, message: 'Upload Succesfull', isLoading: false },
+      });
+    } else {
+      dispatch({
+        type: 'TOAST',
+        payload: { open: true, message: user.msg, isLoading: false },
+      });
+    }
+  };
+
   const getAllContests = async () => {
     const contests = await getContest();
     contests && dispatch({ type: 'ALL_CONTESTS', payload: { contests } });
@@ -118,7 +147,7 @@ const UserState = (props) => {
 
   return (
     <UserContext.Provider
-      value={{ state, handleLogout, handleLogin, handleSignUp }}
+      value={{ state, handleLogout, handleLogin, handleSignUp, changeAvatar }}
     >
       {props.children}
     </UserContext.Provider>

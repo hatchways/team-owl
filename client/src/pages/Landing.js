@@ -129,6 +129,7 @@ export default function Landing() {
                   </Grid>
                 );
               }
+              return '';
             })}
           </Grid>
         </Grid>
@@ -195,6 +196,7 @@ export default function Landing() {
               </Grid>
             );
           }
+          return '';
         })}
       </Grid>
     </Grid>

@@ -5,10 +5,11 @@ import {
   Button,
   Grid,
   Typography,
-  TextField,
   InputBase,
 } from '@material-ui/core';
 import UseMessagesPanelStyles from './MessagesPanelStyles';
+import { format, parseISO } from 'date-fns';
+
 import UserContext from '../context/UserContext';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
@@ -26,15 +27,13 @@ export default function MessagePanel({ sendMessage, activeConversation }) {
 
   const handleEnter = (e) => {
     e.preventDefault();
-    if (input.trim() != '') {
+    if (input.trim() !== '') {
       sendMessage(input);
     } else {
       console.log('empty message');
     }
     setInput('');
   };
-
-  console.log(user);
   const messageJSX = activeConversation.messages.map((message, i) => {
     return (
       <Grid
@@ -43,16 +42,21 @@ export default function MessagePanel({ sendMessage, activeConversation }) {
         container
         justify={user === message.sender ? 'flex-end' : 'flex-start'}
       >
-        <Box
-          height="10%"
-          bgcolor={user === message.sender ? 'primary.main' : 'secondary.main'}
-          color={user === message.sender ? 'secondary.main' : 'primary.main'}
-          borderRadius="25px"
-          my={2}
-          align="center"
-          p={2}
-        >
-          <Typography variant="subtitle2">{message.message}</Typography>
+        <Box mb={1} maxWidth="35%">
+          <Box
+            bgcolor={
+              user === message.sender ? 'primary.main' : 'secondary.main'
+            }
+            color={user === message.sender ? 'secondary.main' : 'primary.main'}
+            borderRadius="25px"
+            px={3}
+            py={0.75}
+          >
+            <Typography variant="subtitle2">{message.message}</Typography>
+            <Box fontSize="0.5rem" color="secondary.dark" align="right">
+              {format(parseISO(message.sent), 'hh:mm a')}
+            </Box>
+          </Box>
         </Box>
       </Grid>
     );
@@ -73,7 +77,9 @@ export default function MessagePanel({ sendMessage, activeConversation }) {
         </Grid>
         <Grid container item lg={10} alignContent="center">
           <Typography variant="h6">
-            {activeConversation.participants[0].name}
+            <Box fontWeight="600">
+              {activeConversation.participants[0].name}
+            </Box>
           </Typography>
         </Grid>
         <Grid container item lg={1} alignContent="center" justify="center">
@@ -97,6 +103,11 @@ export default function MessagePanel({ sendMessage, activeConversation }) {
             placeholder="Send Messages"
             classes={{
               root: classes.messageTextfield,
+            }}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                handleEnter(e);
+              }
             }}
             onChange={(e) => {
               setInput(e.target.value);

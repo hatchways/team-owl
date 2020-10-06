@@ -15,13 +15,14 @@ export default function Profile() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   return (
     <Grid container direction="column" justify="center" alignContent="center">
       <Grid container item className={classes.grid}>
         <Grid container item justify="center" alignContent="center">
           <Avatar
-            alt="Remy Sharp"
-            src="https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/userAvatar/avatarplaceholder.png"
+            alt="Profile Picture"
+            src={user.avatar}
             className={classes.avatar}
           />
         </Grid>

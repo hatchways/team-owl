@@ -14,6 +14,11 @@ export const ConversationReducer = (state, { type, payload }) => {
           messages: [...state.activeConversation.messages, payload],
         },
       };
+    case 'ADD_NEW_CONVERSATION':
+      return {
+        allConversations: [...state.allConversations, payload],
+        activeConversation: payload,
+      };
     default:
       return state;
   }

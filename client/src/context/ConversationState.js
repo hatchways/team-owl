@@ -1,7 +1,6 @@
 import React, { useReducer, useEffect, useState, useContext } from 'react';
 import ConversationContext from './ConversationContext';
 import { ConversationReducer } from './ConversationReducer';
-import { fetchAllConversations } from '../helper/Fetch';
 import UserContext from '../context/UserContext';
 import io from 'socket.io-client';
 
@@ -13,29 +12,11 @@ const ConversationState = (props) => {
   const [socket, setSocket] = useState();
   const ENDPOINT = 'localhost:3001';
   const context = useContext(UserContext);
-  const { token } = context.state;
+  const { token, user } = context.state;
 
+  // setting up socket
   useEffect(() => {
-    if (token) {
-      const getAllConversations = async () => {
-        const conversations = await fetchAllConversations(token);
-        if (conversations) {
-          dispatch({
-            type: 'SET_ACTIVE_CONVERSATION',
-            payload: conversations[0],
-          });
-          dispatch({
-            type: 'GET_ALL_CONVERSATIONS',
-            payload: conversations,
-          });
-        }
-      };
-      getAllConversations();
-    }
-  }, [token, fetchAllConversations]);
-
-  useEffect(() => {
-    if (token) {
+    if (token && !socket) {
       const socketClient = io(ENDPOINT, {
         query: {
           token: token,
@@ -43,14 +24,46 @@ const ConversationState = (props) => {
       });
       setSocket(socketClient);
     }
-  }, [token]);
+    return () => {
+      if (socket) {
+        socket.disconnect();
+        setSocket('');
+      }
+    };
+  }, [token, socket]);
 
+  // get all conversations
+  useEffect(() => {
+    if (token && socket) {
+      const getAllConversations = async () => {
+        socket.emit('getAllConversations', {
+          token,
+        });
+        socket.on('getAllConversations', (conversations) => {
+          if (conversations) {
+            dispatch({
+              type: 'SET_ACTIVE_CONVERSATION',
+              payload: conversations[0],
+            });
+            dispatch({
+              type: 'GET_ALL_CONVERSATIONS',
+              payload: conversations,
+            });
+          }
+        });
+      };
+      getAllConversations();
+    }
+  }, [token, socket]);
+
+  // join a room
   useEffect(() => {
     if (socket && state.activeConversation) {
       socket.emit('join', state.activeConversation._id);
     }
   }, [socket, state.activeConversation]);
 
+  // receive a message
   useEffect(() => {
     if (socket) {
       socket.on('chatmessage', (data) => {
@@ -63,21 +76,69 @@ const ConversationState = (props) => {
     }
   }, [socket]);
 
+  // send message
   const sendMessage = (message) => {
     socket.emit('sendMessage', {
       room: state.activeConversation._id,
       message,
     });
   };
-  // get all the conversations
+
+  // initiate new conversation or if present get the old one.
+  const getNewConversation = async (participant) => {
+    if (participant === user._id) return;
+
+    const oldConversation = await state.allConversations.filter(
+      (conversation) => {
+        if (participant === conversation.participants[0]._id) {
+          return conversation;
+        }
+      },
+    );
+    if (oldConversation) {
+      dispatch({
+        type: 'SET_ACTIVE_CONVERSATION',
+        payload: oldConversation[0],
+      });
+    } else {
+      socket.emit('startConversation', { participant });
+      socket.on('sendNewConversation', (newConversation) => {
+        console.log(newConversation);
+        if (newConversation) {
+          dispatch({
+            type: 'ADD_NEW_CONVERSATION',
+            payload: newConversation,
+          });
+          dispatch({
+            type: 'SET_ACTIVE_CONVERSATION',
+            payload: newConversation,
+          });
+        }
+      });
+    }
+  };
 
   // get all the messages from one conversation
-
-  // send a message to the receipient.
+  const getOneConversation = async (conversationId) => {
+    socket.emit('getOneConversation', conversationId);
+    socket.on('getOneConversation', (oneConversation) => {
+      dispatch({
+        type: 'SET_ACTIVE_CONVERSATION',
+        payload: oneConversation,
+      });
+    });
+  };
 
   return (
     <ConversationContext.Provider
-      value={{ state, socket, sendMessage, dispatch }}
+      value={{
+        state,
+        socket,
+        sendMessage,
+        getNewConversation,
+        getOneConversation,
+        dispatch,
+      }}
     >
       {props.children}
     </ConversationContext.Provider>

@@ -8,8 +8,8 @@ const {
 	addMessageToConversation,
 } = require("../controllers/conversation");
 
-router.post("/", auth, initiateConversation);
-router.get("/", auth, getAllConversation);
-router.put("/:conversationId/message", auth, addMessageToConversation);
+// router.post("/", auth, initiateConversation);
+// router.get("/", auth, getAllConversation);
+// router.put("/:conversationId/message", auth, addMessageToConversation);
 
 module.exports = router;

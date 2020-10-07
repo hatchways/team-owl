@@ -33,6 +33,7 @@ const ConversationSchema = new mongoose.Schema({
 	},
 });
 
+
 // all the conversations that the logged in user has
 ConversationSchema.statics.getConversationsByUserId = async function (userId) {
 	try {
@@ -80,8 +81,8 @@ ConversationSchema.statics.getConversationsByUserId = async function (userId) {
 	}
 };
 
-//roomId - id of conversation
 
+//roomId - id of conversation
 ConversationSchema.statics.getConversationByRoomId = async function (
 	roomId,
 	userId
@@ -128,6 +129,8 @@ ConversationSchema.statics.getConversationByRoomId = async function (
 		throw error;
 	}
 };
+
+
 // start an conversation or create a new conversation
 //userId - array of strings of userIds
 ConversationSchema.statics.initiateConversation = async function (
@@ -175,6 +178,7 @@ ConversationSchema.statics.initiateConversation = async function (
 	}
 };
 
+// add message to conversation
 ConversationSchema.statics.addMessageToConversation = async function (
 	conversationId,
 	message,

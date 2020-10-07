@@ -10,7 +10,7 @@ import {
   ListItemAvatar,
   ListItemText,
 } from '@material-ui/core';
-import { format, parseISO } from 'date-fns';
+import { isToday, format, parseISO } from 'date-fns';
 import UseConversationsPanelStyles from './ConverstationsPanelStyles';
 
 export default function Conversations({
@@ -57,9 +57,9 @@ export default function Conversations({
         />
         <Box textAlign="right" color="secondary.dark">
           <Typography variant="caption">
-            {lastMessage.sent
-              ? format(parseISO(lastMessage.sent), 'hh:mm')
-              : ''}
+            {isToday(parseISO(lastMessage.sent))
+              ? format(parseISO(lastMessage.sent), 'HH:MM')
+              : format(parseISO(lastMessage.sent), 'dd/MM')}
           </Typography>
         </Box>
       </ListItem>

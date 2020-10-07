@@ -26,5 +26,7 @@ yarn-error.log*
 .eslintrc.js
 .prettierrc.js
 
+ignore-controller-conversation.js
+ignore-route-conversations.js
 temp.js
 notes

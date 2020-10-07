@@ -30,6 +30,7 @@ const UserState = (props) => {
   });
 
   const handleLogout = () => {
+    dispatch({ type: 'IS_LOADING', payload: true });
     removeFromStorage('auth_token');
     dispatch({ type: 'LOG_OUT' });
   };
@@ -54,6 +55,7 @@ const UserState = (props) => {
   const handleSignUp = async (name, email, password, rePassword) => {
     dispatch({ type: 'IS_LOADING', payload: true });
     if (password !== rePassword) {
+      console.log('password');
       dispatch({
         type: 'TOAST',
         payload: { open: true, message: 'Passwords Do not Match' },
@@ -61,7 +63,7 @@ const UserState = (props) => {
       return;
     }
     let user = await signUp(name, email, password);
-    if (user.name) {
+    if (user.user.name) {
       handleLogin(email, password);
     } else {
       dispatch({ type: 'TOAST', payload: { open: true, message: user.msg } });
@@ -118,7 +120,6 @@ const UserState = (props) => {
 
   // get all contests and submission by userID
   useEffect(() => {
-    dispatch({ type: 'IS_LOADING', payload: true });
     if (state.user && state.user._id && state.token) {
       const getAllContestByUserId = async () => {
         const contests = await fetchAllContestByUserId(

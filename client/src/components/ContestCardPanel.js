@@ -6,12 +6,11 @@ export default function ContestCardPanel(props) {
   const { contest, submitted } = props;
   const classes = ContestCardPanelStyles();
   let thumbnail;
-  // if(submitted){
-  //   thumbnail = contest.submissionPic[0]
-  // }
-  // else{
-
-  // }
+  if (submitted) {
+    thumbnail = contest.submissionPic ? contest.submissionPic[0] : ' ';
+  } else {
+    thumbnail = contest.contestPics[0];
+  }
   return (
     <Grid
       container
@@ -25,20 +24,18 @@ export default function ContestCardPanel(props) {
         <Card className={classes.card}>
           <CardMedia
             className={classes.media}
-            image="https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/tattoos/tattoo1.png"
-            title="hi"
+            image={thumbnail}
+            title="image"
             height="140"
           />
-          {contest.submissions && (
-            <Typography
-              className={classes.cardText}
-              variant="subtitle1"
-              align="center"
-              color="secondary"
-            >
-              {contest.submissions.length} SKETCHES
-            </Typography>
-          )}
+          <Typography
+            className={classes.cardText}
+            variant="subtitle1"
+            align="center"
+            color="secondary"
+          >
+            {!submitted ? `${contest.submissions.length} "SKETCHES` : ''}
+          </Typography>
         </Card>
       </Grid>
       <Grid container item xs={9} className={classes.textGrid}>

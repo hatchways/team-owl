@@ -1,24 +1,42 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import UserContext from '../context/UserContext';
-import { AppBar, Toolbar, Typography, Button, Grid } from '@material-ui/core';
+import {
+  AppBar,
+  Avatar,
+  IconButton,
+  Toolbar,
+  Typography,
+  Button,
+  Grid,
+} from '@material-ui/core';
 import useNavCss from './NavStyles';
 
 export default function Nav() {
+  const [isProfile, setIsProfile] = useState(false);
   const context = useContext(UserContext);
   const classes = useNavCss();
+  const { user } = context.state;
+  const location = useLocation();
 
+  useEffect(() => {
+    if (location.pathname === '/profile') {
+      setIsProfile(true);
+    } else {
+      setIsProfile(false);
+    }
+  }, [location]);
   return (
     <>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <Grid container>
-            <Grid container item xs={4} alignContent="center">
+            <Grid container item xs={3} alignContent="center">
               <Link to="/" className={classes.logo}>
                 <Typography variant="subtitle1">TATTO ART</Typography>
               </Link>
             </Grid>
-            <Grid container item xs={8} justify="flex-end">
+            <Grid container item xs={9} justify="flex-end">
               {context.state.user ? (
                 <>
                   <Button
@@ -27,6 +45,7 @@ export default function Nav() {
                     size="large"
                     color="primary"
                     className={classes.button}
+                    disableRipple
                   >
                     <Typography variant="button" className={classes.buttonText}>
                       Create Contest
@@ -38,6 +57,7 @@ export default function Nav() {
                     size="large"
                     color="primary"
                     className={classes.button}
+                    disableRipple
                   >
                     <Typography variant="button" className={classes.buttonText}>
                       Messages
@@ -45,26 +65,40 @@ export default function Nav() {
                   </Button>
                   <Button
                     component={Link}
-                    to="/profile"
+                    to=""
                     size="large"
                     color="primary"
                     className={classes.button}
+                    disableRipple
                   >
                     <Typography variant="button" className={classes.buttonText}>
-                      Profile
+                      Notification
                     </Typography>
                   </Button>
-                  <Button
-                    onClick={() => {
-                      context.handleLogout();
-                    }}
-                    size="large"
-                    variant="outlined"
-                    color="primary"
-                    className={classes.button}
-                  >
-                    <Typography variant="button">LogOut</Typography>
-                  </Button>
+                  {!isProfile ? (
+                    <IconButton
+                      component={Link}
+                      to="/profile"
+                      className={classes.avatar}
+                    >
+                      <Avatar src={user.avatar} />
+                    </IconButton>
+                  ) : (
+                    <Button
+                      onClick={() => {
+                        context.handleLogout();
+                      }}
+                      component={Link}
+                      to="/"
+                      size="large"
+                      variant="outlined"
+                      color="primary"
+                      className={classes.button}
+                      disableRipple
+                    >
+                      <Typography variant="button">LogOut</Typography>
+                    </Button>
+                  )}
                 </>
               ) : (
                 <>

@@ -10,6 +10,5 @@ router.use("/api/contest", require("./contests"));
 router.use("/api/contest/:id/submission", extractId, require("./submissions"));
 router.use("/api/user", require("./users"));
 router.use("/api/contestSub/", require("./contestSub"));
-router.use('/api/conversations/', require('./conversations'));
 
 module.exports = router;

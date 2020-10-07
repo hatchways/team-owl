@@ -140,7 +140,16 @@ exports.loginUser = async (req, res, next) => {
 			return res.status(400).json({ msg: "Password invalid" });
 		}
 		const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET_KEY);
-		res.status(200).json({ token, user: { name: user.name, _id: user._id } });
+		const result = {
+			avatar: user.avatar,
+			_id: user._id,
+			name: user.name,
+			email: user.email,
+		};
+		res.status(200).json({
+			token,
+			user: result,
+		});
 	} catch (error) {
 		console.error(error.message);
 		res.status(500).json({ msg: "Server error - 500" });
@@ -180,16 +189,8 @@ exports.getAllUsers = async (req, res, next) => {
 
 //PUT - update User by Id - auth
 exports.updateUser = async (req, res, next) => {
-	console.log("req.body");
-	// const { name, email } = req.body;
-
 	try {
 		let user = await User.findOne({ _id: req.user.userId });
-
-		// user.name = name;
-		// user.email = email;
-
-		// await user.save();
 
 		//if avatar is provided
 		if (req.file) {

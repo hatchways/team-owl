@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Grid } from '@material-ui/core';
 import MessagesPanel from './MessagesPanel';
 import UseMessagesStyles from './MessagesStyles';

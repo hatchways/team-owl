@@ -1,14 +1,22 @@
 import React, { useContext } from 'react';
-import { Avatar, Box, Button, Grid, Typography } from '@material-ui/core';
+import { Avatar, Box, Grid, Typography } from '@material-ui/core';
 import UserContext from '../context/UserContext';
 import UserInfoStyles from './UserInfoStyles';
+import { isPast, parseISO } from 'date-fns';
 
 export default function UserInfo() {
   const classes = UserInfoStyles();
   const context = useContext(UserContext);
   const { changeAvatar } = context;
-  const { user } = context.state;
-  
+  const { user, contests } = context.state;
+
+  const totalCreadted = contests.created.reduce((a, c) => {
+    console.log(a, c.prize);
+    if (isPast(parseISO(c.deadline))) {
+      return a + c.prize;
+    }
+    return a;
+  }, 0);
 
   const handlechange = (e) => {
     e.preventDefault();
@@ -43,32 +51,32 @@ export default function UserInfo() {
           />
         </label>
         <Box>
-          <Box mr={5} fontSize="2rem" align="right">
+          <Box mr={2} fontSize="2rem" align="right">
             {user.name} <br />
           </Box>
-          <Box mr={5} fontSize="1rem" align="right" color="secondary.dark">
+          <Box mr={2} fontSize="1rem" align="right" color="secondary.dark">
             {user.email}
           </Box>
         </Box>
         <Typography variant="h6">
-          <Box ml={5} align="right" color="secondary.dark">
-            <b>12</b> Contests Created <br />
-            <b>8</b> Complete <br />
-            <b>4</b> Ongoing
+          <Box ml={2} align="right" color="secondary.dark">
+            <b>{contests.created.length}</b> Contests Created <br />
+            <b>0</b> Complete <br />
+            <b>{contests.created.length}</b> Ongoing
           </Box>{' '}
         </Typography>
         <Typography variant="h6">
-          <Box ml={5} align="right" color="secondary.dark">
-            <b>25</b> Contests Submissions <br />
-            <b>11</b> Won <br />
-            <b>14</b> Ongoing <br />
+          <Box ml={2} align="right" color="secondary.dark">
+            <b>{contests.submitted.length}</b> Contests Submissions <br />
+            <b>0</b> Won <br />
+            <b>{contests.submitted.length}</b> Ongoing <br />
           </Box>{' '}
         </Typography>
         <Typography variant="h6">
-          <Box ml={5} align="right" color="secondary.dark">
+          <Box ml={2} align="right" color="secondary.dark">
             Total Prize Amount <br />
             <b>$365</b> Won <br />
-            <b>$200</b> Paid <br />
+            <b>${totalCreadted}</b> Paid <br />
           </Box>{' '}
         </Typography>
       </Grid>

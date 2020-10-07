@@ -10,9 +10,12 @@ const useNavStyles = makeStyles(() => ({
     textDecoration: 'none',
     color: 'inherit',
   },
+  avatar: {
+    marginLeft: '5%',
+  },
   button: {
     borderColor: 'white',
-    marginLeft: '10%',
+    marginLeft: '5%',
     color: '#f4f4f4',
   },
   buttonText: {

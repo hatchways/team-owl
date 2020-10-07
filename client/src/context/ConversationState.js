@@ -89,11 +89,7 @@ const ConversationState = (props) => {
     if (participant === user._id) return;
 
     const oldConversation = await state.allConversations.filter(
-      (conversation) => {
-        if (participant === conversation.participants[0]._id) {
-          return conversation;
-        }
-      },
+      (conversation) => participant === conversation.participants[0]._id,
     );
     if (oldConversation) {
       dispatch({

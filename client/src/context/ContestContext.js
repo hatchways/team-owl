@@ -49,6 +49,16 @@ export const ContestContextProvider = ({ children }) => {
       });
   };
 
+  // const getAllContestsByUser = async () => {
+  //   console.log('get all contests');
+  //   let token = getFromStorage('auth_token') || '';
+  //   const user = await verifyToken(token);
+  //   const contests = await getContestsByUser(user._id);
+  //   //console.log(contests);
+  //   contests &&
+  //     dispatch({ type: 'ALL_CONTESTS_BY_USER', payload: { contests } });
+  // };
+
   return (
     <ContestContext.Provider
       value={{

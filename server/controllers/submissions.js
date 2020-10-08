@@ -10,8 +10,23 @@ exports.createSubmission = async (req, res, next) => {
   req.params.id = req.id;
   try {
     const contest = await Contest.findOne({ _id: req.params.id });
-    //problem - same user can submit multiple submissions
     const user = await User.findOne({ _id: req.user.userId });
+
+    if (!user.stripeBankAcct) {
+      return res
+        .status(400)
+        .json({ msg: 'Please upload your banking information first.' });
+    }
+
+    const dateNow = Date.now();
+    const deadlineJS = new Date(contest.deadline);
+    const deadlineEpoch = deadlineJS.getTime();
+
+    if (deadlineEpoch < dateNow) {
+      return res
+        .status(400)
+        .json({ msg: 'The deadline to submit to this contest has passed.' });
+    }
 
     let uploads = req.files;
     aws.config.setPromisesDependency();
@@ -69,7 +84,6 @@ exports.createSubmission = async (req, res, next) => {
               name: user.name,
             },
           };
-          console.log(subObj);
           contest.submissions.push(subObj);
           await contest.save();
           res.status(201).json(submission);
@@ -131,6 +145,19 @@ exports.deleteSubmission = async (req, res, next) => {
     }
     await Submission.findOneAndRemove({ _id: req.params.id });
     res.json({ msg: 'Submission removed' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+};
+
+//UPDATE - update submission 'winner' field by Id - auth
+exports.updateSubmission = async (req, res, next) => {
+  const { winner } = req.body;
+  try {
+    const submission = await Submission.findOne({ _id: req.params.id });
+    submission.winner = winner;
+    res.json({ msg: 'This submissions is selected as the winner.' });
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server error');

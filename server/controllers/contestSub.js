@@ -45,13 +45,16 @@ exports.getSubmissionsByContestAndLoggedUser = async (req, res, next) => {
       contest: contestId,
     }).populate('user');
 
-    if (loggedUserId != contestUserId) {
-      filteredSubmissions = submissions.filter(
-        (submission) => submission.user._id == loggedUserId
-      );
-    } else {
-      filteredSubmissions = submissions;
+    if (submissions) {
+      if (loggedUserId != contestUserId) {
+        filteredSubmissions = submissions.filter(
+          (submission) => submission.user._id == loggedUserId
+        );
+      } else {
+        filteredSubmissions = submissions;
+      }
     }
+
     res.status(200).json(filteredSubmissions);
   } catch (error) {
     console.error(error.message);

@@ -5,7 +5,6 @@ import {
   Grid,
   CardMedia,
   Card,
-  CircularProgress,
   Box,
 } from '@material-ui/core';
 import ContestCardPanelStyles from './ContestCardPanelStyles';
@@ -13,9 +12,14 @@ import ContestCardPanelStyles from './ContestCardPanelStyles';
 export default function ContestCardPanel(props) {
   const { contest, submitted } = props;
   const classes = ContestCardPanelStyles();
+  console.log(submitted);
+  console.log(contest);
   let thumbnail;
   if (submitted) {
-    thumbnail = contest.submissionPic ? contest.submissionPic[0] : ' ';
+    //thumbnail = contest.submissionPic ? contest.submissionPic[0] : ' ';
+    thumbnail = contest.submissions
+      ? contest.submissions[0].submissionPic.url[0]
+      : ' ';
   } else {
     thumbnail = contest.contestPics[0];
   }

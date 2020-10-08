@@ -23,18 +23,19 @@ const ContestSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   submissions: {
     type: Array,
   },
-  // submissionFirstPics: {
-  //   type: Array,
-  // },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+  },
+  active: {
+    type: Boolean,
+    default: true,
   },
 });
 

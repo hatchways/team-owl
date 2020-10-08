@@ -20,7 +20,7 @@ export default function Nav() {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === '/profile') {
+   setIsProfile(location.pathname === '/profile')
       setIsProfile(true);
     } else {
       setIsProfile(false);

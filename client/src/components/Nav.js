@@ -21,10 +21,6 @@ export default function Nav() {
 
   useEffect(() => {
    setIsProfile(location.pathname === '/profile')
-      setIsProfile(true);
-    } else {
-      setIsProfile(false);
-    }
   }, [location]);
   return (
     <>

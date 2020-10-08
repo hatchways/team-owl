@@ -178,7 +178,7 @@ exports.getAllUsers = async (req, res, next) => {
 
 //PUT - update User by Id - auth
 exports.updateUser = async (req, res, next) => {
-  const { name, email } = req.body;
+  const { name, email, avatar } = req.body;
 
   try {
     let user = await User.findOne({ _id: req.user.userId });
@@ -186,6 +186,7 @@ exports.updateUser = async (req, res, next) => {
 
     user.name = name;
     user.email = email;
+    user.avatar = avatar;
 
     await user.save();
 
@@ -201,9 +202,11 @@ exports.updateUser = async (req, res, next) => {
   }
 };
 
-//DELETE - delete User by Id - auth
+//DELETE - delete loggedin user - auth
 exports.deleteUser = async (req, res, next) => {
   try {
+    await Submission.deleteMany({ user: req.user.userId });
+    await Contest.deleteMany({ user: req.user.userId });
     await User.findOneAndRemove({ _id: req.user.userId });
     res.json({ msg: 'User removed' });
   } catch (error) {

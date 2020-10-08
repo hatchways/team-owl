@@ -1,6 +1,6 @@
 const Contest = require('../models/Contest');
 const User = require('../models/User');
-const Submissions = require('../models/Submission');
+const Submission = require('../models/Submission');
 const { userCheck } = require('../helpers/userCheck');
 
 //POST - create contest - auth
@@ -24,6 +24,16 @@ exports.createContest = async (req, res, next) => {
       contestPics,
       user,
     });
+
+    const dateNow = Date.now();
+    const deadlineJS = new Date(contest.deadline);
+    const deadlineEpoch = deadlineJS.getTime();
+
+    if (deadlineEpoch < dateNow) {
+      return res
+        .status(400)
+        .json({ msg: 'Deadline date must be later than current time.' });
+    }
 
     await contest.save();
     res.status(201).json(contest);
@@ -109,8 +119,11 @@ exports.deleteContest = async (req, res, next) => {
         .status(401)
         .json({ msg: 'You are not authorized to delete this contest' });
     }
+    await Submission.deleteMany({
+      contest: req.params.id,
+    });
     await Contest.findOneAndRemove({ _id: req.params.id });
-    res.json({ msg: 'Contest removed' });
+    res.status(200).json({ msg: 'Contest deleted.' });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ msg: 'Server error - 500' });
@@ -123,7 +136,7 @@ exports.getAllSubmissionsByContestId = async (req, res, next) => {
   const user = req.user;
 
   //get all submissions under the same contest Id
-  const submissions = await Submissions.find({ contest: req.params.contestId });
+  const submissions = await Submission.find({ contest: req.params.contestId });
 
   if (!submissions) {
     res.status(404).json({ msg: 'There are no submissions under this ID.' });

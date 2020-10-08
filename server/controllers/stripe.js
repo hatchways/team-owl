@@ -11,7 +11,6 @@ exports.createConnectedAccount = async (req, res, next) => {
     if (!user.stripeBankAcct) {
       const account = await stripe.accounts.create({
         type: 'express',
-        email: user.email,
       });
       user.stripeBankAcct = account;
       user.save();
@@ -141,9 +140,7 @@ exports.createCustomer = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.user.userId });
     if (!user.stripeCreditCustomer) {
-      const customer = await stripe.customers.create({
-        email: user.email,
-      });
+      const customer = await stripe.customers.create();
       user.stripeCreditCustomer = customer;
       user.save();
     }

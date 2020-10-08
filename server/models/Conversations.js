@@ -33,7 +33,6 @@ const ConversationSchema = new mongoose.Schema({
 	},
 });
 
-
 // all the conversations that the logged in user has
 ConversationSchema.statics.getConversationsByUserId = async function (userId) {
 	try {
@@ -80,7 +79,6 @@ ConversationSchema.statics.getConversationsByUserId = async function (userId) {
 		throw error;
 	}
 };
-
 
 //roomId - id of conversation
 ConversationSchema.statics.getConversationByRoomId = async function (
@@ -129,7 +127,6 @@ ConversationSchema.statics.getConversationByRoomId = async function (
 		throw error;
 	}
 };
-
 
 // start an conversation or create a new conversation
 //userId - array of strings of userIds
@@ -216,7 +213,7 @@ ConversationSchema.statics.addMessageToConversation = async function (
 				},
 			},
 			{
-				// removing passwords
+				// removing passwords and other things
 				$unset: [
 					"participants.password",
 					"paymentMethodArray",
@@ -226,9 +223,11 @@ ConversationSchema.statics.addMessageToConversation = async function (
 			},
 			{
 				$project: {
+					_id: 1,
 					message: {
 						$slice: ["$messages", -1],
 					},
+					participants: 1,
 				},
 			},
 		]);

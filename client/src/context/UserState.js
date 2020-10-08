@@ -103,14 +103,16 @@ const UserState = (props) => {
 
     const checkLogin = async () => {
       let token = getFromStorage('auth_token') || '';
-      const user = await verifyToken(token);
-      if (!user.msg) {
-        dispatch({
-          type: 'VERIFY_TOKEN',
-          payload: { token, user: user, isLoading: false },
-        });
-      } else {
-        dispatch({ type: 'IS_LOADING', payload: false });
+      if (token) {
+        const user = await verifyToken(token);
+        if (!user.msg) {
+          dispatch({
+            type: 'VERIFY_TOKEN',
+            payload: { token, user: user, isLoading: false },
+          });
+        } else {
+          dispatch({ type: 'IS_LOADING', payload: false });
+        }
       }
     };
 

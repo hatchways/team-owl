@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 const ConversationState = (props) => {
   const [state, dispatch] = useReducer(ConversationReducer, {
     allConversations: [],
-    activeConversation: {},
+    activeId: '',
   });
   const [socket, setSocket] = useState();
   const ENDPOINT = 'localhost:3001';
@@ -36,14 +36,11 @@ const ConversationState = (props) => {
   useEffect(() => {
     if (token && socket) {
       const getAllConversations = async () => {
-        socket.emit('getAllConversations', {
-          token,
-        });
-        socket.on('getAllConversations', (conversations) => {
-          if (conversations) {
+        socket.emit('getAllConversations', { token }, (conversations) => {
+          if (conversations.length) {
             dispatch({
               type: 'SET_ACTIVE_CONVERSATION',
-              payload: conversations[0],
+              payload: conversations[0]._id,
             });
             dispatch({
               type: 'GET_ALL_CONVERSATIONS',
@@ -58,19 +55,24 @@ const ConversationState = (props) => {
 
   // join a room
   useEffect(() => {
-    if (socket && state.activeConversation) {
-      socket.emit('join', state.activeConversation._id);
+    if (socket && state.activeId) {
+      socket.emit('join', state.activeId);
     }
-  }, [socket, state.activeConversation]);
+  }, [socket, state.activeId]);
 
   // receive a message
   useEffect(() => {
     if (socket) {
       socket.on('chatmessage', (data) => {
-        console.log(data.message[0]);
         dispatch({
           type: 'ADD_MESSAGE',
-          payload: data.message[0],
+          payload: data,
+        });
+      });
+      socket.on('notification', (data) => {
+        dispatch({
+          type: 'ADD_INACTIVE_MESSAGE',
+          payload: { id: data.id, message: data.newMessage },
         });
       });
     }
@@ -78,8 +80,9 @@ const ConversationState = (props) => {
 
   // send message
   const sendMessage = (message) => {
+    console.log('sent a message');
     socket.emit('sendMessage', {
-      room: state.activeConversation._id,
+      room: state.activeId,
       message,
     });
   };
@@ -87,27 +90,21 @@ const ConversationState = (props) => {
   // initiate new conversation or if present get the old one.
   const getNewConversation = async (participant) => {
     if (participant === user._id) return;
-
     const oldConversation = await state.allConversations.filter(
       (conversation) => participant === conversation.participants[0]._id,
     );
-    if (oldConversation) {
+    if (oldConversation.length) {
       dispatch({
         type: 'SET_ACTIVE_CONVERSATION',
-        payload: oldConversation[0],
+        payload: oldConversation[0]._id,
       });
     } else {
-      socket.emit('startConversation', { participant });
-      socket.on('sendNewConversation', (newConversation) => {
-        console.log(newConversation);
+      socket.emit('startConversation', { participant }, (newConversation) => {
+        console.log(newConversation[0]);
         if (newConversation) {
           dispatch({
             type: 'ADD_NEW_CONVERSATION',
-            payload: newConversation,
-          });
-          dispatch({
-            type: 'SET_ACTIVE_CONVERSATION',
-            payload: newConversation,
+            payload: newConversation[0],
           });
         }
       });
@@ -116,13 +113,21 @@ const ConversationState = (props) => {
 
   // get all the messages from one conversation
   const getOneConversation = async (conversationId) => {
-    socket.emit('getOneConversation', conversationId);
-    socket.on('getOneConversation', (oneConversation) => {
+    socket.emit('getOneConversation', conversationId, (oneConversation) => {
       dispatch({
-        type: 'SET_ACTIVE_CONVERSATION',
+        type: 'UPDATE_ONE_CONVERSATION',
         payload: oneConversation,
       });
+      dispatch({
+        type: 'SET_ACTIVE_CONVERSATION',
+        payload: oneConversation._id,
+      });
+      dispatch({
+        type: 'REMOVE_INACTIVE_MESSAGE',
+        payload: conversationId,
+      });
     });
+    socket.emit('leave', state.activeId);
   };
 
   return (

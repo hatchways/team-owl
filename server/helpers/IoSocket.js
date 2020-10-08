@@ -4,6 +4,8 @@ const { auth } = require("../middleware/auth");
 const User = require("../models/User");
 const Conversation = require("../models/Conversations");
 
+const allUsers = {};
+
 module.exports = function (server) {
 	const io = socket(server);
 
@@ -14,47 +16,54 @@ module.exports = function (server) {
 	});
 
 	io.on("connection", (client) => {
-		console.log("someone connected");
+		allUsers[client.request.user.userId] = client.id;
 
 		// event fired when the chat room is disconnected
 		client.on("disconnect", () => {
-			console.log("user is disconnected");
+			delete allUsers[client.request.user.userId];
 		});
 
 		// subscribe person to chat & other user as well
 		client.on("join", (room) => {
 			if (room) {
 				client.join(room);
-				console.log("joined", room, client.id);
+			}
+		});
+
+		client.on("leave", (room) => {
+			if (room) {
+				client.leave(room);
 			}
 		});
 
 		// get all conversations
-		client.on("getAllConversations", async () => {
+		client.on("getAllConversations", async (data, callback) => {
 			const { userId } = client.request.user;
 			client.join(userId);
 			try {
 				const conversations = await Conversation.getConversationsByUserId(
 					userId
 				);
-				io.to(userId).emit("getAllConversations", conversations);
+				callback(conversations);
+				// io.to(userId).emit("getAllConversations", conversations);
 			} catch (error) {
 				console.error(error.message);
 			}
 		});
 
 		// get conversation by RoomID/ conversationId
-		client.on("getOneConversation", async (data) => {
+		client.on("getOneConversation", async (data, callback) => {
 			const { userId } = client.request.user;
 			const oneConversation = await Conversation.getConversationByRoomId(
 				data,
 				userId
 			);
-			io.to(userId).emit("getOneConversation", oneConversation);
+			callback(oneConversation);
+			// io.to(userId).emit("getOneConversation", oneConversation);
 		});
 
 		// starting a conversation
-		client.on("startConversation", async (data) => {
+		client.on("startConversation", async (data, callback) => {
 			const firstUserId = client.request.user.userId; //logged in user
 			const { participant } = data;
 			const userIds = [firstUserId, participant];
@@ -65,7 +74,8 @@ module.exports = function (server) {
 					userIds,
 					sender
 				);
-				io.emit("sendNewConversation", newConversation);
+				callback(newConversation);
+				// io.emit("sendNewConversation", newConversation);
 			} catch (error) {
 				console.error(error.message);
 				res.status(500).json({ msg: "Server error - 500" });
@@ -83,7 +93,26 @@ module.exports = function (server) {
 					message,
 					sender
 				);
-				io.in(room).emit("chatmessage", savedMessage);
+				const participant = savedMessage.participants[0];
+				const participantSocket = allUsers[participant._id];
+				const newMessage = savedMessage.message[0];
+				const id = savedMessage._id;
+				const getRoomClients = (room) => {
+					return new Promise((resolve, reject) => {
+						io.of("/")
+							.in(room)
+							.clients((error, clients) => {
+								resolve(clients);
+							});
+					});
+				};
+				const totalUsers = await getRoomClients(room);
+				if (totalUsers.length === 1) {
+					client.emit("chatmessage", newMessage);
+					io.to(participantSocket).emit("notification", { newMessage, id });
+				} else {
+					io.in(room).emit("chatmessage", newMessage);
+				}
 			} catch (error) {
 				console.error(error.message);
 			}

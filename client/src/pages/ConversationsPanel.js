@@ -26,8 +26,16 @@ export default function Conversations({
 
   const jsx = conversations.map((conversation, i) => {
     const active = activeConversation._id === conversation._id;
-    const messages = conversation.messages;
-    const lastMessage = messages[messages.length - 1];
+    const { messages } = conversation;
+    const notification = conversation.notification || '';
+    let lastMessage;
+
+    if (notification) {
+      lastMessage =
+        conversation.notification[conversation.notification.length - 1];
+    } else {
+      lastMessage = messages[messages.length - 1];
+    }
     const participant = conversation.participants[0];
     return (
       <ListItem
@@ -44,12 +52,12 @@ export default function Conversations({
         </ListItemAvatar>
         <ListItemText
           className={classes.listText}
-          primary={<b>{participant.name}</b>}
+          primary={notification ? <b>{participant.name}</b> : participant.name}
           secondary={
             <Typography
               component="span"
               variant="caption"
-              color="textSecondary"
+              color={notification ? 'textPrimary' : 'textSecondary'}
             >
               {lastMessage.message.substr(0, 20) || ''}
             </Typography>
@@ -61,6 +69,20 @@ export default function Conversations({
               ? format(parseISO(lastMessage.sent), 'HH:MM')
               : format(parseISO(lastMessage.sent), 'dd/MM')}
           </Typography>
+          <Box
+            bgcolor={notification && 'primary.main'}
+            borderRadius="25px"
+            height="1.25rem"
+            width="1.25rem"
+            color="secondary.main"
+            display="flex"
+            justifyContent="center"
+            alignContent="center"
+          >
+            <Typography variant="caption">
+              {notification && notification.length}
+            </Typography>
+          </Box>
         </Box>
       </ListItem>
     );

@@ -137,6 +137,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   contestButton: {
+    marginLeft: '5%',
     height: 60,
     width: 160,
     borderColor: theme.palette.primary.main,

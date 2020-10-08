@@ -11,36 +11,39 @@ import {
 import ContestCardPanelStyles from './ContestCardPanelStyles';
 
 export default function ContestCardPanel(props) {
-  const { contest } = props;
+  const { contest, submitted } = props;
   const classes = ContestCardPanelStyles();
+  let thumbnail;
+  if (submitted) {
+    thumbnail = contest.submissionPic ? contest.submissionPic[0] : ' ';
+  } else {
+    thumbnail = contest.contestPics[0];
+  }
   return (
-    <Grid container justify="center" className={classes.cardGrid}>
+    <Grid
+      container
+      justify="center"
+      className={classes.cardGrid}
+      onClick={() => {
+        console.log('clicked');
+      }}
+    >
       <Grid container item xs={3}>
         <Card className={classes.card}>
-          {contest.contestPics ? (
-            <CardMedia
-              className={classes.media}
-              image={
-                contest.contestPics[0] ||
-                'https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/tattoos/tattoo1.png'
-              } //using Brief pic instead
-              title="hi"
-              height="140"
-            />
-          ) : (
-            <CircularProgress />
-          )}
-
-          {contest.submissions && (
-            <Typography
-              className={classes.cardText}
-              variant="subtitle1"
-              align="center"
-              color="secondary"
-            >
-              {contest.submissions.length} SUBMISSIONS
-            </Typography>
-          )}
+          <CardMedia
+            className={classes.media}
+            image={thumbnail}
+            title="image"
+            height="140"
+          />
+          <Typography
+            className={classes.cardText}
+            variant="subtitle1"
+            align="center"
+            color="secondary"
+          >
+            {!submitted ? `${contest.submissions.length} "SKETCHES` : ''}
+          </Typography>
         </Card>
       </Grid>
       <Grid container item xs={9} className={classes.textGrid}>

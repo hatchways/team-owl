@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useContext } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
+
 import {
   Container,
-  Link,
   Box,
   Typography,
   Button,
@@ -12,12 +12,14 @@ import {
 import useStyles from './GetContestStyles';
 import { ContestContext } from '../../context/ContestContext';
 import Tabs from './Tabs';
+import ConversationContext from '../../context/ConversationContext';
 
 const ViewContest = () => {
   const classes = useStyles();
   const context = useContext(ContestContext);
-
   const { contest } = context.state;
+  const conversationContext = useContext(ConversationContext);
+  const { getNewConversation } = conversationContext;
 
   const params = useParams();
   const history = useHistory();
@@ -36,18 +38,23 @@ const ViewContest = () => {
     history.push(`/contest/${params.id}/winner`);
   };
 
+  const messageMe = (e) => {
+    e.preventDefault();
+    history.push('/messages');
+    getNewConversation(contest.user._id);
+  };
   return (
     <Fragment>
       <Container maxWidth="md">
         <Box className={classes.infoBox}>
           <Container className={classes.innerContainer}>
             <Box mt={6}>
-              <Link m={3} className={classes.navLinks}>
+              <Link to="/" m={3} className={classes.navLinks}>
                 {'<'} Back to list of contests
               </Link>
               <Box mt={4}>
                 <Grid container spacing={4}>
-                  <Grid item xs={8}>
+                  <Grid item xs={5}>
                     <Typography className={classes.subtitle}>
                       {contest.title}&nbsp;&nbsp;&nbsp;&nbsp;
                       <span className={classes.prizeStandout}>
@@ -71,7 +78,15 @@ const ViewContest = () => {
                       </Grid>
                     </Box>
                   </Grid>
-                  <Grid item xs={4} align={'right'}>
+                  <Grid item xs={7} align={'right'}>
+                    <Button
+                      variant={'outlined'}
+                      className={classes.contestButton}
+                      align={'right'}
+                      onClick={(e) => messageMe(e)}
+                    >
+                      Message
+                    </Button>
                     <Button
                       variant={'outlined'}
                       className={classes.contestButton}

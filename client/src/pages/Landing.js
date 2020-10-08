@@ -7,7 +7,6 @@ import {
   CardActionArea,
   Grid,
   Typography,
-  Paper,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import LandingStyles from './LandingStyles';
@@ -130,6 +129,7 @@ export default function Landing() {
                   </Grid>
                 );
               }
+              return '';
             })}
           </Grid>
         </Grid>
@@ -196,6 +196,7 @@ export default function Landing() {
               </Grid>
             );
           }
+          return '';
         })}
       </Grid>
     </Grid>

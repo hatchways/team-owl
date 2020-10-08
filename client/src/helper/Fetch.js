@@ -45,7 +45,8 @@ const signUp = async (name, email, password) => {
   return user.data;
 };
 
-const getContest = async () => {
+// get all contest
+const fetchAllContest = async () => {
   const contests = await axios
     .get(`${server_url}/api/contest`)
     .catch((error) => {
@@ -54,13 +55,53 @@ const getContest = async () => {
   return contests.data;
 };
 
-const getContestsByUser = async (userId) => {
-  const contests = await axios
-    .get(`${server_url}/api/user/${userId}/contests`)
+// GET all contests or submissions by UserId
+const fetchAllContestByUserId = async (userId, token) => {
+  const promise1 = () => {
+    return axios.get(`${server_url}/api/user/${userId}/contests`, {
+      headers: {
+        auth_token: `Bearer ${token}`,
+      },
+    });
+  };
+  const promise2 = () => {
+    return axios.get(`${server_url}/api/user/${userId}/submissions`, {
+      headers: {
+        auth_token: `Bearer ${token}`,
+      },
+    });
+  };
+  const contests = await Promise.all([promise1(), promise2()])
+    .then((response) => {
+      const results = {};
+      results.created = response[0].data;
+      results.submitted = response[1].data;
+      return results;
+    })
+    .then((results) => {
+      return results;
+    })
     .catch((error) => {
       return error.response;
     });
-  return contests.data;
+  return contests;
 };
 
-export { verifyToken, login, signUp, getContest, getContestsByUser };
+// uploadAvatar
+const uploadAvatar = async (form, token, userId) => {
+  const user = await axios.put(`${server_url}/api/user/${userId}`, form, {
+    headers: {
+      auth_token: `Bearer ${token}`,
+    },
+  });
+  return user.data;
+};
+
+export {
+  verifyToken,
+  login,
+  signUp,
+  uploadAvatar,
+  fetchAllContestByUserId,
+  fetchAllContest,
+};

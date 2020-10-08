@@ -18,17 +18,13 @@ export default function Profile() {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    context.getAllContestsByUser();
-  }, []);
-
   return (
     <Grid container direction="column" justify="center" alignContent="center">
       <Grid container item className={classes.grid}>
         <Grid container item justify="center" alignContent="center">
           <Avatar
-            alt="Remy Sharp"
-            src="https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/userAvatar/avatarplaceholder.png"
+            alt="Profile Picture"
+            src={user.avatar}
             className={classes.avatar}
           />
         </Grid>
@@ -59,9 +55,9 @@ export default function Profile() {
               height: '4px',
             },
           }}
+          indicatorColor="primary"
           value={value}
           onChange={handleChange}
-          indicatorColor="primary"
           textColor="primary"
           centered
           variant="fullWidth"
@@ -74,6 +70,7 @@ export default function Profile() {
             value={0}
             index={0}
             contests={contests.created}
+            submitted={false}
             Component={ContestCardPanel}
           />
         ) : (
@@ -81,6 +78,7 @@ export default function Profile() {
             value={1}
             index={1}
             contests={contests.submitted}
+            submitted={true}
             Component={ContestCardPanel}
           />
         )}

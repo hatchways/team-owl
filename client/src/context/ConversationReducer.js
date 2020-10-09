@@ -1,27 +1,22 @@
 export const ConversationReducer = (state, { type, payload }) => {
-  const findAndAddNotification = (state, payload) => {
-    const { id, message } = payload;
-    const newState = state.allConversations;
-    const newAllConversation = newState.map((conversation) => {
-      if (conversation._id === id) {
-        conversation.notification
-          ? conversation.notification.push(message)
-          : (conversation.notification = [message]);
-      }
-      return conversation;
-    });
-    return { ...state, allConversations: newAllConversation };
+  const addNotification = (state, payload) => {
+    const { conversationId } = payload;
+    const newState = state.notifications;
+    if (newState.messages[conversationId]) {
+      newState.messages[conversationId].push(payload);
+    } else {
+      newState.messages[conversationId] = [payload];
+    }
+    return { ...state, notifications: newState };
   };
 
-  const findAndRemoveNotification = (state, payload) => {
-    const newState = state.allConversations;
-    const newAllConversation = newState.map((conversation) => {
-      if (conversation._id === payload) {
-        conversation.notification && delete conversation.notification;
-      }
-      return conversation;
-    });
-    return { ...state, allConversations: newAllConversation };
+  const removeNotification = (state, payload) => {
+    const { id } = payload;
+    const newState = state.notifications;
+    if (newState.messages[id]) {
+      delete newState.messages[id];
+    }
+    return { ...state, notifications: newState };
   };
 
   const updateOneConversation = (state, payload) => {
@@ -64,14 +59,10 @@ export const ConversationReducer = (state, { type, payload }) => {
         allConversations: [...state.allConversations, payload],
         activeId: payload._id,
       };
-    case 'ADD_MAIN_NOTIFICATION':
-      return {
-        ...state,
-      };
-    case 'ADD_INACTIVE_MESSAGE':
-      return findAndAddNotification(state, payload);
-    case 'REMOVE_INACTIVE_MESSAGE':
-      return findAndRemoveNotification(state, payload);
+    case 'ADD_NOTIFICATION':
+      return addNotification(state, payload);
+    case 'REMOVE_NOTIFICATION':
+      return removeNotification(state, payload);
     default:
       return state;
   }

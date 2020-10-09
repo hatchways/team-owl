@@ -7,7 +7,12 @@ import io from 'socket.io-client';
 const ConversationState = (props) => {
   const [state, dispatch] = useReducer(ConversationReducer, {
     allConversations: [],
+    isLoading: false,
     activeId: '',
+    notifications: {
+      messages: {},
+      others: {},
+    },
   });
   const [socket, setSocket] = useState();
   const ENDPOINT = 'localhost:3001';
@@ -32,27 +37,6 @@ const ConversationState = (props) => {
     };
   }, [token, socket]);
 
-  // get all conversations
-  useEffect(() => {
-    if (token && socket) {
-      const getAllConversations = async () => {
-        socket.emit('getAllConversations', { token }, (conversations) => {
-          if (conversations.length) {
-            dispatch({
-              type: 'SET_ACTIVE_CONVERSATION',
-              payload: conversations[0]._id,
-            });
-            dispatch({
-              type: 'GET_ALL_CONVERSATIONS',
-              payload: conversations,
-            });
-          }
-        });
-      };
-      getAllConversations();
-    }
-  }, [token, socket]);
-
   // join a room
   useEffect(() => {
     if (socket && state.activeId) {
@@ -70,17 +54,17 @@ const ConversationState = (props) => {
         });
       });
       socket.on('notification', (data) => {
-        dispatch({
-          type: 'ADD_INACTIVE_MESSAGE',
-          payload: { id: data.id, message: data.newMessage },
-        });
+        if (data)
+          dispatch({
+            type: 'ADD_NOTIFICATION',
+            payload: data.newMessage,
+          });
       });
     }
   }, [socket]);
 
   // send message
   const sendMessage = (message) => {
-    console.log('sent a message');
     socket.emit('sendMessage', {
       room: state.activeId,
       message,
@@ -111,6 +95,24 @@ const ConversationState = (props) => {
     }
   };
 
+  // get all conversations
+  const getAllConversations = async () => {
+    dispatch({ type: 'IS_LOADING', payload: true });
+    socket.emit('getAllConversations', { token }, (conversations) => {
+      if (conversations.length) {
+        dispatch({
+          type: 'SET_ACTIVE_CONVERSATION',
+          payload: conversations[0]._id,
+        });
+        dispatch({
+          type: 'GET_ALL_CONVERSATIONS',
+          payload: conversations,
+        });
+      }
+      dispatch({ type: 'IS_LOADING', payload: false });
+    });
+  };
+
   // get all the messages from one conversation
   const getOneConversation = async (conversationId) => {
     socket.emit('getOneConversation', conversationId, (oneConversation) => {
@@ -123,8 +125,8 @@ const ConversationState = (props) => {
         payload: oneConversation._id,
       });
       dispatch({
-        type: 'REMOVE_INACTIVE_MESSAGE',
-        payload: conversationId,
+        type: 'REMOVE_NOTIFICATION',
+        payload: { id: conversationId },
       });
     });
     socket.emit('leave', state.activeId);
@@ -138,6 +140,7 @@ const ConversationState = (props) => {
         sendMessage,
         getNewConversation,
         getOneConversation,
+        getAllConversations,
         dispatch,
       }}
     >

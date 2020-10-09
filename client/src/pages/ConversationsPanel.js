@@ -17,6 +17,7 @@ export default function Conversations({
   conversations,
   activeConversation,
   getOneConversation,
+  allNotifications,
 }) {
   const classes = UseConversationsPanelStyles();
 
@@ -27,12 +28,11 @@ export default function Conversations({
   const jsx = conversations.map((conversation, i) => {
     const active = activeConversation._id === conversation._id;
     const { messages } = conversation;
-    const notification = conversation.notification || '';
+    const notifications = allNotifications.messages[conversation._id];
     let lastMessage;
 
-    if (notification) {
-      lastMessage =
-        conversation.notification[conversation.notification.length - 1];
+    if (notifications) {
+      lastMessage = notifications[notifications.length - 1];
     } else {
       lastMessage = messages[messages.length - 1];
     }
@@ -52,12 +52,12 @@ export default function Conversations({
         </ListItemAvatar>
         <ListItemText
           className={classes.listText}
-          primary={notification ? <b>{participant.name}</b> : participant.name}
+          primary={notifications ? <b>{participant.name}</b> : participant.name}
           secondary={
             <Typography
               component="span"
               variant="caption"
-              color={notification ? 'textPrimary' : 'textSecondary'}
+              color={notifications ? 'textPrimary' : 'textSecondary'}
             >
               {lastMessage.message.substr(0, 20) || ''}
             </Typography>
@@ -70,7 +70,7 @@ export default function Conversations({
               : format(parseISO(lastMessage.sent), 'dd/MM')}
           </Typography>
           <Box
-            bgcolor={notification && 'primary.main'}
+            bgcolor={notifications && 'primary.main'}
             borderRadius="25px"
             height="1.25rem"
             width="1.25rem"
@@ -80,7 +80,7 @@ export default function Conversations({
             alignContent="center"
           >
             <Typography variant="caption">
-              {notification && notification.length}
+              {notifications && notifications.length}
             </Typography>
           </Box>
         </Box>

@@ -4,27 +4,25 @@ import UserContext from '../context/UserContext';
 import {
   AppBar,
   Avatar,
+  Badge,
   IconButton,
   Toolbar,
   Typography,
   Button,
   Grid,
 } from '@material-ui/core';
-import useNavCss from './NavStyles';
+import useNavStyles from './NavStyles';
+import Notifications from './Notifications';
 
 export default function Nav() {
   const [isProfile, setIsProfile] = useState(false);
   const context = useContext(UserContext);
-  const classes = useNavCss();
   const { user } = context.state;
+  const classes = useNavStyles();
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === '/profile') {
-      setIsProfile(true);
-    } else {
-      setIsProfile(false);
-    }
+    setIsProfile(location.pathname === '/profile');
   }, [location]);
   return (
     <>
@@ -43,7 +41,7 @@ export default function Nav() {
                     component={Link}
                     to="/contest"
                     size="large"
-                    color="primary"
+                    color="secondary"
                     className={classes.button}
                     disableRipple
                   >
@@ -55,7 +53,7 @@ export default function Nav() {
                     component={Link}
                     to="/messages"
                     size="large"
-                    color="primary"
+                    color="secondary"
                     className={classes.button}
                     disableRipple
                   >
@@ -63,18 +61,7 @@ export default function Nav() {
                       Messages
                     </Typography>
                   </Button>
-                  <Button
-                    component={Link}
-                    to=""
-                    size="large"
-                    color="primary"
-                    className={classes.button}
-                    disableRipple
-                  >
-                    <Typography variant="button" className={classes.buttonText}>
-                      Notification
-                    </Typography>
-                  </Button>
+                  <Notifications />
                   {!isProfile ? (
                     <IconButton
                       component={Link}
@@ -92,7 +79,7 @@ export default function Nav() {
                       to="/"
                       size="large"
                       variant="outlined"
-                      color="primary"
+                      color="secondary"
                       className={classes.button}
                       disableRipple
                     >
@@ -107,7 +94,7 @@ export default function Nav() {
                     to="/login"
                     size="large"
                     variant="outlined"
-                    color="primary"
+                    color="secondary"
                     className={classes.button}
                   >
                     <Typography variant="button">Login</Typography>
@@ -117,7 +104,7 @@ export default function Nav() {
                     to="/signup"
                     size="large"
                     variant="outlined"
-                    color="primary"
+                    color="secondary"
                     className={classes.button}
                   >
                     <Typography variant="button">Signup</Typography>

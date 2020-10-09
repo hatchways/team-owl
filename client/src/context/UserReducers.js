@@ -39,7 +39,6 @@ export const userReducer = (state, { type, payload }) => {
       return {
         ...state,
         allContests: payload.contests,
-        isLoading: false,
       };
     case 'USER_CONTESTS':
       return {

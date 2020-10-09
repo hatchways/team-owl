@@ -20,6 +20,7 @@ import Messages from './pages/Messages';
 
 const App = () => {
   const context = useContext(UserContext);
+
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />

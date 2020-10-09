@@ -16,7 +16,6 @@ const useNavStyles = makeStyles(() => ({
   button: {
     borderColor: 'white',
     marginLeft: '5%',
-    color: '#f4f4f4',
   },
   buttonText: {
     textTransform: 'none',

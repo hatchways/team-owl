@@ -87,7 +87,7 @@ module.exports = function (server) {
 			const { userId } = client.request.user;
 			const { room, message } = data;
 			try {
-				const sender = await User.findOne({ _id: userId });
+				const sender = await User.findOne({ _id: userId }, { password: 0 });
 				const savedMessage = await Conversation.addMessageToConversation(
 					room,
 					message,
@@ -96,7 +96,8 @@ module.exports = function (server) {
 				const participant = savedMessage.participants[0];
 				const participantSocket = allUsers[participant._id];
 				const newMessage = savedMessage.message[0];
-				const id = savedMessage._id;
+				newMessage.senderName = sender.name;
+				newMessage.conversationId = savedMessage._id;
 				const getRoomClients = (room) => {
 					return new Promise((resolve, reject) => {
 						io.of("/")
@@ -109,7 +110,10 @@ module.exports = function (server) {
 				const totalUsers = await getRoomClients(room);
 				if (totalUsers.length === 1) {
 					client.emit("chatmessage", newMessage);
-					io.to(participantSocket).emit("notification", { newMessage, id });
+					io.to(participantSocket).emit("notification", {
+						newMessage,
+						participant,
+					});
 				} else {
 					io.in(room).emit("chatmessage", newMessage);
 				}

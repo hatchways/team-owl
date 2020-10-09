@@ -24,6 +24,7 @@ export default function Nav() {
   useEffect(() => {
     setIsProfile(location.pathname === '/profile');
   }, [location]);
+
   return (
     <>
       <AppBar position="static" className={classes.appBar}>
@@ -31,7 +32,7 @@ export default function Nav() {
           <Grid container>
             <Grid container item xs={3} alignContent="center">
               <Link to="/" className={classes.logo}>
-                <Typography variant="subtitle1">TATTO ART</Typography>
+                <Typography variant="subtitle1">TATTOO ART</Typography>
               </Link>
             </Grid>
             <Grid container item xs={9} justify="flex-end">

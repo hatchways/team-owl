@@ -113,9 +113,9 @@ export default function Landing() {
                         >
                           <CardMedia
                             component="img"
-                            alt="Contemplative Reptile"
+                            alt="Contest Image"
                             image={contest.contestPics[0]}
-                            title="Contemplative Reptile"
+                            title={contest.title}
                             className={classes.img}
                           />
                           <CardContent>
@@ -162,9 +162,9 @@ export default function Landing() {
                     >
                       <CardMedia
                         component="img"
-                        alt="Contemplative Reptile"
+                        alt="Contest Image"
                         image={contest.contestPics[0]}
-                        title="Contemplative Reptile"
+                        title={contest.title}
                         className={classes.img}
                       />
                       <CardContent>

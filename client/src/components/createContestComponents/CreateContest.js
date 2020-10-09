@@ -67,7 +67,7 @@ const CreateContest = () => {
 
       history.push(`/contest/${res.data._id}`);
     } catch (error) {
-      return alertFn('Server error. Please re-try.');
+      return context.alertFn(error.response.data.msg);
     }
   };
 

@@ -1,23 +1,15 @@
 import React, { useReducer, useEffect } from 'react';
 import axios from 'axios';
-
-import UserContext from './UserContext';
+import UserContext from '../context/UserContext';
 import {
   getFromStorage,
   setInStorage,
   removeFromStorage,
 } from '../helper/localStorage';
-import {
-  verifyToken,
-  login,
-  signUp,
-  fetchAllContest,
-  fetchAllContestByUserId,
-  uploadAvatar,
-} from '../helper/Fetch';
+import { verifyToken, login, signUp } from '../helper/Fetch';
 import { userReducer } from './UserReducers';
 
-const UserState = (props) => {
+const GlobalState = (props) => {
   const token = getFromStorage('auth_token');
   const header = { headers: { auth_token: `Bearer ${token}` } };
 
@@ -28,14 +20,45 @@ const UserState = (props) => {
     isLoading: true,
     authed: false,
     contests: {
-      created: [],
-      submitted: [],
+      created: [
+        {
+          title: 'Lion Tatto concept in minimal style',
+          description: 'Looking for cool simplicity ideas for Lion',
+          prize: 150,
+          id: 1,
+          thumbnail: '0de773f98a983912282d4a303e355329d5f592da.png',
+          submissions: Array(26), // just to emulate number of submission until we have actual data
+        },
+        {
+          title: 'Lightning in a bolt',
+          description: 'Looking for an inspirational lightning image ',
+          prize: 300,
+          id: 2,
+          thumbnail: 'c91c45b97085fa64186472d903c1d1ef475d14d1.png',
+          submissions: Array(31), // just to emulate number of submission until we have actual data
+        },
+      ],
+      submitted: [
+        {
+          title: 'Lightning in a bolt',
+          description: 'Looking for an inspirational lightning image ',
+          prize: 500,
+          id: 22,
+          thumbnail: 'c91c45b97085fa64186472d903c1d1ef475d14d1.png',
+        },
+        {
+          title: 'Lion Tatto concept in minimal style',
+          description: 'Looking for cool simplicity ideas for Lion',
+          prize: 900,
+          id: 11,
+          thumbnail: '0de773f98a983912282d4a303e355329d5f592da.png',
+        },
+      ],
     },
     allContests: [],
   });
 
   const handleLogout = () => {
-    dispatch({ type: 'IS_LOADING', payload: true });
     removeFromStorage('auth_token');
     dispatch({ type: 'LOG_OUT' });
   };
@@ -60,7 +83,6 @@ const UserState = (props) => {
   const handleSignUp = async (name, email, password, rePassword) => {
     dispatch({ type: 'IS_LOADING', payload: true });
     if (password !== rePassword) {
-      console.log('password');
       dispatch({
         type: 'TOAST',
         payload: { open: true, message: 'Passwords Do not Match' },
@@ -68,68 +90,33 @@ const UserState = (props) => {
       return;
     }
     let user = await signUp(name, email, password);
-    if (user.user.name) {
+    if (user.name) {
       handleLogin(email, password);
     } else {
       dispatch({ type: 'TOAST', payload: { open: true, message: user.msg } });
     }
   };
 
-  // change the profile avatar
-  const changeAvatar = async (file) => {
-    dispatch({ type: 'IS_LOADING', payload: true });
-    const formData = new FormData();
-    formData.append('avatar', file);
-    const user = await uploadAvatar(formData, state.token, state.user._id);
-    if (user) {
+  const checkLogin = async () => {
+    let token = getFromStorage('auth_token') || '';
+    const user = await verifyToken(token);
+    if (!user.msg) {
       dispatch({
-        type: 'UPDATE_USER',
-        payload: user,
-      });
-      dispatch({
-        type: 'TOAST',
-        payload: { open: true, message: 'Upload Succesfull', isLoading: false },
+        type: 'VERIFY_TOKEN',
+        payload: { token, user: user, isLoading: false },
       });
     } else {
-      dispatch({
-        type: 'TOAST',
-        payload: { open: true, message: user.msg, isLoading: false },
-      });
+      dispatch({ type: 'IS_LOADING', payload: false });
     }
   };
 
-  // get all contest
-  useEffect(() => {
-    dispatch({ type: 'IS_LOADING', payload: true });
-    const getAllContests = async () => {
-      const contests = await fetchAllContest();
-      contests && dispatch({ type: 'ALL_CONTESTS', payload: { contests } });
-    };
-
-    const checkLogin = async () => {
-      let token = getFromStorage('auth_token') || '';
-      if (token) {
-        const user = await verifyToken(token);
-        if (!user.msg) {
-          dispatch({
-            type: 'VERIFY_TOKEN',
-            payload: { token, user: user, isLoading: false },
-          });
-        } else {
-          dispatch({ type: 'IS_LOADING', payload: false });
-        }
-      }
-    };
-
-    checkLogin();
-    getAllContests();
-  }, []);
-
   const createCustomer = async () => {
     try {
-      await verifyToken(token);
+      console.log('create cus running');
+      const user = await verifyToken(token);
       const res = await axios.post('/api/v1/customers', null, header);
       const data = res.data;
+      console.log(user);
       dispatch({
         type: 'CREATE_STRIPE_CREDIT_ACCOUNT',
         payload: { user: data, isLoading: false },
@@ -141,9 +128,11 @@ const UserState = (props) => {
 
   const createAccount = async () => {
     try {
-      await verifyToken(token);
+      console.log('create acct running');
+      const user = await verifyToken(token);
       const res = await axios.post('/api/v1/accounts', null, header);
       const acctData = res.data;
+      console.log(user);
       dispatch({
         type: 'CREATE_STRIPE_BANK_ACCOUNT',
         payload: { user: acctData, isLoading: false },
@@ -153,21 +142,9 @@ const UserState = (props) => {
     }
   };
 
-  // get all contests and submission by userID
   useEffect(() => {
-    if (state.user && state.user._id && state.token) {
-      const getAllContestByUserId = async () => {
-        const contests = await fetchAllContestByUserId(
-          state.user._id,
-          state.token
-        );
-        if (contests) {
-          dispatch({ type: 'USER_CONTESTS', payload: contests });
-        }
-      };
-      getAllContestByUserId();
-    }
-  }, [state.user, state.token]);
+    checkLogin();
+  }, []);
 
   return (
     <UserContext.Provider
@@ -176,7 +153,7 @@ const UserState = (props) => {
         handleLogout,
         handleLogin,
         handleSignUp,
-        changeAvatar,
+        verifyToken,
         createCustomer,
         createAccount,
       }}
@@ -186,4 +163,4 @@ const UserState = (props) => {
   );
 };
 
-export default UserState;
+export default GlobalState;

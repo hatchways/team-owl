@@ -1,6 +1,5 @@
-import React, { Fragment, useEffect, useContext } from 'react';
+import React, { Fragment, useEffect, useContext, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
-
 import {
   Container,
   Box,
@@ -13,6 +12,7 @@ import useStyles from './GetContestStyles';
 import { ContestContext } from '../../context/ContestContext';
 import Tabs from './Tabs';
 import ConversationContext from '../../context/ConversationContext';
+import { convertMS } from '../../helper/CountDown';
 
 const ViewContest = () => {
   const classes = useStyles();
@@ -21,8 +21,21 @@ const ViewContest = () => {
   const conversationContext = useContext(ConversationContext);
   const { getNewConversation } = conversationContext;
 
+  const dateNow = Date.now();
+
+  const [date, setDate] = useState(dateNow);
+
+  const deadlineJS = new Date(contest.deadline);
+  const deadlineEpoch = deadlineJS.getTime();
+  const timeTilDeadlineEpoch = deadlineEpoch - date;
+  const countDown = convertMS(timeTilDeadlineEpoch);
+
   const params = useParams();
   const history = useHistory();
+
+  setTimeout(() => {
+    setDate(dateNow);
+  }, 1000);
 
   useEffect(() => {
     context.getContestById(params.id);
@@ -31,11 +44,6 @@ const ViewContest = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     history.push(`/contest/${params.id}/submission`);
-  };
-
-  const chooseWinner = (e) => {
-    e.preventDefault();
-    history.push(`/contest/${params.id}/winner`);
   };
 
   const messageMe = (e) => {
@@ -87,30 +95,30 @@ const ViewContest = () => {
                     >
                       Message
                     </Button>
-                    <Button
-                      variant={'outlined'}
-                      className={classes.contestButton}
-                      align={'right'}
-                      onClick={(e) => onSubmit(e)}
-                    >
-                      Submit Design
-                    </Button>
+                    {deadlineEpoch > dateNow ? (
+                      <Button
+                        variant={'outlined'}
+                        className={classes.contestButton}
+                        align={'right'}
+                        onClick={(e) => onSubmit(e)}
+                      >
+                        Submit Design
+                      </Button>
+                    ) : null}
                   </Grid>
                 </Grid>
               </Box>
             </Box>
             <Box mt={4}>
-              <Typography>Time to Deadline: pending</Typography>
+              {deadlineEpoch > dateNow ? (
+                <Typography>
+                  Time to Deadline: {countDown ? countDown : null}
+                </Typography>
+              ) : (
+                <Typography>Deadline Passed</Typography>
+              )}
             </Box>
             <Tabs contestData={contest} />
-            <Button
-              variant={'outlined'}
-              className={classes.contestButton}
-              align={'right'}
-              onClick={(e) => chooseWinner(e)}
-            >
-              Choose Winner
-            </Button>
           </Container>
         </Box>
       </Container>

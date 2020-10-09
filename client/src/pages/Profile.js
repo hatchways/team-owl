@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar, Grid, Button, Tabs, Tab, Typography } from '@material-ui/core';
 import TabPanel from '../components/TabPanel';

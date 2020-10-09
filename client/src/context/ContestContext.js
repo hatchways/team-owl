@@ -15,7 +15,7 @@ export const ContestContextProvider = ({ children }) => {
   const [prize, setPrize] = useState(100);
   //TattoosGrid
   const [pics, setPics] = useState([]);
-  //slect winner
+  //select winner
   const [winningSub, setWinningSub] = useState('Not chosen');
   //Snackbar
   const [state, dispatch] = useReducer(contestReducer, {
@@ -26,10 +26,15 @@ export const ContestContextProvider = ({ children }) => {
 
   const token = getFromStorage('auth_token');
 
-  const alertFn = (message) => {
+  const alertFn = (message, severity) => {
     dispatch({
       type: 'TOAST',
-      payload: { open: true, message: message, isLoading: false },
+      payload: {
+        open: true,
+        message: message,
+        severity: severity,
+        isLoading: false,
+      },
     });
   };
 

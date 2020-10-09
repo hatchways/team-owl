@@ -33,17 +33,18 @@ const CreateContest = () => {
       contestPics.length < 1
     ) {
       return alertFn(
-        'Please complete all fields and select at least one image.'
+        'Please complete all fields and select at least one image.',
+        'warning'
       );
     }
 
     if (typeof prize !== 'number') {
-      return alertFn('Prize must be a number.');
+      return alertFn('Prize must be a number.', 'warning');
     }
 
     const date = Date.now();
     if (deadline < date) {
-      return alertFn('Please pick a date and time in the future.');
+      return alertFn('Please pick a date and time in the future.', 'warning');
     }
 
     const token = getFromStorage('auth_token');

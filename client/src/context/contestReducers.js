@@ -8,6 +8,7 @@ export const contestReducer = (state, { type, payload }) => {
         toast: {
           open: payload.open,
           message: payload.message,
+          severity: payload.severity,
         },
         isLoading: false,
       };

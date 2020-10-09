@@ -100,7 +100,6 @@ const UserState = (props) => {
 
   // get all contest
   useEffect(() => {
-    dispatch({ type: 'IS_LOADING', payload: true });
     const getAllContests = async () => {
       const contests = await fetchAllContest();
       contests && dispatch({ type: 'ALL_CONTESTS', payload: { contests } });

@@ -183,7 +183,7 @@ export default function Landing() {
                   <CardActions>
                     <Box ml={1} color="secondary.dark" width="50%">
                       <Typography variant="subtitle2">
-                        By {contest.user.name}
+                        By {contest.user && contest.user.name}
                       </Typography>
                     </Box>
                     <Box mr={1} align="right" width="50%">

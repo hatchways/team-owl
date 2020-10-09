@@ -27,6 +27,15 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  stripeBankAcct: {
+    type: Object,
+  },
+  stripeCreditCustomer: {
+    type: Object,
+  },
+  paymentMethodArray: {
+    type: Array,
+  },
 });
 
 const User = mongoose.model('User', UserSchema);

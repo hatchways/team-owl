@@ -17,11 +17,15 @@ const SubmissionSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   submissionPic: {
     type: Array,
     required: true,
+  },
+  winner: {
+    type: Boolean,
+    default: false,
   },
 });
 

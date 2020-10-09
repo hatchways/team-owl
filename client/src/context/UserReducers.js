@@ -61,6 +61,18 @@ export const userReducer = (state, { type, payload }) => {
         },
         isLoading: false,
       };
+    case 'CREATE_STRIPE_CREDIT_ACCOUNT':
+      return {
+        ...state,
+        user: payload.user,
+        isLoading: false,
+      };
+    case 'CREATE_STRIPE_BANK_ACCOUNT':
+      return {
+        ...state,
+        user: payload.user,
+        isLoading: false,
+      };
     default:
       return state;
   }

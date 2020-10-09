@@ -15,6 +15,8 @@ export const ContestContextProvider = ({ children }) => {
   const [prize, setPrize] = useState(100);
   //TattoosGrid
   const [pics, setPics] = useState([]);
+  //slect winner
+  const [winningSub, setWinningSub] = useState('Not chosen');
   //Snackbar
   const [state, dispatch] = useReducer(contestReducer, {
     toast: { open: false, message: '' },
@@ -49,16 +51,6 @@ export const ContestContextProvider = ({ children }) => {
       });
   };
 
-  // const getAllContestsByUser = async () => {
-  //   console.log('get all contests');
-  //   let token = getFromStorage('auth_token') || '';
-  //   const user = await verifyToken(token);
-  //   const contests = await getContestsByUser(user._id);
-  //   //console.log(contests);
-  //   contests &&
-  //     dispatch({ type: 'ALL_CONTESTS_BY_USER', payload: { contests } });
-  // };
-
   return (
     <ContestContext.Provider
       value={{
@@ -68,6 +60,7 @@ export const ContestContextProvider = ({ children }) => {
         prize,
         pics,
         state,
+        winningSub,
         setTitle,
         setDescription,
         setSelectedDate,
@@ -76,6 +69,7 @@ export const ContestContextProvider = ({ children }) => {
         alertFn,
         dispatch,
         getContestById,
+        setWinningSub,
       }}
     >
       {children}

@@ -8,6 +8,12 @@ const PaymentsStyles = makeStyles((theme) => ({
     textAlign: 'left',
     padding: '2% 0',
   },
+
+  stripeLogo: {
+    width: 220,
+    height: 100,
+    cursor: 'pointer',
+  },
 }));
 
 export default PaymentsStyles;

@@ -11,14 +11,3 @@ const convertMS = (ms) => {
 };
 
 export { convertMS };
-
-// const [date, setDate] = useState(dateNow);
-
-// setTimeout(() => {
-//   setDate(dateNow);
-// }, 1000);
-
-// const deadlineJS = new Date(data.deadline);
-// const deadlineEpoch = deadlineJS.getTime();
-// const timeTilDeadlineEpoch = deadlineEpoch - date;
-// const countDown = convertMS(timeTilDeadlineEpoch);

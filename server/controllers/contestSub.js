@@ -1,5 +1,4 @@
 const Contest = require('../models/Contest');
-const User = require('../models/User');
 const Submissions = require('../models/Submission');
 
 //GET - All one submitter's submissions under a contest Id - auth

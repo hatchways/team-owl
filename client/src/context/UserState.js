@@ -125,11 +125,9 @@ const UserState = (props) => {
 
   const createCustomer = async () => {
     try {
-      console.log('create cus running');
-      const user = await verifyToken(token);
+      await verifyToken(token);
       const res = await axios.post('/api/v1/customers', null, header);
       const data = res.data;
-      console.log(user);
       dispatch({
         type: 'CREATE_STRIPE_CREDIT_ACCOUNT',
         payload: { user: data, isLoading: false },
@@ -141,11 +139,9 @@ const UserState = (props) => {
 
   const createAccount = async () => {
     try {
-      console.log('create acct running');
-      const user = await verifyToken(token);
+      await verifyToken(token);
       const res = await axios.post('/api/v1/accounts', null, header);
       const acctData = res.data;
-      console.log(user);
       dispatch({
         type: 'CREATE_STRIPE_BANK_ACCOUNT',
         payload: { user: acctData, isLoading: false },

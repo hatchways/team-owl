@@ -10,7 +10,9 @@ exports.createSubmission = async (req, res, next) => {
   req.params.id = req.id;
   try {
     const contest = await Contest.findOne({ _id: req.params.id });
-    const user = await User.findOne({ _id: req.user.userId });
+    const user = await User.findOne({ _id: req.user.userId }).select(
+      '-password'
+    );
 
     if (!user.stripeBankAcct) {
       return res

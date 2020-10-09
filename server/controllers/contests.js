@@ -8,7 +8,9 @@ exports.createContest = async (req, res, next) => {
   const { title, description, prize, deadline, contestPics } = req.body;
 
   try {
-    const user = await User.findOne({ _id: req.user.userId });
+    const user = await User.findOne({ _id: req.user.userId }).select(
+      '-password'
+    );
 
     if (!user.stripeCreditCustomer) {
       return res

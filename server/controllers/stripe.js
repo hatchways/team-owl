@@ -7,7 +7,9 @@ const url = process.env.CLIENT_DOMAIN;
 //POST - create Connected account
 exports.createConnectedAccount = async (req, res, next) => {
   try {
-    const user = await User.findOne({ _id: req.user.userId });
+    const user = await User.findOne({ _id: req.user.userId }).select(
+      '-password'
+    );
     if (!user.stripeBankAcct) {
       const account = await stripe.accounts.create({
         type: 'express',
@@ -25,7 +27,9 @@ exports.createConnectedAccount = async (req, res, next) => {
 //POST - create connected account LINK
 exports.createConnectedAccountLinks = async (req, res, next) => {
   try {
-    const user = await User.findOne({ _id: req.user.userId });
+    const user = await User.findOne({ _id: req.user.userId }).select(
+      '-password'
+    );
     const accountId = user.stripeBankAcct.id;
     const accountLinks = await stripe.accountLinks.create({
       account: accountId,
@@ -83,9 +87,13 @@ exports.createPaymentIntent = async (req, res, next) => {
   const { amount, winnerId } = req.body;
 
   try {
-    const winnerUser = await User.findOne({ _id: winnerId });
+    const winnerUser = await User.findOne({ _id: winnerId }).select(
+      '-password'
+    );
     const destinationAcct = winnerUser.stripeBankAcct.id;
-    const user = await User.findOne({ _id: req.user.userId });
+    const user = await User.findOne({ _id: req.user.userId }).select(
+      '-password'
+    );
     const customerId = user.stripeCreditCustomer.id;
     const paymentMethodId = user.paymentMethodArray[0].id;
     const grossAmount = (amount * 100 + 30) * 1.029;
@@ -138,9 +146,13 @@ exports.getPaymentIntentSecretById = async (req, res, next) => {
 //POST - create Stripe customer for loggedin user
 exports.createCustomer = async (req, res, next) => {
   try {
-    const user = await User.findOne({ _id: req.user.userId });
+    const user = await User.findOne({ _id: req.user.userId }).select(
+      '-password'
+    );
     if (!user.stripeCreditCustomer) {
-      const customer = await stripe.customers.create();
+      const customer = await stripe.customers.create({
+        email: user.email,
+      });
       user.stripeCreditCustomer = customer;
       user.save();
     }
@@ -182,7 +194,9 @@ exports.getAllCustomers = async (req, res, next) => {
 //POST - create setupIntent
 exports.createSetupIntent = async (req, res, next) => {
   try {
-    const user = await User.findOne({ _id: req.user.userId });
+    const user = await User.findOne({ _id: req.user.userId }).select(
+      '-password'
+    );
     const setupIntent = await stripe.setupIntents.create({
       customer: user.stripeCreditCustomer.id,
     });
@@ -263,7 +277,9 @@ exports.attachPaymentMethodById = async (req, res, next) => {
   const data = req.body;
 
   try {
-    const user = await User.findOne({ _id: req.user.userId });
+    const user = await User.findOne({ _id: req.user.userId }).select(
+      '-password'
+    );
     const customer = await stripe.customers.retrieve(customerId);
     const paymentMethod = await stripe.paymentMethods.attach(
       data.payment_method,
@@ -271,7 +287,6 @@ exports.attachPaymentMethodById = async (req, res, next) => {
     );
     user.paymentMethodArray.push(paymentMethod);
     user.save();
-    console.log(customer);
     res.status(200).json(customer);
   } catch (error) {
     console.error(error.message);

@@ -6,6 +6,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import { getFromStorage } from '../helper/localStorage';
 import UserContext from '../context/UserContext';
+import useStyles from './PaymentsStyles';
 
 const stripePromise = loadStripe(
   'pk_test_51HWWbQFRhp1apXIhIWnE2plaQLEcE2x9d6lGrAMYZIcQ8aQRuhjnRevRtIeCobxESbJ7P8NWetaeHVEgE3AiGAAO009C2IawZi'
@@ -16,13 +17,13 @@ export default function Payments() {
   const header = { headers: { auth_token: `Bearer ${token}` } };
 
   const context = useContext(UserContext);
-  const { user } = context.state;
 
   const [intentData, setIntentData] = useState({});
-  const [acctLinks, setAcctLinks] = useState('');
   const [display, setDisplay] = useState('none');
   const [bankDisplay, setBankDisplay] = useState('none');
   const [reload, setReload] = useState(false);
+
+  const classes = useStyles();
 
   const createIntent = async (e) => {
     e.preventDefault();
@@ -48,7 +49,6 @@ export default function Payments() {
     try {
       const res = await axios.post('/api/v1/account_links', null, header);
       const data = res.data;
-      setAcctLinks(data);
       window.open(data.url);
     } catch (error) {
       return console.error(error.message);
@@ -58,8 +58,6 @@ export default function Payments() {
   useEffect(() => {
     context.createCustomer();
   }, []);
-
-  console.log(user);
 
   return (
     <div>
@@ -89,15 +87,20 @@ export default function Payments() {
         <Box pb={2} pt={1}>
           <Grid>
             <Button variant="contained" color="primary" onClick={refresh}>
-              Setup up Bank Record
+              Setup up Bank Record With Stripe!
             </Button>
           </Grid>
         </Box>
         <Box pb={2} pt={1} display={bankDisplay}>
           <Grid>
-            <Button variant="contained" color="primary" onClick={accountLink}>
-              Leave Site to go to Stripe
-            </Button>
+            <img
+              onClick={accountLink}
+              alt="stripe-logo"
+              className={classes.stripeLogo}
+              src={
+                'https://team-owl-tattoo.s3.ca-central-1.amazonaws.com/stripe/Stripe+wordmark+-+blurple_sm.png'
+              }
+            ></img>
           </Grid>
         </Box>
       </Box>

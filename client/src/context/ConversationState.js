@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 const ConversationState = (props) => {
   const [state, dispatch] = useReducer(ConversationReducer, {
     allConversations: [],
-    isLoading: false,
+    isLoading: true,
     activeId: '',
     notifications: {
       messages: {},
@@ -71,33 +71,8 @@ const ConversationState = (props) => {
     });
   };
 
-  // initiate new conversation or if present get the old one.
-  const getNewConversation = async (participant) => {
-    if (participant === user._id) return;
-    const oldConversation = await state.allConversations.filter(
-      (conversation) => participant === conversation.participants[0]._id,
-    );
-    if (oldConversation.length) {
-      dispatch({
-        type: 'SET_ACTIVE_CONVERSATION',
-        payload: oldConversation[0]._id,
-      });
-    } else {
-      socket.emit('startConversation', { participant }, (newConversation) => {
-        console.log(newConversation[0]);
-        if (newConversation) {
-          dispatch({
-            type: 'ADD_NEW_CONVERSATION',
-            payload: newConversation[0],
-          });
-        }
-      });
-    }
-  };
-
   // get all conversations
   const getAllConversations = async () => {
-    dispatch({ type: 'IS_LOADING', payload: true });
     socket.emit('getAllConversations', { token }, (conversations) => {
       if (conversations.length) {
         dispatch({
@@ -109,8 +84,31 @@ const ConversationState = (props) => {
           payload: conversations,
         });
       }
-      dispatch({ type: 'IS_LOADING', payload: false });
+      dispatch({ type: 'IS_LOADING', payloadL: false });
     });
+  };
+
+  // initiate new conversation or if present get the old one.
+  const getNewConversation = async (participant) => {
+    if (participant === user._id) return;
+    const oldConversation = await state.allConversations.filter(
+      (conversation) => participant === conversation.participants[0]._id,
+    );
+    if (oldConversation[0]) {
+      dispatch({
+        type: 'SET_ACTIVE_CONVERSATION',
+        payload: oldConversation[0]._id,
+      });
+    } else {
+      socket.emit('startConversation', { participant }, (newConversation) => {
+        if (newConversation) {
+          dispatch({
+            type: 'ADD_NEW_CONVERSATION',
+            payload: newConversation[0],
+          });
+        }
+      });
+    }
   };
 
   // get all the messages from one conversation
@@ -132,6 +130,16 @@ const ConversationState = (props) => {
     socket.emit('leave', state.activeId);
   };
 
+  const leaveRoom = () => {
+    if (socket) {
+      socket.emit('leave', state.activeId);
+      dispatch({
+        type: 'SET_ACTIVE_CONVERSATION',
+        payload: '',
+      });
+    }
+  };
+
   return (
     <ConversationContext.Provider
       value={{
@@ -141,6 +149,7 @@ const ConversationState = (props) => {
         getNewConversation,
         getOneConversation,
         getAllConversations,
+        leaveRoom,
         dispatch,
       }}
     >

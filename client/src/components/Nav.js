@@ -4,7 +4,6 @@ import UserContext from '../context/UserContext';
 import {
   AppBar,
   Avatar,
-  Badge,
   IconButton,
   Toolbar,
   Typography,

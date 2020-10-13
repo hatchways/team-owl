@@ -96,11 +96,11 @@ exports.loginUser = async (req, res, next) => {
     }
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ msg: 'Email invalid' });
+      return res.status(400).json({ msg: 'Email or Password invalid' });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ msg: 'Password invalid' });
+      return res.status(400).json({ msg: 'Email or Password invalid' });
     }
     const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET_KEY);
     const result = {

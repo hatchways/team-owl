@@ -16,21 +16,24 @@ export default function Messages() {
     dispatch,
     getOneConversation,
     getAllConversations,
-    isLoading,
+    leaveRoom,
   } = context;
   const { allConversations, activeId, notifications } = state;
   const activeConversation = allConversations.filter((conversation) => {
-    if (conversation._id === activeId) return conversation;
+    return conversation._id === activeId ? conversation : '';
   });
 
   useEffect(() => {
     if (socket) {
       getAllConversations();
     }
+    return () => {
+      leaveRoom();
+    };
   }, [socket]);
   return (
     <Grid container className={classes.messageGrid}>
-      {context.state.isLoading ? (
+      {state.isLoading ? (
         <IsLoading />
       ) : activeConversation[0] ? (
         <>
@@ -49,11 +52,11 @@ export default function Messages() {
       ) : (
         <Grid container justify="center" alignContent="center">
           <Typography variant="h5" display="block">
-            No Conversations
+            {/* No Conversations */}
           </Typography>
           <Box width="100%" textAlign="center">
             <Typography variant="subtitle2" color="textSecondary">
-              Explore contests to start talking with any contest holders.
+              {/* Explore contests to start talking with any contest holders. */}
             </Typography>
           </Box>
         </Grid>

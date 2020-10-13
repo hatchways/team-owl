@@ -34,12 +34,14 @@ const UserState = (props) => {
     allContests: [],
   });
 
+  // LOGOUT
   const handleLogout = () => {
     dispatch({ type: 'IS_LOADING', payload: true });
     removeFromStorage('auth_token');
     dispatch({ type: 'LOG_OUT' });
   };
 
+  // LOGIN
   const handleLogin = async (email, password) => {
     dispatch({ type: 'IS_LOADING', payload: true });
     const user = await login(email, password);
@@ -57,6 +59,7 @@ const UserState = (props) => {
     }
   };
 
+  // SIGN_UP
   const handleSignUp = async (name, email, password, rePassword) => {
     dispatch({ type: 'IS_LOADING', payload: true });
     if (password !== rePassword) {
@@ -86,28 +89,13 @@ const UserState = (props) => {
         type: 'UPDATE_USER',
         payload: user,
       });
-      dispatch({
-        type: 'TOAST',
-        payload: { open: true, message: 'Upload Succesfull', isLoading: false },
-      });
-    } else {
-      dispatch({
-        type: 'TOAST',
-        payload: { open: true, message: user.msg, isLoading: false },
-      });
     }
   };
 
   // get all contest
   useEffect(() => {
-    dispatch({ type: 'IS_LOADING', payload: true });
-    const getAllContests = async () => {
-      const contests = await fetchAllContest();
-      contests && dispatch({ type: 'ALL_CONTESTS', payload: { contests } });
-    };
-
     const checkLogin = async () => {
-      let token = getFromStorage('auth_token') || '';
+      let token = getFromStorage('auth_token');
       if (token) {
         const user = await verifyToken(token);
         if (!user.msg) {
@@ -118,13 +106,35 @@ const UserState = (props) => {
         } else {
           dispatch({ type: 'IS_LOADING', payload: false });
         }
+      } else {
+        dispatch({ type: 'IS_LOADING', payload: false });
       }
     };
-
+    const getAllContests = async () => {
+      const contests = await fetchAllContest();
+      contests && dispatch({ type: 'ALL_CONTESTS', payload: { contests } });
+    };
     checkLogin();
     getAllContests();
   }, []);
 
+  // get all contests and submission by userID
+  useEffect(() => {
+    if (state.user && state.user._id && state.token) {
+      const getAllContestByUserId = async () => {
+        const contests = await fetchAllContestByUserId(
+          state.user._id,
+          state.token,
+        );
+        if (contests) {
+          dispatch({ type: 'USER_CONTESTS', payload: contests });
+        }
+      };
+      getAllContestByUserId();
+    }
+  }, [state.user, state.token]);
+
+  // Stripe credit card account creation
   const createCustomer = async () => {
     try {
       await verifyToken(token);
@@ -139,6 +149,7 @@ const UserState = (props) => {
     }
   };
 
+  // stripe bank account creation
   const createAccount = async () => {
     try {
       await verifyToken(token);
@@ -152,23 +163,6 @@ const UserState = (props) => {
       return console.error(error.message);
     }
   };
-
-  // get all contests and submission by userID
-  useEffect(() => {
-    if (state.user && state.user._id && state.token) {
-      const getAllContestByUserId = async () => {
-        const contests = await fetchAllContestByUserId(
-          state.user._id,
-          state.token
-        );
-        if (contests) {
-          dispatch({ type: 'USER_CONTESTS', payload: contests });
-        }
-      };
-      getAllContestByUserId();
-    }
-  }, [state.user, state.token]);
-
   return (
     <UserContext.Provider
       value={{

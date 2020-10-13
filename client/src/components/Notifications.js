@@ -6,7 +6,6 @@ import {
   MenuItem,
   Typography,
   Button,
-  Grid,
 } from '@material-ui/core';
 import useNotificationsStyles from './NotificationsStyles';
 import conversationContext from '../context/ConversationContext';

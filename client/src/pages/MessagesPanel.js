@@ -55,7 +55,7 @@ export default function MessagePanel({ sendMessage, activeConversation }) {
             <Typography variant="subtitle2">{message.message}</Typography>
             <Box fontSize="0.5rem" color="secondary.dark" align="right">
               {isToday(parseISO(message.sent))
-                ? format(parseISO(message.sent), 'HH:MM')
+                ? format(parseISO(message.sent), 'HH:mm')
                 : format(parseISO(message.sent), 'dd/MM/yy hh a')}
             </Box>
           </Box>

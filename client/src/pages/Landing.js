@@ -68,7 +68,7 @@ export default function Landing() {
                       align="justify"
                     >
                       {allContests[0]
-                        ? allContests[0].description.substr(0, 200)
+                        ? allContests[0].description.substr(0, 100)
                         : ' '}
                     </Typography>
                   </Box>
@@ -103,7 +103,7 @@ export default function Landing() {
                 alignContent="space-between"
               >
                 {allContests.map((contest, i) => {
-                  if (i < 4) {
+                  if (i < 5 && i > 0) {
                     return (
                       <Grid item xs={12} sm={5} md={5} lg={5} key={i}>
                         <CardActionArea
@@ -152,7 +152,7 @@ export default function Landing() {
               </Box>
             </Grid>
             {allContests.map((contest, i) => {
-              if (i > 3) {
+              if (i > 4) {
                 return (
                   <Grid key={i} item xs={12} sm={6} md={4} lg={3}>
                     <CardActionArea

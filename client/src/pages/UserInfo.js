@@ -11,7 +11,6 @@ export default function UserInfo() {
   const { user, contests } = context.state;
 
   const totalCreadted = contests.created.reduce((a, c) => {
-    console.log(a, c.prize);
     if (isPast(parseISO(c.deadline))) {
       return a + c.prize;
     }

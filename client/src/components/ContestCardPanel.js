@@ -8,10 +8,13 @@ import {
   Box,
 } from '@material-ui/core';
 import ContestCardPanelStyles from './ContestCardPanelStyles';
+import { useHistory } from 'react-router-dom';
 
 export default function ContestCardPanel(props) {
   const { contest, submitted } = props;
   const classes = ContestCardPanelStyles();
+  const history = useHistory();
+
   let thumbnail;
   if (submitted) {
     thumbnail = contest.submissions
@@ -20,13 +23,17 @@ export default function ContestCardPanel(props) {
   } else {
     thumbnail = contest.contestPics[0];
   }
+
+  const handleCardClick = (id) => {
+    history.push(`/contest/${id}`);
+  };
   return (
     <Grid
       container
       justify="center"
       className={classes.cardGrid}
       onClick={() => {
-        console.log('clicked');
+        handleCardClick(contest._id);
       }}
     >
       <Grid container item xs={3}>

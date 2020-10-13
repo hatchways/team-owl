@@ -75,7 +75,6 @@ module.exports = function (server) {
 					sender
 				);
 				callback(newConversation);
-				// io.emit("sendNewConversation", newConversation);
 			} catch (error) {
 				console.error(error.message);
 				res.status(500).json({ msg: "Server error - 500" });

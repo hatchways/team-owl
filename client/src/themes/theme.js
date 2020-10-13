@@ -21,6 +21,12 @@ export const theme = createMuiTheme({
       outlinedPrimary: {
         borderRadius: 0,
       },
+      containedSecondary: {
+        borderRadius: 0,
+      },
+      outlinedSecondary: {
+        borderRadius: 0,
+      },
     },
   },
 });

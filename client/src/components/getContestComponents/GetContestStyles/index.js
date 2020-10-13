@@ -46,13 +46,13 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(8),
-    fontFamily: 'Poppins-Semibold',
+    fontWeight: 600,
   },
 
   subtitle: {
     textAlign: 'left',
     fontSize: 16,
-    fontFamily: 'Poppins-Semibold',
+    fontWeight: 600,
   },
 
   subtext: {
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
   prizeTimeSub: {
     textAlign: 'left',
-    fontFamily: 'Poppins-Semibold',
+    fontWeight: 600,
   },
 
   textFieldOne: {
@@ -161,7 +161,7 @@ const useStyles = makeStyles((theme) => ({
   userName: {
     textAlign: 'left',
     paddingTop: theme.spacing(1),
-    fontFamily: 'Poppins-Semibold',
+    fontWeight: 600,
   },
 
   //tabs

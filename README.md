@@ -31,13 +31,13 @@ Our Stack:
 
 ## Features
 
-Users can sign-up, login to our platform.
-A user can be both contest creator and tattoo artist.
-A user planning on creating a contest must submit their credit card information to Stripe through our app.
-A user planning on competing on contests must submit their banking information to Stripe.
-Users can communicate with one another through instant chat messaging.
-Users can create timed contests, and users and submit their designs.
-Once a contest reaches the deadline, the contest creator can pick a winner. The winning prize will be sent to the winner's bank account via Stripe Connect.
+- Users can sign-up, login to our platform.
+- A user can be both contest creator and tattoo artist.
+- A user planning on creating a contest must submit their credit card information to Stripe through our app.
+- A user planning on competing on contests must submit their banking information to Stripe.
+- Users can communicate with one another through instant chat messaging.
+- Users can create timed contests, and users and submit their designs.
+- Once a contest reaches the deadline, the contest creator can pick a winner. The winning prize will be sent to the winner's bank account via Stripe Connect.
 
 
 

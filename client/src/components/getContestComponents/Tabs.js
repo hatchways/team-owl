@@ -85,8 +85,10 @@ const SimpleTabs = ({ contestData }) => {
       header
     );
     const data = res.data;
-    console.log(data);
-    alertFn(`You have chosen ${selectedTile.user.name} as the winner!`);
+    //console.log(data);
+    alertFn(
+      `You have chosen ${selectedTile.user.name} as the winner! The contest prize has been awarded to ${selectedTile.user.name}.`
+    );
     handleClose();
     setOpen(false);
   };
@@ -150,9 +152,11 @@ const SimpleTabs = ({ contestData }) => {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">
-            Choose this design as winner?
-          </DialogTitle>
+          {deadlineEpoch < dateNow ? (
+            <DialogTitle id="alert-dialog-title">
+              Choose this design as winner?
+            </DialogTitle>
+          ) : null}
           <DialogContent>
             {selectedTile &&
               selectedTile.submissionPic.map((pic, i) => {

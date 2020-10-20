@@ -65,8 +65,9 @@ exports.getContestById = async (req, res, next) => {
 //GET - get all contests
 exports.getAllContests = async (req, res, next) => {
   try {
-    const contests = await Contest.find()
-      .sort({ deadline: -1 })
+    const wiggleRoom = Date.now() - 1000 * 60 * 60;
+    const contests = await Contest.find({ deadline: { $gte: wiggleRoom } })
+      .sort({ deadline: 1 })
       .populate('user');
     if (!contests) {
       return res.status(404).json({ msg: 'There are no contests' });

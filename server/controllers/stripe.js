@@ -13,6 +13,7 @@ exports.createConnectedAccount = async (req, res, next) => {
     if (!user.stripeBankAcct) {
       const account = await stripe.accounts.create({
         type: 'express',
+        email: user.email,
       });
       user.stripeBankAcct = account;
       user.save();

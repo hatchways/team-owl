@@ -49,13 +49,11 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(8),
-    fontFamily: 'Poppins-Semibold',
   },
 
   subtitle: {
     textAlign: 'left',
     paddingTop: theme.spacing(6),
-    fontFamily: 'Poppins-Semibold',
   },
 
   subtext: {
@@ -66,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
 
   prizeTimeSub: {
     textAlign: 'left',
-    fontFamily: 'Poppins-Semibold',
   },
 
   textFieldOne: {

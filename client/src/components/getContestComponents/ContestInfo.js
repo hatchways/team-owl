@@ -13,11 +13,14 @@ import { ContestContext } from '../../context/ContestContext';
 import Tabs from './Tabs';
 import ConversationContext from '../../context/ConversationContext';
 import { convertMS } from '../../helper/CountDown';
+import UserState from '../../context/UserContext';
 
 const ViewContest = () => {
   const classes = useStyles();
   const context = useContext(ContestContext);
+  const userContext = useContext(UserState);
   const { contest } = context.state;
+  const { user } = userContext.state;
   const conversationContext = useContext(ConversationContext);
   const { getNewConversation } = conversationContext;
 
@@ -32,6 +35,9 @@ const ViewContest = () => {
 
   const params = useParams();
   const history = useHistory();
+
+  // console.log(user._id);
+  // console.log(contest.user._id);
 
   setTimeout(() => {
     setDate(dateNow);
@@ -95,7 +101,8 @@ const ViewContest = () => {
                     >
                       Message
                     </Button>
-                    {deadlineEpoch > dateNow ? (
+                    {deadlineEpoch > dateNow &&
+                    user._id !== contest.user._id ? (
                       <Button
                         variant={'outlined'}
                         className={classes.contestButton}

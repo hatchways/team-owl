@@ -18,8 +18,6 @@ export default function CardSetupForm({ intentData, display }) {
   const { user } = context.state;
   const { alertFn } = contestContext;
 
-  //console.log(user);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) {
@@ -37,10 +35,11 @@ export default function CardSetupForm({ intentData, display }) {
 
     if (result.error) {
       console.log(result.error);
-      return alertFn('We were not able to save your credit card info.');
+      return alertFn(
+        'We were not able to save your credit card info.',
+        'error'
+      );
     } else {
-      // console.log(result.setupIntent.payment_method);
-      // console.log(user.stripeCreditCustomer);
       try {
         await axios.post(
           `/api/v1/payment_methods/${user.stripeCreditCustomer.id}/attach`,
@@ -51,8 +50,6 @@ export default function CardSetupForm({ intentData, display }) {
             },
           }
         );
-        // const data = res.data;
-        // console.log(data);
         return alertFn('Your credit card info is saved.');
       } catch (error) {
         console.error(error.message);

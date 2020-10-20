@@ -45,3 +45,5 @@ Tattoo Art is a web app that brings together tattoo artists and tattoo seekers i
 7. run server via `npm run dev`
 8. server will run on http://localhost:3001
 9. Add API Key Dependencies to the project **instructions pending**
+
+

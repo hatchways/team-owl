@@ -7,6 +7,7 @@ const cors = require("cors");
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
 const connectDB = require("./bin/db");
+require('dotenv').config();
 
 const { json, urlencoded } = express;
 

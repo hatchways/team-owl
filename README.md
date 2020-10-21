@@ -8,10 +8,10 @@ Tattoo Art is a web app that brings together tattoo artists and tattoo seekers i
 
 ## Gallery
 
-![Landing Page](./images/pic1.png)
-![Contest Creation](./images/pic2.png)
-![Instant Messaging](./images/pic4.png)
-![Contest Page](./images/pic5.png)
+![Landing Page](./images/pic1.jpg)
+![Contest Creation](./images/pic2.jpg)
+![Instant Messaging](./images/pic4.jpg)
+![Contest Page](./images/pic5.jpg)
 
 ## TechStack:
 
